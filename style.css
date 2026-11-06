@@ -1,8 +1,6 @@
-body {
-  
-/* -------------------- */
-/* PAGE                 */
-/* -------------------- */
+/* ======================================== */
+/* PAGE                                     */
+/* ======================================== */
 
 html,
 body {
@@ -18,142 +16,77 @@ body {
   justify-content: center;
   align-items: center;
 
+  min-height: 100vh;
+
   overflow: hidden;
 
   font-family: Arial, sans-serif;
 }
 
 
-/* -------------------- */
-/* ADAPTATION ÉCRAN     */
-/* -------------------- */
+/* ======================================== */
+/* CONTENEUR DU JEU                         */
+/* ======================================== */
 
 #game-wrapper {
-  width: 700px;
-  height: 450px;
+  width: 704px;
+  height: 454px;
 
   flex-shrink: 0;
 }
 
 
-/* -------------------- */
-/* CONTRÔLES MOBILE     */
-/* -------------------- */
+/* ======================================== */
+/* JEU                                      */
+/* ======================================== */
 
-#mobile-controls {
-  display: none;
-
-  position: fixed;
-
-  left: 0;
-  right: 0;
-  bottom: 20px;
-
-  padding: 0 25px;
-
-  justify-content: space-between;
-  align-items: flex-end;
-
-  pointer-events: none;
-
-  z-index: 1000;
-}
-
-
-/* JOYSTICK */
-
-#joystick {
-  width: 120px;
-  height: 120px;
-
-  position: relative;
-
-  border-radius: 50%;
-
-  background-color: rgba(0, 0, 0, 0.45);
-
-  border: 3px solid rgba(255, 255, 255, 0.7);
-
-  pointer-events: auto;
-
-  touch-action: none;
-}
-
-
-#joystick-stick {
-  width: 50px;
-  height: 50px;
-
-  position: absolute;
-
-  left: 35px;
-  top: 35px;
-
-  border-radius: 50%;
-
-  background-color: rgba(255, 255, 255, 0.85);
-
-  pointer-events: none;
-}
-
-
-/* BOUTON E */
-
-#mobile-action {
-  width: 80px;
-  height: 80px;
-
-  border: 3px solid white;
-  border-radius: 50%;
-
-  background-color: rgba(0, 0, 0, 0.7);
-
-  color: white;
-
-  font-size: 28px;
-  font-weight: bold;
-
-  pointer-events: auto;
-
-  touch-action: manipulation;
-}
-
-
-/* AFFICHER LES CONTRÔLES
-   UNIQUEMENT SUR ÉCRAN TACTILE */
-
-@media (pointer: coarse) {
-
-  #mobile-controls {
-    display: flex;
-  }
-
-}
-
-  
 #game {
   width: 700px;
   height: 450px;
 
-background-color: #6fa84f;
+  background-color: #6fa84f;
 
-background-image:
-  radial-gradient(circle at 20% 30%, #85b85e 2px, transparent 3px),
-  radial-gradient(circle at 70% 60%, #5f963f 2px, transparent 3px),
-  radial-gradient(circle at 40% 80%, #8cbd63 1px, transparent 2px),
-  radial-gradient(circle at 85% 20%, #5b913d 1px, transparent 2px);
+  background-image:
+    radial-gradient(
+      circle at 20% 30%,
+      #85b85e 2px,
+      transparent 3px
+    ),
+    radial-gradient(
+      circle at 70% 60%,
+      #5f963f 2px,
+      transparent 3px
+    ),
+    radial-gradient(
+      circle at 40% 80%,
+      #8cbd63 1px,
+      transparent 2px
+    ),
+    radial-gradient(
+      circle at 85% 20%,
+      #5b913d 1px,
+      transparent 2px
+    );
 
-background-size:
-  45px 45px,
-  55px 55px,
-  35px 35px,
-  40px 40px;
+  background-size:
+    45px 45px,
+    55px 55px,
+    35px 35px,
+    40px 40px;
 
   position: relative;
+
   overflow: hidden;
 
   border: 4px solid white;
+
+  box-sizing: border-box;
 }
+
+
+/* ======================================== */
+/* JOËL                                     */
+/* ======================================== */
 
 #player {
   width: 50px;
@@ -171,6 +104,11 @@ background-size:
 
   z-index: 10;
 }
+
+
+/* ======================================== */
+/* ARBRES                                   */
+/* ======================================== */
 
 .tree {
   width: 100px;
@@ -200,6 +138,11 @@ background-size:
   top: 320px;
 }
 
+
+/* ======================================== */
+/* ROCHERS                                  */
+/* ======================================== */
+
 .rock {
   width: 90px;
   height: 50px;
@@ -224,6 +167,11 @@ background-size:
   top: 80px;
 }
 
+
+/* ======================================== */
+/* CHEMIN                                   */
+/* ======================================== */
+
 .path {
   position: absolute;
 
@@ -240,13 +188,15 @@ background-size:
   z-index: 0;
 }
 
-/* -------------------- */
-/* DÉCORATIONS          */
-/* -------------------- */
+
+/* ======================================== */
+/* DÉCORATIONS                              */
+/* ======================================== */
 
 .grass,
 .flower {
   position: absolute;
+
   user-select: none;
 
   z-index: 1;
@@ -259,6 +209,7 @@ background-size:
 .flower {
   font-size: 16px;
 }
+
 
 /* Herbes */
 
@@ -282,6 +233,7 @@ background-size:
   top: 370px;
 }
 
+
 /* Fleurs */
 
 .flower1 {
@@ -300,6 +252,10 @@ background-size:
 }
 
 
+/* ======================================== */
+/* THIRY                                    */
+/* ======================================== */
+
 #npc {
   width: 50px;
   height: 95px;
@@ -317,9 +273,10 @@ background-size:
   z-index: 2;
 }
 
-/* -------------------- */
-/* INTERACTION PNJ      */
-/* -------------------- */
+
+/* ======================================== */
+/* INTERACTION                              */
+/* ======================================== */
 
 #interaction {
   position: absolute;
@@ -330,9 +287,9 @@ background-size:
   padding: 6px 10px;
 
   background-color: rgba(0, 0, 0, 0.8);
+
   color: white;
 
-  font-family: Arial, sans-serif;
   font-size: 13px;
 
   border-radius: 5px;
@@ -340,12 +297,14 @@ background-size:
   display: none;
 
   z-index: 50;
+
+  white-space: nowrap;
 }
 
 
-/* -------------------- */
-/* BOÎTE DE DIALOGUE    */
-/* -------------------- */
+/* ======================================== */
+/* BOÎTE DE DIALOGUE                        */
+/* ======================================== */
 
 #dialogue {
   position: absolute;
@@ -367,15 +326,16 @@ background-size:
 
   color: white;
 
-  font-family: Arial, sans-serif;
-
   display: none;
 
   z-index: 100;
+
+  box-sizing: border-box;
 }
 
 #dialogue-name {
   color: #ffd166;
+
   font-weight: bold;
   font-size: 18px;
 
@@ -389,15 +349,18 @@ background-size:
 
 .dialogue-help {
   margin-top: 12px;
+
   text-align: right;
 
   font-size: 12px;
+
   color: #aaa;
 }
 
-/* -------------------- */
-/* QUÊTE                */
-/* -------------------- */
+
+/* ======================================== */
+/* QUÊTE                                    */
+/* ======================================== */
 
 #quest-box {
   position: absolute;
@@ -416,15 +379,16 @@ background-size:
 
   color: white;
 
-  font-family: Arial, sans-serif;
-
   display: none;
 
   z-index: 100;
+
+  box-sizing: border-box;
 }
 
 .quest-title {
   font-weight: bold;
+
   color: #ffd166;
 
   margin-bottom: 8px;
@@ -434,9 +398,10 @@ background-size:
   font-size: 13px;
 }
 
-/* -------------------- */
-/* CAFÉ DE LA QUÊTE     */
-/* -------------------- */
+
+/* ======================================== */
+/* CAFÉ                                     */
+/* ======================================== */
 
 #coffee {
   position: absolute;
@@ -451,9 +416,10 @@ background-size:
   z-index: 5;
 }
 
-/* -------------------- */
-/* STATS DE JOËL        */
-/* -------------------- */
+
+/* ======================================== */
+/* STATS DE JOËL                            */
+/* ======================================== */
 
 #joel-stats {
   position: absolute;
@@ -462,6 +428,7 @@ background-size:
   left: 15px;
 
   width: 180px;
+
   padding: 12px;
 
   background-color: rgba(20, 20, 20, 0.9);
@@ -471,28 +438,32 @@ background-size:
 
   color: white;
 
-  font-family: Arial, sans-serif;
-
   z-index: 100;
+
+  box-sizing: border-box;
 }
 
 .stats-header {
   font-weight: bold;
+
   margin-bottom: 8px;
 }
 
 #level {
   float: right;
+
   color: #ffd166;
 }
 
 .health {
   font-size: 13px;
+
   margin-bottom: 7px;
 }
 
 .xp-line {
   font-size: 13px;
+
   margin-bottom: 5px;
 }
 
@@ -507,6 +478,7 @@ background-size:
   background-color: #444;
 
   border-radius: 5px;
+
   overflow: hidden;
 }
 
@@ -517,4 +489,153 @@ background-size:
   background-color: #ffd166;
 
   transition: width 0.4s;
+}
+
+
+/* ======================================== */
+/* CONTRÔLES MOBILE                         */
+/* ======================================== */
+
+#mobile-controls {
+  display: none;
+
+  position: fixed;
+
+  left: 0;
+  right: 0;
+  bottom: 20px;
+
+  padding: 0 25px;
+
+  justify-content: space-between;
+  align-items: flex-end;
+
+  pointer-events: none;
+
+  z-index: 1000;
+
+  box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* JOYSTICK                                 */
+/* ======================================== */
+
+#joystick {
+  width: 120px;
+  height: 120px;
+
+  position: relative;
+
+  border-radius: 50%;
+
+  background-color: rgba(0, 0, 0, 0.45);
+
+  border: 3px solid rgba(255, 255, 255, 0.7);
+
+  pointer-events: auto;
+
+  touch-action: none;
+
+  box-sizing: border-box;
+}
+
+#joystick-stick {
+  width: 50px;
+  height: 50px;
+
+  position: absolute;
+
+  left: 32px;
+  top: 32px;
+
+  border-radius: 50%;
+
+  background-color: rgba(255, 255, 255, 0.85);
+
+  pointer-events: none;
+}
+
+
+/* ======================================== */
+/* BOUTON E                                 */
+/* ======================================== */
+
+#mobile-action {
+  width: 80px;
+  height: 80px;
+
+  border: 3px solid white;
+  border-radius: 50%;
+
+  background-color: rgba(0, 0, 0, 0.7);
+
+  color: white;
+
+  font-size: 28px;
+  font-weight: bold;
+
+  pointer-events: auto;
+
+  touch-action: manipulation;
+}
+
+
+/* ======================================== */
+/* APPAREILS TACTILES                       */
+/* ======================================== */
+
+@media (pointer: coarse) {
+
+  #mobile-controls {
+    display: flex;
+  }
+
+}
+
+
+/* ======================================== */
+/* PETITS ÉCRANS                            */
+/* ======================================== */
+
+@media (max-width: 750px) {
+
+  body {
+    align-items: flex-start;
+
+    padding-top: 15px;
+
+    box-sizing: border-box;
+  }
+
+  #game-wrapper {
+    transform: scale(0.5);
+
+    transform-origin: top center;
+  }
+
+}
+
+
+/* ======================================== */
+/* TÉLÉPHONE EN PAYSAGE                     */
+/* ======================================== */
+
+@media (max-height: 600px) and (pointer: coarse) {
+
+  body {
+    align-items: flex-start;
+
+    padding-top: 10px;
+
+    box-sizing: border-box;
+  }
+
+  #game-wrapper {
+    transform: scale(0.65);
+
+    transform-origin: top center;
+  }
+
 }
