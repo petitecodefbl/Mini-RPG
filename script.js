@@ -26,6 +26,24 @@ let x = 330;
 let y = 205;
 
 const speed = 10;
+// --------------------
+// CONTRÔLES MOBILE
+// --------------------
+
+const joystick =
+  document.getElementById("joystick");
+
+const joystickStick =
+  document.getElementById("joystick-stick");
+
+const mobileAction =
+  document.getElementById("mobile-action");
+
+
+let joystickX = 0;
+let joystickY = 0;
+
+let joystickActive = false;
 
 // --------------------
 // STATS DE JOËL
@@ -783,3 +801,295 @@ function updateStats() {
 
 }
 updateStats();
+
+// --------------------
+// JOYSTICK MOBILE
+// --------------------
+
+function updateJoystick(event) {
+
+  const rect =
+    joystick.getBoundingClientRect();
+
+  const centerX =
+    rect.left + rect.width / 2;
+
+  const centerY =
+    rect.top + rect.height / 2;
+
+
+  let deltaX =
+    event.clientX - centerX;
+
+  let deltaY =
+    event.clientY - centerY;
+
+
+  const maxDistance = 35;
+
+  const distance =
+    Math.sqrt(
+      deltaX * deltaX +
+      deltaY * deltaY
+    );
+
+
+  if (distance > maxDistance) {
+
+    deltaX =
+      (deltaX / distance) *
+      maxDistance;
+
+    deltaY =
+      (deltaY / distance) *
+      maxDistance;
+
+  }
+
+
+  joystickStick.style.transform =
+    "translate(" +
+    deltaX +
+    "px, " +
+    deltaY +
+    "px)";
+
+
+  joystickX =
+    deltaX / maxDistance;
+
+  joystickY =
+    deltaY / maxDistance;
+
+}
+
+
+joystick.addEventListener(
+  "pointerdown",
+  function(event) {
+
+    joystickActive = true;
+
+    joystick.setPointerCapture(
+      event.pointerId
+    );
+
+    updateJoystick(event);
+
+  }
+);
+
+
+joystick.addEventListener(
+  "pointermove",
+  function(event) {
+
+    if (!joystickActive) {
+      return;
+    }
+
+    updateJoystick(event);
+
+  }
+);
+
+
+function stopJoystick() {
+
+  joystickActive = false;
+
+  joystickX = 0;
+  joystickY = 0;
+
+  joystickStick.style.transform =
+    "translate(0px, 0px)";
+
+}
+
+
+joystick.addEventListener(
+  "pointerup",
+  stopJoystick
+);
+
+joystick.addEventListener(
+  "pointercancel",
+  stopJoystick
+);
+
+// --------------------
+// MOUVEMENT MOBILE
+// --------------------
+
+let lastMobileMove = 0;
+
+
+function mobileMovement(time) {
+
+  if (
+    joystickActive &&
+    time - lastMobileMove > 60
+  ) {
+
+    /*
+      On transforme la direction
+      du joystick en touche clavier.
+    */
+
+    if (joystickY < -0.35) {
+
+      document.dispatchEvent(
+        new KeyboardEvent(
+          "keydown",
+          { key: "ArrowUp" }
+        )
+      );
+
+    }
+
+
+    if (joystickY > 0.35) {
+
+      document.dispatchEvent(
+        new KeyboardEvent(
+          "keydown",
+          { key: "ArrowDown" }
+        )
+      );
+
+    }
+
+
+    if (joystickX < -0.35) {
+
+      document.dispatchEvent(
+        new KeyboardEvent(
+          "keydown",
+          { key: "ArrowLeft" }
+        )
+      );
+
+    }
+
+
+    if (joystickX > 0.35) {
+
+      document.dispatchEvent(
+        new KeyboardEvent(
+          "keydown",
+          { key: "ArrowRight" }
+        )
+      );
+
+    }
+
+
+    lastMobileMove = time;
+
+  }
+
+
+  requestAnimationFrame(
+    mobileMovement
+  );
+
+}
+
+
+requestAnimationFrame(
+  mobileMovement
+);
+
+// --------------------
+// BOUTON E MOBILE
+// --------------------
+
+mobileAction.addEventListener(
+  "pointerdown",
+  function(event) {
+
+    event.preventDefault();
+
+    document.dispatchEvent(
+      new KeyboardEvent(
+        "keydown",
+        { key: "e" }
+      )
+    );
+
+  }
+);
+
+// --------------------
+// ADAPTER LE JEU
+// À LA TAILLE DE L'ÉCRAN
+// --------------------
+
+const gameWrapper =
+  document.getElementById("game-wrapper");
+
+
+function resizeGame() {
+
+  const gameWidth = 700;
+  const gameHeight = 450;
+
+
+  let availableWidth =
+    window.innerWidth;
+
+  let availableHeight =
+    window.innerHeight;
+
+
+  /*
+    Sur téléphone on garde
+    de la place pour les contrôles.
+  */
+
+  const touchDevice =
+    window.matchMedia(
+      "(pointer: coarse)"
+    ).matches;
+
+
+  if (touchDevice) {
+
+    availableHeight -= 150;
+
+  }
+
+
+  const scaleX =
+    availableWidth /
+    gameWidth;
+
+  const scaleY =
+    availableHeight /
+    gameHeight;
+
+
+  let scale =
+    Math.min(
+      scaleX,
+      scaleY
+    );
+
+
+  // Petite marge
+  scale *= 0.95;
+
+
+  gameWrapper.style.transform =
+    "scale(" + scale + ")";
+
+}
+
+
+resizeGame();
+
+
+window.addEventListener(
+  "resize",
+  resizeGame
+);
