@@ -456,7 +456,6 @@ if (key === "e" && canPickCoffee && !hasCoffee) {
     }
 
 // Thiry
-// Thiry
 else if (obstacle.classList.contains("npc")) {
 
   obstacleRect = fullObstacleRect;
@@ -1034,25 +1033,22 @@ function resizeGame() {
   const gameWidth = 700;
   const gameHeight = 450;
 
-
-  let availableWidth =
-    window.innerWidth;
-
-  let availableHeight =
-    window.innerHeight;
-
-
-  /*
-    Sur téléphone on garde
-    de la place pour les contrôles.
-  */
-
   const touchDevice =
     window.matchMedia(
       "(pointer: coarse)"
     ).matches;
 
 
+  // Espace disponible
+  let availableWidth =
+    window.innerWidth - 40;
+
+  let availableHeight =
+    window.innerHeight - 40;
+
+
+  // Sur téléphone,
+  // on garde de la place pour le joystick
   if (touchDevice) {
 
     availableHeight -= 150;
@@ -1061,27 +1057,22 @@ function resizeGame() {
 
 
   const scaleX =
-    availableWidth /
-    gameWidth;
+    availableWidth / gameWidth;
 
   const scaleY =
-    availableHeight /
-    gameHeight;
+    availableHeight / gameHeight;
 
 
-  let scale =
+  const scale =
     Math.min(
       scaleX,
       scaleY
     );
 
 
-  // Petite marge
-  scale *= 0.95;
-
-
-  gameWrapper.style.transform =
-    "scale(" + scale + ")";
+  // IMPORTANT :
+  // on utilise zoom et PAS transform
+  gameWrapper.style.zoom = scale;
 
 }
 
@@ -1093,3 +1084,5 @@ window.addEventListener(
   "resize",
   resizeGame
 );
+
+
