@@ -1,0 +1,408 @@
+body {
+  margin: 0;
+  background-color: #222;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100vh;
+}
+
+#game {
+  width: 700px;
+  height: 450px;
+
+background-color: #6fa84f;
+
+background-image:
+  radial-gradient(circle at 20% 30%, #85b85e 2px, transparent 3px),
+  radial-gradient(circle at 70% 60%, #5f963f 2px, transparent 3px),
+  radial-gradient(circle at 40% 80%, #8cbd63 1px, transparent 2px),
+  radial-gradient(circle at 85% 20%, #5b913d 1px, transparent 2px);
+
+background-size:
+  45px 45px,
+  55px 55px,
+  35px 35px,
+  40px 40px;
+
+  position: relative;
+  overflow: hidden;
+
+  border: 4px solid white;
+}
+
+#player {
+  width: 50px;
+  height: 90px;
+
+  background-image: url("joel.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  position: absolute;
+
+  left: 330px;
+  top: 205px;
+
+  z-index: 10;
+}
+
+.tree {
+  width: 100px;
+  height: 120px;
+
+  background-image: url("tree.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+
+  position: absolute;
+
+  z-index: 2;
+}
+
+.tree1 {
+  left: 100px;
+  top: 80px;
+}
+
+.tree2 {
+  left: 520px;
+  top: 70px;
+}
+
+.tree3 {
+  left: 200px;
+  top: 320px;
+}
+
+.rock {
+  width: 90px;
+  height: 50px;
+
+  background-image: url("rock.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  position: absolute;
+
+  z-index: 2;
+}
+
+.rock1 {
+  left: 400px;
+  top: 300px;
+}
+
+.rock2 {
+  left: 300px;
+  top: 80px;
+}
+
+.path {
+  position: absolute;
+
+  width: 170px;
+  height: 600px;
+
+  background-color: #c9a66b;
+
+  left: 265px;
+  top: -70px;
+
+  transform: rotate(8deg);
+
+  z-index: 0;
+}
+
+/* -------------------- */
+/* DÉCORATIONS          */
+/* -------------------- */
+
+.grass,
+.flower {
+  position: absolute;
+  user-select: none;
+
+  z-index: 1;
+}
+
+.grass {
+  font-size: 20px;
+}
+
+.flower {
+  font-size: 16px;
+}
+
+/* Herbes */
+
+.grass1 {
+  left: 50px;
+  top: 250px;
+}
+
+.grass2 {
+  left: 600px;
+  top: 200px;
+}
+
+.grass3 {
+  left: 450px;
+  top: 130px;
+}
+
+.grass4 {
+  left: 120px;
+  top: 370px;
+}
+
+/* Fleurs */
+
+.flower1 {
+  left: 80px;
+  top: 200px;
+}
+
+.flower2 {
+  left: 580px;
+  top: 350px;
+}
+
+.flower3 {
+  left: 470px;
+  top: 390px;
+}
+
+#npc {
+  position: absolute;
+
+  left: 560px;
+  top: 220px;
+
+  font-size: 45px;
+
+  z-index: 5;
+}
+
+#npc {
+  width: 50px;
+  height: 95px;
+
+  background-image: url("thiry.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  position: absolute;
+
+  left: 560px;
+  top: 220px;
+
+  z-index: 2;
+}
+
+/* -------------------- */
+/* INTERACTION PNJ      */
+/* -------------------- */
+
+#interaction {
+  position: absolute;
+
+  left: 535px;
+  top: 150px;
+
+  padding: 6px 10px;
+
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+
+  border-radius: 5px;
+
+  display: none;
+
+  z-index: 50;
+}
+
+
+/* -------------------- */
+/* BOÎTE DE DIALOGUE    */
+/* -------------------- */
+
+#dialogue {
+  position: absolute;
+
+  left: 50%;
+  bottom: 20px;
+
+  transform: translateX(-50%);
+
+  width: 600px;
+  min-height: 90px;
+
+  padding: 15px;
+
+  background-color: rgba(20, 20, 20, 0.95);
+
+  border: 3px solid white;
+  border-radius: 8px;
+
+  color: white;
+
+  font-family: Arial, sans-serif;
+
+  display: none;
+
+  z-index: 100;
+}
+
+#dialogue-name {
+  color: #ffd166;
+  font-weight: bold;
+  font-size: 18px;
+
+  margin-bottom: 10px;
+}
+
+#dialogue-text {
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.dialogue-help {
+  margin-top: 12px;
+  text-align: right;
+
+  font-size: 12px;
+  color: #aaa;
+}
+
+/* -------------------- */
+/* QUÊTE                */
+/* -------------------- */
+
+#quest-box {
+  position: absolute;
+
+  top: 15px;
+  right: 15px;
+
+  width: 200px;
+
+  padding: 12px;
+
+  background-color: rgba(20, 20, 20, 0.9);
+
+  border: 2px solid white;
+  border-radius: 7px;
+
+  color: white;
+
+  font-family: Arial, sans-serif;
+
+  display: none;
+
+  z-index: 100;
+}
+
+.quest-title {
+  font-weight: bold;
+  color: #ffd166;
+
+  margin-bottom: 8px;
+}
+
+#quest-objective {
+  font-size: 13px;
+}
+
+/* -------------------- */
+/* CAFÉ DE LA QUÊTE     */
+/* -------------------- */
+
+#coffee {
+  position: absolute;
+
+  left: 80px;
+  top: 330px;
+
+  font-size: 35px;
+
+  display: none;
+
+  z-index: 5;
+}
+
+/* -------------------- */
+/* STATS DE JOËL        */
+/* -------------------- */
+
+#joel-stats {
+  position: absolute;
+
+  top: 15px;
+  left: 15px;
+
+  width: 180px;
+  padding: 12px;
+
+  background-color: rgba(20, 20, 20, 0.9);
+
+  border: 2px solid white;
+  border-radius: 7px;
+
+  color: white;
+
+  font-family: Arial, sans-serif;
+
+  z-index: 100;
+}
+
+.stats-header {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+#level {
+  float: right;
+  color: #ffd166;
+}
+
+.health {
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+
+.xp-line {
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+#xp-text {
+  float: right;
+}
+
+.xp-bar {
+  width: 100%;
+  height: 10px;
+
+  background-color: #444;
+
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+#xp-fill {
+  width: 0%;
+  height: 100%;
+
+  background-color: #ffd166;
+
+  transition: width 0.4s;
+}
