@@ -3,151 +3,182 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no"
+  >
 
   <title>Mini RPG</title>
 
   <link rel="stylesheet" href="style.css">
 </head>
 
-  
 
 <body>
 
+  <!-- ==================== -->
+  <!-- CONTENEUR DU JEU     -->
+  <!-- ==================== -->
+
   <div id="game-wrapper">
 
     <div id="game">
 
-      <!-- ICI : TOUT LE CONTENU ACTUEL DE TON JEU -->
-      <!-- Joël, Thiry, arbres, rochers, HUD, quête, dialogue, etc. -->
+
+      <!-- CHEMIN -->
+
+      <div class="path"></div>
+
+
+      <!-- DÉCORATIONS -->
+
+      <div class="grass grass1">🌿</div>
+      <div class="grass grass2">🌿</div>
+      <div class="grass grass3">🌿</div>
+      <div class="grass grass4">🌿</div>
+
+      <div class="flower flower1">🌼</div>
+      <div class="flower flower2">🌼</div>
+      <div class="flower flower3">🌸</div>
+
+
+      <!-- ARBRES -->
+
+      <div class="tree obstacle tree1"></div>
+      <div class="tree obstacle tree2"></div>
+      <div class="tree obstacle tree3"></div>
+
+
+      <!-- ROCHERS -->
+
+      <div class="rock obstacle rock1"></div>
+      <div class="rock obstacle rock2"></div>
+
+
+      <!-- CAFÉ -->
+
+      <div id="coffee">☕</div>
+
+
+      <!-- THIRY -->
+
+      <div
+        id="npc"
+        class="obstacle npc">
+      </div>
+
+
+      <!-- JOËL -->
+
+      <div id="player"></div>
+
+
+      <!-- ==================== -->
+      <!-- STATS DE JOËL        -->
+      <!-- ==================== -->
+
+      <div id="joel-stats">
+
+        <div class="stats-header">
+          JOËL
+          <span id="level">
+            Niv. 1
+          </span>
+        </div>
+
+        <div class="health">
+          ❤️
+          <span id="health">
+            100 / 100
+          </span>
+        </div>
+
+        <div class="xp-line">
+          ⭐ XP
+
+          <span id="xp-text">
+            0 / 100
+          </span>
+        </div>
+
+        <div class="xp-bar">
+          <div id="xp-fill"></div>
+        </div>
+
+      </div>
+
+
+      <!-- ==================== -->
+      <!-- INTERACTION          -->
+      <!-- ==================== -->
+
+      <div id="interaction">
+        E — Parler
+      </div>
+
+
+      <!-- ==================== -->
+      <!-- QUÊTE                -->
+      <!-- ==================== -->
+
+      <div id="quest-box">
+
+        <div class="quest-title">
+          ☕ La pause café
+        </div>
+
+        <div id="quest-objective">
+          □ Trouver un café pour Thiry
+        </div>
+
+      </div>
+
+
+      <!-- ==================== -->
+      <!-- DIALOGUE             -->
+      <!-- ==================== -->
+
+      <div id="dialogue">
+
+        <div id="dialogue-name">
+          Thiry
+        </div>
+
+        <div id="dialogue-text"></div>
+
+        <div class="dialogue-help">
+          E — Continuer
+        </div>
+
+      </div>
+
 
     </div>
 
   </div>
 
 
-  <!-- CONTRÔLES MOBILE -->
+  <!-- ==================== -->
+  <!-- CONTRÔLES TÉLÉPHONE  -->
+  <!-- ==================== -->
+
   <div id="mobile-controls">
 
     <div id="joystick">
       <div id="joystick-stick"></div>
     </div>
 
-    <button id="mobile-action" type="button">
+    <button
+      id="mobile-action"
+      type="button">
       E
     </button>
 
   </div>
 
 
-  <script src="script.js"></script>
-
-</body>
-
-  <div id="joel-stats">
-  <div class="stats-header">
-    JOËL <span id="level">Niv. 1</span>
-  </div>
-
-  <div class="health">
-    ❤️ <span id="health">100 / 100</span>
-  </div>
-
-  <div class="xp-line">
-    ⭐ XP <span id="xp-text">0 / 100</span>
-  </div>
-
-  <div class="xp-bar">
-    <div id="xp-fill"></div>
-  </div>
-
-    <body>
-
-  <div id="game-wrapper">
-
-    <div id="game">
-
-      <!-- ICI : TOUT LE CONTENU ACTUEL DE TON JEU -->
-      <!-- Joël, Thiry, arbres, rochers, HUD, quête, dialogue, etc. -->
-
-    </div>
-
-  </div>
-
-
-  <!-- CONTRÔLES MOBILE -->
-  <div id="mobile-controls">
-
-    <div id="joystick">
-      <div id="joystick-stick"></div>
-    </div>
-
-    <button id="mobile-action" type="button">
-      E
-    </button>
-
-  </div>
-
-
-  <script src="script.js"></script>
-
-</body>
-</div>
-  
-
- <div class="path"></div>
-
-  <div id="coffee">☕</div>
-  
-<!-- Décorations -->
-<div class="grass grass1">🌿</div>
-<div class="grass grass2">🌿</div>
-<div class="grass grass3">🌿</div>
-<div class="grass grass4">🌿</div>
-
-<div class="flower flower1">🌼</div>
-<div class="flower flower2">🌼</div>
-<div class="flower flower3">🌸</div>
-
-<div id="npc" class="obstacle npc"></div>
-
-<div id="interaction">E — Parler</div>
-
-<div id="quest-box">
-
-  <div class="quest-title">
-    ☕ La pause café
-  </div>
-
-  <div id="quest-objective">
-    □ Trouver un café pour Thiry
-  </div>
-
-</div>
-  
-  
-<div id="dialogue">
-  <div id="dialogue-name">Thiry</div>
-
-  <div id="dialogue-text"></div>
-
-  <div class="dialogue-help">
-    E — Continuer
-  </div>
-</div>
-
-
-<div id="player"></div>
-  
-
-  <div class="tree obstacle tree1"></div>
-  <div class="tree obstacle tree2"></div>
-  <div class="tree obstacle tree3"></div>
-
-  <div class="rock obstacle rock1"></div>
-  <div class="rock obstacle rock2"></div>
-
-</div>
+  <!-- JAVASCRIPT -->
 
   <script src="script.js"></script>
 
