@@ -1,7 +1,9 @@
+// ========================================
+// ÉLÉMENTS DU JEU
+// ========================================
+
 const player = document.getElementById("player");
 const game = document.getElementById("game");
-const obstacles = document.querySelectorAll(".obstacle");
-const trees = document.querySelectorAll(".tree");
 
 const npc = document.getElementById("npc");
 const interaction = document.getElementById("interaction");
@@ -13,22 +15,84 @@ const dialogueName = document.getElementById("dialogue-name");
 const coffee = document.getElementById("coffee");
 const questObjective = document.getElementById("quest-objective");
 
+const levelUpMessage =
+  document.getElementById("level-up-message");
+
+const levelUpText =
+  document.getElementById("level-up-text");
+
+
+// ========================================
+// MAPS
+// ========================================
+
+const mapOutside =
+  document.getElementById("map-outside");
+
+const mapOffice =
+  document.getElementById("map-office");
+
+const officeDoor =
+  document.getElementById("office-door");
+
+const officeExit =
+  document.getElementById("office-exit");
+
+const printer =
+  document.getElementById("printer");
+
+let currentMap = "outside";
+
+let canEnterOffice = false;
+let canExitOffice = false;
+
+let canExaminePrinter = false;
+let printerFixed = false;
+
+
+// ========================================
+// QUÊTE CAFÉ
+// ========================================
+
 let coffeeQuestActive = false;
 let canPickCoffee = false;
 let hasCoffee = false;
 let coffeeQuestCompleted = false;
 
+
+// ========================================
+// QUÊTE IMPRIMANTE
+// ========================================
+
+let printerQuestAvailable = false;
+let printerQuestActive = false;
+let printerQuestCompleted = false;
+
+
+// ========================================
+// DIALOGUE
+// ========================================
+
 let canTalk = false;
 let dialogueOpen = false;
 let dialogueStep = 0;
+
+let printerMessageOpen = false;
+
+
+// ========================================
+// POSITION DE JOËL
+// ========================================
 
 let x = 330;
 let y = 205;
 
 const speed = 10;
-// --------------------
+
+
+// ========================================
 // CONTRÔLES MOBILE
-// --------------------
+// ========================================
 
 const joystick =
   document.getElementById("joystick");
@@ -39,17 +103,18 @@ const joystickStick =
 const mobileAction =
   document.getElementById("mobile-action");
 
-
 let joystickX = 0;
 let joystickY = 0;
 
 let joystickActive = false;
 
-// --------------------
+
+// ========================================
 // STATS DE JOËL
-// --------------------
+// ========================================
 
 const joel = {
+
   level: 1,
 
   xp: 0,
@@ -59,6 +124,7 @@ const joel = {
   maxHealth: 100,
 
   money: 0
+
 };
 
 const levelDisplay =
@@ -74,9 +140,9 @@ const xpFill =
   document.getElementById("xp-fill");
 
 
-// --------------------
-// DIALOGUE DE THIRY
-// --------------------
+// ========================================
+// DIALOGUE QUÊTE CAFÉ
+// ========================================
 
 const thiryDialogue = [
 
@@ -116,6 +182,12 @@ const thiryDialogue = [
   }
 
 ];
+
+
+// ========================================
+// DIALOGUE RETOUR CAFÉ
+// ========================================
+
 const thiryCoffeeDialogue = [
 
   {
@@ -141,134 +213,274 @@ const thiryCoffeeDialogue = [
 ];
 
 
+// ========================================
+// DIALOGUE QUÊTE IMPRIMANTE
+// ========================================
 
-// --------------------
+const printerQuestDialogue = [
+
+  {
+    speaker: "Joël",
+    text: "Bon, maintenant je vais peut-être pouvoir bosser."
+  },
+
+  {
+    speaker: "Thiry",
+    text: "Justement..."
+  },
+
+  {
+    speaker: "Joël",
+    text: "Quoi encore ?"
+  },
+
+  {
+    speaker: "Thiry",
+    text: "J'ai une imprimante qui répond plus sur le réseau."
+  },
+
+  {
+    speaker: "Joël",
+    text: "T'as vérifié le câble ?"
+  },
+
+  {
+    speaker: "Thiry",
+    text: "...C'est pour ça que je viens voir l'admin réseau."
+  },
+
+  {
+    speaker: "Joël",
+    text: "Bon. Je vais voir."
+  }
+
+];
+
+const printerQuestCompleteDialogue = [
+
+  {
+    speaker: "Joël",
+    text: "C'est bon, ton imprimante est reconnectée."
+  },
+
+  {
+    speaker: "Thiry",
+    text: "Ah ! C'était quoi ?"
+  },
+
+  {
+    speaker: "Joël",
+    text: "Le câble réseau était branché dans le mauvais port."
+  },
+
+  {
+    speaker: "Thiry",
+    text: "Donc c'était bien un problème réseau ! "
+  },
+
+  {
+    speaker: "Joël",
+    text: "Si tu veux..."
+  }
+
+];
+
+// ========================================
 // POSITION DE DÉPART
-// --------------------
+// ========================================
 
 player.style.left = x + "px";
 player.style.top = y + "px";
 
 
-// --------------------
-// TOUCHES DU CLAVIER
-// --------------------
+// ========================================
+// CLAVIER
+// ========================================
 
 document.addEventListener("keydown", function(event) {
 
   const key = event.key.toLowerCase();
 
-// --------------------
-// RAMASSER LE CAFÉ
-// --------------------
 
-if (key === "e" && canPickCoffee && !hasCoffee) {
+  // ======================================
+  // FERMER LE MESSAGE DE L'IMPRIMANTE
+  // ======================================
 
-  hasCoffee = true;
-  canPickCoffee = false;
+  if (
+    key === "e" &&
+    printerMessageOpen
+  ) {
 
-  // Le café disparaît de la carte
-  coffee.style.display = "none";
-
-  // Cache "E — Ramasser"
-  interaction.style.display = "none";
-
-  // Met à jour la quête
-  questObjective.textContent =
-    "☑ Café récupéré — Retourner voir Thiry";
-
-  return;
-}
-  
-  // --------------------
-  // DIALOGUE
-  // --------------------
-
- if (key === "e" && canTalk) {
-
-  // --------------------
-  // QUÊTE DÉJÀ TERMINÉE
-  // --------------------
-
- if (coffeeQuestCompleted) {
-
-  // Si la boîte est fermée → on l'ouvre
-  if (!dialogueOpen) {
-
-    dialogueOpen = true;
-
-    dialogue.style.display = "block";
-
-    dialogueName.textContent = "Thiry";
-    dialogueText.textContent =
-      "On parle après. Là, c'est pause café.";
-
-  }
-
-  // Si elle est déjà ouverte → on la ferme
-  else {
-
+    printerMessageOpen = false;
     dialogueOpen = false;
 
     dialogue.style.display = "none";
 
+    return;
   }
 
-  return;
+
+  // ======================================
+  // EXAMINER L'IMPRIMANTE
+  // ======================================
+
+  if (
+    key === "e" &&
+    canExaminePrinter &&
+    printerQuestActive &&
+    !printerFixed
+  ) {
+
+    fixPrinter();
+
+    // ========================================
+// TERMINER LA QUÊTE IMPRIMANTE
+// ========================================
+
+function completePrinterQuest() {
+
+  printerQuestCompleted = true;
+  printerQuestActive = false;
+
+  const questTitle =
+    document.querySelector(
+      ".quest-title"
+    );
+
+  questTitle.textContent =
+    "🖨️ Problème réseau";
+
+  questObjective.textContent =
+    "✅ Quête terminée !";
+
+  addXP(60);
+
+}
+    
+    return;
+  }
+
+
+  // ======================================
+  // ENTRER DANS L'UNIVERSITÉ
+  // ======================================
+
+  if (
+    key === "e" &&
+    canEnterOffice
+  ) {
+
+    changeMap("office");
+
+    return;
+  }
+
+
+  // ======================================
+  // SORTIR DE L'UNIVERSITÉ
+  // ======================================
+
+  if (
+    key === "e" &&
+    canExitOffice
+  ) {
+
+    changeMap("outside");
+
+    return;
+  }
+
+
+  // ======================================
+  // RAMASSER LE CAFÉ
+  // ======================================
+
+  if (
+    key === "e" &&
+    canPickCoffee &&
+    !hasCoffee
+  ) {
+
+    hasCoffee = true;
+    canPickCoffee = false;
+
+    coffee.style.display = "none";
+
+    interaction.style.display = "none";
+
+    questObjective.textContent =
+      "☑ Café récupéré — Retourner voir Thiry";
+
+    return;
+  }
+
+
+  // ======================================
+  // PARLER À THIRY
+  // ======================================
+
+  if (
+    key === "e" &&
+    canTalk
+  ) {
+
+    let currentDialogue;
+
+    if (
+  printerFixed &&
+  printerQuestActive &&
+  !printerQuestCompleted
+) {
+
+  currentDialogue =
+    printerQuestCompleteDialogue;
+
 }
 
 
-  // --------------------
-  // CHOISIR LE DIALOGUE
-  // --------------------
+    // Joël rapporte le café
 
-  let currentDialogue;
+   else if (hasCoffee) {
 
-  // Joël possède le café
-  if (hasCoffee) {
+      currentDialogue =
+        thiryCoffeeDialogue;
 
-    currentDialogue = thiryCoffeeDialogue;
-
-  }
-
-  // Dialogue normal
-  else {
-
-    currentDialogue = thiryDialogue;
-
-  }
+    }
 
 
-  // --------------------
-  // OUVERTURE
-  // --------------------
+    // Quête imprimante disponible
 
-  if (!dialogueOpen) {
+    else if (
+      printerQuestAvailable &&
+      !printerQuestActive &&
+      !printerQuestCompleted
+    ) {
 
-    dialogueOpen = true;
-    dialogueStep = 0;
+      currentDialogue =
+        printerQuestDialogue;
 
-    dialogue.style.display = "block";
-
-    dialogueName.textContent =
-      currentDialogue[dialogueStep].speaker;
-
-    dialogueText.textContent =
-      currentDialogue[dialogueStep].text;
-
-  }
+    }
 
 
-  // --------------------
-  // PHRASE SUIVANTE
-  // --------------------
+    // Dialogue de départ
 
-  else {
+    else {
 
-    dialogueStep++;
+      currentDialogue =
+        thiryDialogue;
+
+    }
 
 
-    if (dialogueStep < currentDialogue.length) {
+    // OUVERTURE
+
+    if (!dialogueOpen) {
+
+      dialogueOpen = true;
+      dialogueStep = 0;
+
+      dialogue.style.display =
+        "block";
 
       dialogueName.textContent =
         currentDialogue[dialogueStep].speaker;
@@ -279,104 +491,196 @@ if (key === "e" && canPickCoffee && !hasCoffee) {
     }
 
 
-    // --------------------
-    // FIN DU DIALOGUE
-    // --------------------
+    // PHRASE SUIVANTE
 
     else {
 
-      dialogueOpen = false;
-
-      dialogue.style.display = "none";
+      dialogueStep++;
 
 
-      // Joël avait le café
-      if (hasCoffee) {
+      if (
+        dialogueStep <
+        currentDialogue.length
+      ) {
 
-        completeCoffeeQuest();
+        dialogueName.textContent =
+          currentDialogue[dialogueStep].speaker;
+
+        dialogueText.textContent =
+          currentDialogue[dialogueStep].text;
 
       }
 
-      // Première conversation
-      else if (!coffeeQuestActive) {
 
-        startCoffeeQuest();
+      // FIN DU DIALOGUE
+
+      else {
+
+        dialogueOpen = false;
+
+        dialogue.style.display =
+          "none";
+
+if (
+  printerFixed &&
+  printerQuestActive &&
+  !printerQuestCompleted
+) {
+
+  completePrinterQuest();
+
+}
+        // Retour avec le café
+
+       else if (hasCoffee) {
+
+          completeCoffeeQuest();
+
+        }
+
+
+        // Début quête imprimante
+
+        else if (
+          printerQuestAvailable &&
+          !printerQuestActive
+        ) {
+
+          startPrinterQuest();
+
+        }
+
+
+        // Première quête
+
+        else if (
+          !coffeeQuestActive &&
+          !coffeeQuestCompleted
+        ) {
+
+          startCoffeeQuest();
+
+        }
 
       }
 
     }
 
+    return;
   }
 
-  return;
-}
 
-
-  // --------------------
-  // POSITION PRÉCÉDENTE
-  // --------------------
+  // ======================================
+  // ANCIENNE POSITION
+  // ======================================
 
   const oldX = x;
   const oldY = y;
 
 
-  // --------------------
-  // DÉPLACEMENTS
-  // --------------------
+  // ======================================
+  // DÉPLACEMENT
+  // ======================================
 
-  if (key === "z" || event.key === "ArrowUp") {
+  if (
+    key === "z" ||
+    event.key === "ArrowUp"
+  ) {
+
     y -= speed;
+
   }
 
-  if (key === "s" || event.key === "ArrowDown") {
+
+  if (
+    key === "s" ||
+    event.key === "ArrowDown"
+  ) {
+
     y += speed;
+
   }
 
-  if (key === "q" || event.key === "ArrowLeft") {
+
+  if (
+    key === "q" ||
+    event.key === "ArrowLeft"
+  ) {
+
     x -= speed;
+
   }
 
-  if (key === "d" || event.key === "ArrowRight") {
+
+  if (
+    key === "d" ||
+    event.key === "ArrowRight"
+  ) {
+
     x += speed;
+
   }
 
 
-  // --------------------
+  // ======================================
   // LIMITES DU TERRAIN
-  // --------------------
+  // ======================================
 
-  const gameWidth = game.clientWidth;
-  const gameHeight = game.clientHeight;
+  const gameWidth =
+    game.clientWidth;
 
-  const playerWidth = player.offsetWidth;
-  const playerHeight = player.offsetHeight;
+  const gameHeight =
+    game.clientHeight;
+
+  const playerWidth =
+    player.offsetWidth;
+
+  const playerHeight =
+    player.offsetHeight;
+
 
   if (x < 0) {
     x = 0;
   }
 
-  if (x > gameWidth - playerWidth) {
-    x = gameWidth - playerWidth;
+
+  if (
+    x >
+    gameWidth - playerWidth
+  ) {
+
+    x =
+      gameWidth - playerWidth;
+
   }
+
 
   if (y < 0) {
     y = 0;
   }
 
-  if (y > gameHeight - playerHeight) {
-    y = gameHeight - playerHeight;
+
+  if (
+    y >
+    gameHeight - playerHeight
+  ) {
+
+    y =
+      gameHeight - playerHeight;
+
   }
 
 
-  // Nouvelle position
+  player.style.left =
+    x + "px";
 
-  player.style.left = x + "px";
-  player.style.top = y + "px";
+  player.style.top =
+    y + "px";
 
 
-  // --------------------
+  // ======================================
   // HITBOX DE JOËL
-  // --------------------
+  // ======================================
 
   const fullPlayerRect =
     player.getBoundingClientRect();
@@ -398,328 +702,617 @@ if (key === "e" && canPickCoffee && !hasCoffee) {
   };
 
 
-  // --------------------
-  // COLLISIONS
-  // --------------------
+  // ======================================
+  // COLLISIONS DE LA MAP ACTUELLE
+  // ======================================
+
+  let currentObstacles;
+
+
+  if (currentMap === "outside") {
+
+    currentObstacles =
+      mapOutside.querySelectorAll(
+        ".obstacle"
+      );
+
+  }
+
+  else {
+
+    currentObstacles =
+      mapOffice.querySelectorAll(
+        ".obstacle"
+      );
+
+  }
+
 
   let collision = false;
 
-  obstacles.forEach(function(obstacle) {
 
-    const fullObstacleRect =
-      obstacle.getBoundingClientRect();
+  currentObstacles.forEach(
+    function(obstacle) {
 
-    let obstacleRect;
+      const fullObstacleRect =
+        obstacle.getBoundingClientRect();
+
+      let obstacleRect;
 
 
-    // Arbre
-    if (obstacle.classList.contains("tree")) {
+      // ARBRE
 
-      obstacleRect = {
+      if (
+        obstacle.classList.contains(
+          "tree"
+        )
+      ) {
 
-        left:
-          fullObstacleRect.left + 25,
+        obstacleRect = {
 
-        right:
-          fullObstacleRect.right - 25,
+          left:
+            fullObstacleRect.left + 25,
 
-        top:
-          fullObstacleRect.bottom - 30,
+          right:
+            fullObstacleRect.right - 25,
 
-        bottom:
-          fullObstacleRect.bottom
+          top:
+            fullObstacleRect.bottom - 30,
 
-      };
+          bottom:
+            fullObstacleRect.bottom
+
+        };
+
+      }
+
+
+      // ROCHER
+
+      else if (
+        obstacle.classList.contains(
+          "rock"
+        )
+      ) {
+
+        obstacleRect = {
+
+          left:
+            fullObstacleRect.left + 10,
+
+          right:
+            fullObstacleRect.right - 10,
+
+          top:
+            fullObstacleRect.top + 20,
+
+          bottom:
+            fullObstacleRect.bottom
+
+        };
+
+      }
+
+
+      // THIRY
+
+      else if (
+        obstacle.classList.contains(
+          "npc"
+        )
+      ) {
+
+        obstacleRect =
+          fullObstacleRect;
+
+      }
+
+
+      // AUTRES
+
+      else {
+
+        obstacleRect =
+          fullObstacleRect;
+
+      }
+
+
+      if (
+
+        playerRect.left <
+        obstacleRect.right &&
+
+        playerRect.right >
+        obstacleRect.left &&
+
+        playerRect.top <
+        obstacleRect.bottom &&
+
+        playerRect.bottom >
+        obstacleRect.top
+
+      ) {
+
+        collision = true;
+
+      }
 
     }
+  );
 
 
-    // Rocher
-    else if (obstacle.classList.contains("rock")) {
-
-      obstacleRect = {
-
-        left:
-          fullObstacleRect.left + 10,
-
-        right:
-          fullObstacleRect.right - 10,
-
-        top:
-          fullObstacleRect.top + 20,
-
-        bottom:
-          fullObstacleRect.bottom
-
-      };
-
-    }
-
-// Thiry
-else if (obstacle.classList.contains("npc")) {
-
-  obstacleRect = fullObstacleRect;
-
-}
-  
-    // Autres obstacles
-    else {
-
-      obstacleRect = fullObstacleRect;
-
-    }
-
-
-    // Collision
-
-    if (
-
-      playerRect.left < obstacleRect.right &&
-
-      playerRect.right > obstacleRect.left &&
-
-      playerRect.top < obstacleRect.bottom &&
-
-      playerRect.bottom > obstacleRect.top
-
-    ) {
-
-      collision = true;
-
-    }
-
-  });
-
-
-  // Retour à l'ancienne position
+  // ======================================
+  // ANNULER SI COLLISION
+  // ======================================
 
   if (collision) {
 
     x = oldX;
     y = oldY;
 
-    player.style.left = x + "px";
-    player.style.top = y + "px";
+    player.style.left =
+      x + "px";
+
+    player.style.top =
+      y + "px";
 
   }
 
 
-  // --------------------
+  // ======================================
   // PROFONDEUR DES ARBRES
-  // --------------------
+  // ======================================
 
-  let playerZ = 10;
+  let playerZ = 30;
 
-  trees.forEach(function(tree) {
 
-    const treeRect =
-      tree.getBoundingClientRect();
+  if (currentMap === "outside") {
 
-    const currentPlayerRect =
+    const trees =
+      mapOutside.querySelectorAll(
+        ".tree"
+      );
+
+
+    trees.forEach(function(tree) {
+
+      const treeRect =
+        tree.getBoundingClientRect();
+
+      const currentPlayerRect =
+        player.getBoundingClientRect();
+
+      const playerCenterX =
+        currentPlayerRect.left +
+        currentPlayerRect.width / 2;
+
+
+      const procheDeLarbre =
+
+        playerCenterX >
+        treeRect.left - 20
+
+        &&
+
+        playerCenterX <
+        treeRect.right + 20;
+
+
+      if (
+
+        procheDeLarbre &&
+
+        currentPlayerRect.bottom <
+        treeRect.bottom - 10
+
+      ) {
+
+        playerZ = 1;
+
+      }
+
+    });
+
+  }
+
+
+  player.style.zIndex =
+    playerZ;
+
+
+  // ======================================
+  // THIRY
+  // ======================================
+
+  if (currentMap === "outside") {
+
+    const playerPosition =
       player.getBoundingClientRect();
 
+    const npcPosition =
+      npc.getBoundingClientRect();
+
+
     const playerCenterX =
-      currentPlayerRect.left +
-      currentPlayerRect.width / 2;
+      playerPosition.left +
+      playerPosition.width / 2;
 
-    const procheDeLarbre =
-
-      playerCenterX >
-      treeRect.left - 20
-
-      &&
-
-      playerCenterX <
-      treeRect.right + 20;
+    const playerCenterY =
+      playerPosition.top +
+      playerPosition.height / 2;
 
 
-    if (
+    const npcCenterX =
+      npcPosition.left +
+      npcPosition.width / 2;
 
-      procheDeLarbre &&
+    const npcCenterY =
+      npcPosition.top +
+      npcPosition.height / 2;
 
-      currentPlayerRect.bottom <
-      treeRect.bottom - 10
 
-    ) {
+    const distanceX =
+      playerCenterX -
+      npcCenterX;
 
-      playerZ = 1;
+    const distanceY =
+      playerCenterY -
+      npcCenterY;
+
+
+    const distance =
+      Math.sqrt(
+        distanceX * distanceX +
+        distanceY * distanceY
+      );
+
+
+    if (distance < 120) {
+
+      canTalk = true;
+
+      interaction.textContent =
+        "E — Parler";
+
+      interaction.style.left =
+        npc.offsetLeft + 10 + "px";
+
+      interaction.style.top =
+        npc.offsetTop - 35 + "px";
+
+      interaction.style.display =
+        "block";
 
     }
 
-  });
+    else {
 
-  player.style.zIndex = playerZ;
+      canTalk = false;
 
+    }
 
-  // --------------------
-  // DISTANCE JOËL / THIRY
-  // --------------------
-
-  const playerPosition =
-    player.getBoundingClientRect();
-
-  const npcPosition =
-    npc.getBoundingClientRect();
-
-
-  const playerCenterX =
-    playerPosition.left +
-    playerPosition.width / 2;
-
-  const playerCenterY =
-    playerPosition.top +
-    playerPosition.height / 2;
-
-
-  const npcCenterX =
-    npcPosition.left +
-    npcPosition.width / 2;
-
-  const npcCenterY =
-    npcPosition.top +
-    npcPosition.height / 2;
-
-
-  const distanceX =
-    playerCenterX - npcCenterX;
-
-  const distanceY =
-    playerCenterY - npcCenterY;
-
-
-  const distance = Math.sqrt(
-
-    distanceX * distanceX +
-
-    distanceY * distanceY
-
-  );
-
-
-  // --------------------
-  // AFFICHER "E — PARLER"
-  // --------------------
-
-if (distance < 120) {
-
-  canTalk = true;
-
-  interaction.textContent = "E — Parler";
-  
-  interaction.style.left =
-  npc.offsetLeft + 10 + "px";
-
-interaction.style.top =
-  npc.offsetTop - 35 + "px";
-  
-  interaction.style.display = "block";
-
-}
+  }
 
   else {
 
     canTalk = false;
 
-    interaction.style.display = "none";
-
-    dialogueOpen = false;
-
-    dialogue.style.display = "none";
-
   }
 
-  // --------------------
-// DISTANCE JOËL / CAFÉ
-// --------------------
 
-if (coffeeQuestActive && !hasCoffee) {
+  // ======================================
+  // CAFÉ
+  // ======================================
 
-  const playerPosition =
-    player.getBoundingClientRect();
+  if (
+    currentMap === "outside" &&
+    coffeeQuestActive &&
+    !hasCoffee
+  ) {
 
-  const coffeePosition =
-    coffee.getBoundingClientRect();
+    const playerPosition =
+      player.getBoundingClientRect();
 
-  const playerCenterX =
-    playerPosition.left +
-    playerPosition.width / 2;
+    const coffeePosition =
+      coffee.getBoundingClientRect();
 
-  const playerCenterY =
-    playerPosition.top +
-    playerPosition.height / 2;
 
-  const coffeeCenterX =
-    coffeePosition.left +
-    coffeePosition.width / 2;
+    const playerCenterX =
+      playerPosition.left +
+      playerPosition.width / 2;
 
-  const coffeeCenterY =
-    coffeePosition.top +
-    coffeePosition.height / 2;
+    const playerCenterY =
+      playerPosition.top +
+      playerPosition.height / 2;
 
-  const distanceX =
-    playerCenterX - coffeeCenterX;
 
-  const distanceY =
-    playerCenterY - coffeeCenterY;
+    const coffeeCenterX =
+      coffeePosition.left +
+      coffeePosition.width / 2;
 
-  const coffeeDistance =
-    Math.sqrt(
-      distanceX * distanceX +
-      distanceY * distanceY
-    );
+    const coffeeCenterY =
+      coffeePosition.top +
+      coffeePosition.height / 2;
 
-  if (coffeeDistance < 80) {
 
-  canPickCoffee = true;
+    const distanceX =
+      playerCenterX -
+      coffeeCenterX;
 
-  interaction.textContent = "E — Ramasser";
+    const distanceY =
+      playerCenterY -
+      coffeeCenterY;
 
-  // Place l'indication au-dessus du café
-  interaction.style.left =
-    coffee.offsetLeft - 20 + "px";
 
-  interaction.style.top =
-    coffee.offsetTop - 35 + "px";
+    const coffeeDistance =
+      Math.sqrt(
+        distanceX * distanceX +
+        distanceY * distanceY
+      );
 
-  interaction.style.display = "block";
 
-  } else {
+    if (coffeeDistance < 80) {
 
-    canPickCoffee = false;
+      canPickCoffee = true;
 
-    // On remet l'interaction avec Thiry
-    if (!canTalk) {
-      interaction.style.display = "none";
+      interaction.textContent =
+        "E — Ramasser";
+
+      interaction.style.left =
+        coffee.offsetLeft - 20 + "px";
+
+      interaction.style.top =
+        coffee.offsetTop - 35 + "px";
+
+      interaction.style.display =
+        "block";
+
+    }
+
+    else {
+
+      canPickCoffee = false;
+
     }
 
   }
 
-}
-  
+  else {
+
+    canPickCoffee = false;
+
+  }
+
+
+  // ======================================
+  // PORTE DE L'UNIVERSITÉ
+  // ======================================
+
+  if (currentMap === "outside") {
+
+    const playerPosition =
+      player.getBoundingClientRect();
+
+    const doorPosition =
+      officeDoor.getBoundingClientRect();
+
+
+    const nearDoor =
+
+      playerPosition.right >
+        doorPosition.left - 30 &&
+
+      playerPosition.left <
+        doorPosition.right + 30 &&
+
+      playerPosition.bottom >
+        doorPosition.top - 30 &&
+
+      playerPosition.top <
+        doorPosition.bottom + 30;
+
+
+    if (nearDoor) {
+
+      canEnterOffice = true;
+
+      interaction.textContent =
+        "E — Entrer";
+
+      interaction.style.left =
+        officeDoor.offsetLeft + 5 + "px";
+
+      interaction.style.top =
+        officeDoor.offsetTop - 35 + "px";
+
+      interaction.style.display =
+        "block";
+
+    }
+
+    else {
+
+      canEnterOffice = false;
+
+    }
+
+  }
+
+  else {
+
+    canEnterOffice = false;
+
+  }
+
+
+  // ======================================
+  // SORTIE DE L'UNIVERSITÉ
+  // ======================================
+
+  if (currentMap === "office") {
+
+    const playerPosition =
+      player.getBoundingClientRect();
+
+    const exitPosition =
+      officeExit.getBoundingClientRect();
+
+
+    const nearExit =
+
+      playerPosition.right >
+        exitPosition.left - 30 &&
+
+      playerPosition.left <
+        exitPosition.right + 30 &&
+
+      playerPosition.bottom >
+        exitPosition.top - 30 &&
+
+      playerPosition.top <
+        exitPosition.bottom + 30;
+
+
+    if (nearExit) {
+
+      canExitOffice = true;
+
+      interaction.textContent =
+        "E — Sortir";
+
+      interaction.style.left =
+        officeExit.offsetLeft - 5 + "px";
+
+      interaction.style.top =
+        officeExit.offsetTop - 35 + "px";
+
+      interaction.style.display =
+        "block";
+
+    }
+
+    else {
+
+      canExitOffice = false;
+
+    }
+
+  }
+
+  else {
+
+    canExitOffice = false;
+
+  }
+
+
+  // ======================================
+  // IMPRIMANTE
+  // ======================================
+
+  if (
+    currentMap === "office" &&
+    printerQuestActive &&
+    !printerFixed
+  ) {
+
+    const playerPosition =
+      player.getBoundingClientRect();
+
+    const printerPosition =
+      printer.getBoundingClientRect();
+
+
+    const nearPrinter =
+
+      playerPosition.right >
+        printerPosition.left - 40 &&
+
+      playerPosition.left <
+        printerPosition.right + 40 &&
+
+      playerPosition.bottom >
+        printerPosition.top - 40 &&
+
+      playerPosition.top <
+        printerPosition.bottom + 40;
+
+
+    if (nearPrinter) {
+
+      canExaminePrinter = true;
+
+      interaction.textContent =
+        "E — Examiner";
+
+      interaction.style.left =
+        printer.offsetLeft - 10 + "px";
+
+      interaction.style.top =
+        printer.offsetTop - 35 + "px";
+
+      interaction.style.display =
+        "block";
+
+    }
+
+    else {
+
+      canExaminePrinter = false;
+
+    }
+
+  }
+
+  else {
+
+    canExaminePrinter = false;
+
+  }
+
+
+  // ======================================
+  // RIEN À INTERAGIR
+  // ======================================
+
+  if (
+    !canTalk &&
+    !canPickCoffee &&
+    !canEnterOffice &&
+    !canExitOffice &&
+    !canExaminePrinter
+  ) {
+
+    interaction.style.display =
+      "none";
+
+  }
+
 });
 
 
-// --------------------
-// DÉMARRER LA QUÊTE
-// --------------------
+// ========================================
+// QUÊTE CAFÉ
+// ========================================
 
 function startCoffeeQuest() {
 
   const questBox =
-    document.getElementById("quest-box");
+    document.getElementById(
+      "quest-box"
+    );
 
   coffeeQuestActive = true;
 
-  questBox.style.display = "block";
+  questBox.style.display =
+    "block";
 
-  coffee.style.display = "block";
+  coffee.style.display =
+    "block";
 
 }
 
-
-// --------------------
-// TERMINER LA QUÊTE
-// --------------------
 
 function completeCoffeeQuest() {
 
@@ -732,99 +1325,290 @@ function completeCoffeeQuest() {
     "✅ Quête terminée !";
 
   addXP(40);
+
+  printerQuestAvailable = true;
+
 }
 
-  // --------------------
-// AJOUTER DE L'XP
-// --------------------
+
+// ========================================
+// QUÊTE IMPRIMANTE
+// ========================================
+
+function startPrinterQuest() {
+
+  printerQuestActive = true;
+  printerQuestAvailable = false;
+
+
+  const questBox =
+    document.getElementById(
+      "quest-box"
+    );
+
+  const questTitle =
+    document.querySelector(
+      ".quest-title"
+    );
+
+
+  questBox.style.display =
+    "block";
+
+  questTitle.textContent =
+    "🖨️ Problème réseau";
+
+  questObjective.textContent =
+    "□ Aller voir l'imprimante";
+
+}
+
+
+// ========================================
+// RÉPARER L'IMPRIMANTE
+// ========================================
+
+function fixPrinter() {
+
+  printerFixed = true;
+  canExaminePrinter = false;
+
+  interaction.style.display =
+    "none";
+
+  printerMessageOpen = true;
+  dialogueOpen = true;
+
+  dialogue.style.display =
+    "block";
+
+  dialogueName.textContent =
+    "Joël";
+
+  dialogueText.textContent =
+    "Le câble réseau est branché dans le mauvais port... évidemment.";
+
+  questObjective.textContent =
+    "☑ Imprimante reconnectée — Retourner voir Thiry";
+
+}
+
+
+// ========================================
+// XP
+// ========================================
 
 function addXP(amount) {
 
   joel.xp += amount;
 
-  // Vérifie si Joël monte de niveau
-  while (joel.xp >= joel.xpToNextLevel) {
 
-    joel.xp -= joel.xpToNextLevel;
+  while (
+    joel.xp >=
+    joel.xpToNextLevel
+  ) {
+
+    joel.xp -=
+      joel.xpToNextLevel;
 
     levelUp();
 
   }
+
 
   updateStats();
 
 }
 
 
-// --------------------
-// MONTER DE NIVEAU
-// --------------------
+// ========================================
+// LEVEL UP
+// ========================================
 
 function levelUp() {
 
   joel.level++;
 
-  // Il faudra 50 XP de plus
-  // pour le niveau suivant
   joel.xpToNextLevel += 50;
 
-  // +10 points de vie maximum
   joel.maxHealth += 10;
 
-  // Joël récupère toute sa vie
-  joel.health = joel.maxHealth;
+  joel.health =
+    joel.maxHealth;
+
+  showLevelUp();
 
 }
 
 
-// --------------------
-// METTRE À JOUR LE HUD
-// --------------------
+// ========================================
+// NOTIFICATION LEVEL UP
+// ========================================
+
+function showLevelUp() {
+
+  levelUpText.textContent =
+    "Joël passe niveau " +
+    joel.level +
+    " — ❤️ Vie max : " +
+    joel.maxHealth;
+
+
+  levelUpMessage.style.display =
+    "block";
+
+
+  setTimeout(function() {
+
+    levelUpMessage.style.display =
+      "none";
+
+  }, 2500);
+
+}
+
+
+// ========================================
+// HUD
+// ========================================
 
 function updateStats() {
 
   levelDisplay.textContent =
     "Niv. " + joel.level;
 
+
   healthDisplay.textContent =
-    joel.health + " / " + joel.maxHealth;
+    joel.health +
+    " / " +
+    joel.maxHealth;
+
 
   xpText.textContent =
-    joel.xp + " / " + joel.xpToNextLevel;
+    joel.xp +
+    " / " +
+    joel.xpToNextLevel;
+
 
   const percentage =
-    (joel.xp / joel.xpToNextLevel) * 100;
+    (
+      joel.xp /
+      joel.xpToNextLevel
+    ) * 100;
+
 
   xpFill.style.width =
     percentage + "%";
 
 }
+
+
 updateStats();
 
-// --------------------
+
+// ========================================
+// CHANGEMENT DE MAP
+// ========================================
+
+function changeMap(mapName) {
+
+  mapOutside.classList.remove(
+    "active-map"
+  );
+
+  mapOffice.classList.remove(
+    "active-map"
+  );
+
+
+  // ENTRER
+
+  if (mapName === "office") {
+
+    currentMap = "office";
+
+    mapOffice.classList.add(
+      "active-map"
+    );
+
+    x = 325;
+    y = 330;
+
+  }
+
+
+  // SORTIR
+
+  if (mapName === "outside") {
+
+    currentMap = "outside";
+
+    mapOutside.classList.add(
+      "active-map"
+    );
+
+    x = 515;
+    y = 320;
+
+  }
+
+
+  player.style.left =
+    x + "px";
+
+  player.style.top =
+    y + "px";
+
+
+  dialogueOpen = false;
+  printerMessageOpen = false;
+
+  dialogue.style.display =
+    "none";
+
+  interaction.style.display =
+    "none";
+
+
+  canTalk = false;
+  canPickCoffee = false;
+  canEnterOffice = false;
+  canExitOffice = false;
+  canExaminePrinter = false;
+
+}
+
+
+// ========================================
 // JOYSTICK MOBILE
-// --------------------
+// ========================================
 
 function updateJoystick(event) {
 
   const rect =
     joystick.getBoundingClientRect();
 
+
   const centerX =
-    rect.left + rect.width / 2;
+    rect.left +
+    rect.width / 2;
 
   const centerY =
-    rect.top + rect.height / 2;
+    rect.top +
+    rect.height / 2;
 
 
   let deltaX =
-    event.clientX - centerX;
+    event.clientX -
+    centerX;
 
   let deltaY =
-    event.clientY - centerY;
+    event.clientY -
+    centerY;
 
 
   const maxDistance = 35;
+
 
   const distance =
     Math.sqrt(
@@ -833,14 +1617,24 @@ function updateJoystick(event) {
     );
 
 
-  if (distance > maxDistance) {
+  if (
+    distance >
+    maxDistance
+  ) {
 
     deltaX =
-      (deltaX / distance) *
+      (
+        deltaX /
+        distance
+      ) *
       maxDistance;
 
+
     deltaY =
-      (deltaY / distance) *
+      (
+        deltaY /
+        distance
+      ) *
       maxDistance;
 
   }
@@ -855,10 +1649,12 @@ function updateJoystick(event) {
 
 
   joystickX =
-    deltaX / maxDistance;
+    deltaX /
+    maxDistance;
 
   joystickY =
-    deltaY / maxDistance;
+    deltaY /
+    maxDistance;
 
 }
 
@@ -911,14 +1707,16 @@ joystick.addEventListener(
   stopJoystick
 );
 
+
 joystick.addEventListener(
   "pointercancel",
   stopJoystick
 );
 
-// --------------------
+
+// ========================================
 // MOUVEMENT MOBILE
-// --------------------
+// ========================================
 
 let lastMobileMove = 0;
 
@@ -930,17 +1728,15 @@ function mobileMovement(time) {
     time - lastMobileMove > 60
   ) {
 
-    /*
-      On transforme la direction
-      du joystick en touche clavier.
-    */
 
     if (joystickY < -0.35) {
 
       document.dispatchEvent(
         new KeyboardEvent(
           "keydown",
-          { key: "ArrowUp" }
+          {
+            key: "ArrowUp"
+          }
         )
       );
 
@@ -952,7 +1748,9 @@ function mobileMovement(time) {
       document.dispatchEvent(
         new KeyboardEvent(
           "keydown",
-          { key: "ArrowDown" }
+          {
+            key: "ArrowDown"
+          }
         )
       );
 
@@ -964,7 +1762,9 @@ function mobileMovement(time) {
       document.dispatchEvent(
         new KeyboardEvent(
           "keydown",
-          { key: "ArrowLeft" }
+          {
+            key: "ArrowLeft"
+          }
         )
       );
 
@@ -976,7 +1776,9 @@ function mobileMovement(time) {
       document.dispatchEvent(
         new KeyboardEvent(
           "keydown",
-          { key: "ArrowRight" }
+          {
+            key: "ArrowRight"
+          }
         )
       );
 
@@ -999,9 +1801,10 @@ requestAnimationFrame(
   mobileMovement
 );
 
-// --------------------
+
+// ========================================
 // BOUTON E MOBILE
-// --------------------
+// ========================================
 
 mobileAction.addEventListener(
   "pointerdown",
@@ -1009,15 +1812,15 @@ mobileAction.addEventListener(
 
     event.preventDefault();
 
+
     document.dispatchEvent(
       new KeyboardEvent(
         "keydown",
-        { key: "e" }
+        {
+          key: "e"
+        }
       )
     );
 
   }
 );
-
-
-
