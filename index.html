@@ -2,6 +2,7 @@
 <html lang="fr">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -11,116 +12,292 @@
 
   <title>Mini RPG</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 </head>
 
 
 <body>
 
-  <!-- ==================== -->
-  <!-- CONTENEUR DU JEU     -->
-  <!-- ==================== -->
 
   <div id="game-wrapper">
 
     <div id="game">
 
 
-      <!-- CHEMIN -->
-
-      <div class="path"></div>
-
-
-      <!-- DÉCORATIONS -->
-
-      <div class="grass grass1">🌿</div>
-      <div class="grass grass2">🌿</div>
-      <div class="grass grass3">🌿</div>
-      <div class="grass grass4">🌿</div>
-
-      <div class="flower flower1">🌼</div>
-      <div class="flower flower2">🌼</div>
-      <div class="flower flower3">🌸</div>
-
-
-      <!-- ARBRES -->
-
-      <div class="tree obstacle tree1"></div>
-      <div class="tree obstacle tree2"></div>
-      <div class="tree obstacle tree3"></div>
-
-
-      <!-- ROCHERS -->
-
-      <div class="rock obstacle rock1"></div>
-      <div class="rock obstacle rock2"></div>
-
-
-      <!-- CAFÉ -->
-
-      <div id="coffee">☕</div>
-
-
-      <!-- THIRY -->
+      <!-- ======================================== -->
+      <!-- MAP 1 : EXTÉRIEUR                        -->
+      <!-- ======================================== -->
 
       <div
-        id="npc"
-        class="obstacle npc">
+        id="map-outside"
+        class="map active-map"
+      >
+
+
+        <!-- CHEMIN -->
+
+        <div class="path"></div>
+
+
+        <!-- CAFÉ -->
+
+        <div id="coffee">
+          ☕
+        </div>
+
+
+        <!-- DÉCORATIONS -->
+
+        <div class="grass grass1">🌿</div>
+        <div class="grass grass2">🌿</div>
+        <div class="grass grass3">🌿</div>
+        <div class="grass grass4">🌿</div>
+
+        <div class="flower flower1">🌼</div>
+        <div class="flower flower2">🌼</div>
+        <div class="flower flower3">🌸</div>
+
+
+        <!-- ARBRES -->
+
+        <div
+          class="tree obstacle tree1">
+        </div>
+
+        <div
+          class="tree obstacle tree2">
+        </div>
+
+        <div
+          class="tree obstacle tree3">
+        </div>
+
+
+        <!-- ROCHERS -->
+
+        <div
+          class="rock obstacle rock1">
+        </div>
+
+        <div
+          class="rock obstacle rock2">
+        </div>
+
+
+        <!-- THIRY -->
+
+        <div
+          id="npc"
+          class="obstacle npc">
+        </div>
+
+
+        <!-- ======================================== -->
+        <!-- UNIVERSITÉ                               -->
+        <!-- ======================================== -->
+
+        <div id="office-building"></div>
+
+
+        <!-- COLLISIONS UNIVERSITÉ -->
+
+        <div
+          class="school-wall school-wall-left obstacle">
+        </div>
+
+        <div
+          class="school-wall school-wall-right obstacle">
+        </div>
+
+        <div
+          class="school-wall school-wall-top obstacle">
+        </div>
+
+
+        <!-- PORTE INVISIBLE -->
+
+        <div id="office-door"></div>
+
+
       </div>
+      <!-- FIN MAP EXTÉRIEURE -->
 
 
-      <!-- JOËL -->
+
+      <!-- ======================================== -->
+      <!-- MAP 2 : INTÉRIEUR UNIVERSITÉ             -->
+      <!-- ======================================== -->
+
+     <!-- ======================================== -->
+<!-- MAP 2 : INTÉRIEUR UNIVERSITÉ             -->
+<!-- ======================================== -->
+
+<div id="map-office" class="map">
+
+  <!-- SOL -->
+  <div class="office-floor"></div>
+
+
+  <!-- MUR DU FOND -->
+  <div class="office-back-wall"></div>
+
+
+  <!-- FENÊTRES -->
+
+  <div class="office-window window1"></div>
+  <div class="office-window window2"></div>
+
+
+  <!-- TABLEAU D'AFFICHAGE -->
+
+  <div class="office-board"></div>
+
+
+  <!-- PANNEAU UNIVERSITÉ -->
+
+  <div class="office-sign"></div>
+
+
+  <!-- BIBLIOTHÈQUE -->
+
+  <div class="office-library obstacle"></div>
+
+
+  <!-- ARMOIRE -->
+
+  <div class="office-cabinet obstacle"></div>
+
+
+  <!-- BUREAU GAUCHE -->
+
+  <div class="office-desk desk-left obstacle"></div>
+
+  <div class="office-chair chair-left obstacle"></div>
+
+
+  <!-- BUREAU DROIT -->
+
+  <div class="office-desk desk-right obstacle"></div>
+
+  <div class="office-chair chair-right obstacle"></div>
+
+
+  <!-- PLANTE -->
+
+  <div class="office-plant obstacle"></div>
+
+
+  <!-- IMPRIMANTE DE LA QUÊTE -->
+
+  <div id="printer" class="obstacle"></div>
+
+
+  <!-- PORTE / SORTIE -->
+
+  <div id="office-exit"></div>
+
+</div>
+
+
+      <!-- ======================================== -->
+      <!-- JOËL                                     -->
+      <!-- ======================================== -->
+
+      <!-- Joël reste en dehors des maps -->
 
       <div id="player"></div>
 
 
-      <!-- ==================== -->
-      <!-- STATS DE JOËL        -->
-      <!-- ==================== -->
+
+      <!-- ======================================== -->
+      <!-- INTERFACE                                -->
+      <!-- ======================================== -->
+
+
+      <!-- STATS -->
 
       <div id="joel-stats">
 
+
         <div class="stats-header">
+
           JOËL
+
           <span id="level">
             Niv. 1
           </span>
+
         </div>
 
+
         <div class="health">
+
           ❤️
+
           <span id="health">
             100 / 100
           </span>
+
         </div>
 
+
         <div class="xp-line">
+
           ⭐ XP
 
           <span id="xp-text">
             0 / 100
           </span>
+
         </div>
 
+
         <div class="xp-bar">
+
           <div id="xp-fill"></div>
+
         </div>
+
 
       </div>
 
 
-      <!-- ==================== -->
-      <!-- INTERACTION          -->
-      <!-- ==================== -->
+
+      <!-- ======================================== -->
+      <!-- LEVEL UP                                 -->
+      <!-- ======================================== -->
+
+      <div id="level-up-message">
+
+        <div class="level-up-title">
+
+          ⭐ NIVEAU SUPÉRIEUR !
+
+        </div>
+
+        <div id="level-up-text"></div>
+
+      </div>
+
+
+
+      <!-- ======================================== -->
+      <!-- INTERACTION                              -->
+      <!-- ======================================== -->
 
       <div id="interaction">
         E — Parler
       </div>
 
 
-      <!-- ==================== -->
-      <!-- QUÊTE                -->
-      <!-- ==================== -->
+
+      <!-- ======================================== -->
+      <!-- QUÊTE                                    -->
+      <!-- ======================================== -->
 
       <div id="quest-box">
 
@@ -135,9 +312,10 @@
       </div>
 
 
-      <!-- ==================== -->
-      <!-- DIALOGUE             -->
-      <!-- ==================== -->
+
+      <!-- ======================================== -->
+      <!-- DIALOGUE                                 -->
+      <!-- ======================================== -->
 
       <div id="dialogue">
 
@@ -155,32 +333,48 @@
 
 
     </div>
+    <!-- FIN GAME -->
+
 
   </div>
+  <!-- FIN GAME WRAPPER -->
 
 
-  <!-- ==================== -->
-  <!-- CONTRÔLES TÉLÉPHONE  -->
-  <!-- ==================== -->
+
+  <!-- ======================================== -->
+  <!-- CONTRÔLES TÉLÉPHONE                      -->
+  <!-- ======================================== -->
 
   <div id="mobile-controls">
 
+
     <div id="joystick">
+
       <div id="joystick-stick"></div>
+
     </div>
+
 
     <button
       id="mobile-action"
-      type="button">
+      type="button"
+    >
+
       E
+
     </button>
+
 
   </div>
 
 
-  <!-- JAVASCRIPT -->
+
+  <!-- ======================================== -->
+  <!-- JAVASCRIPT                               -->
+  <!-- ======================================== -->
 
   <script src="script.js"></script>
+
 
 </body>
 
