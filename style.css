@@ -102,7 +102,7 @@ body {
   left: 330px;
   top: 205px;
 
-  z-index: 10;
+  z-index: 2;
 }
 
 
@@ -158,15 +158,13 @@ body {
 }
 
 .rock1 {
-  left: 400px;
-  top: 300px;
+  left: 10px;
+  top: 220px;
 }
-
 .rock2 {
   left: 300px;
   top: 80px;
 }
-
 
 /* ======================================== */
 /* CHEMIN                                   */
@@ -175,19 +173,85 @@ body {
 .path {
   position: absolute;
 
-  width: 170px;
-  height: 600px;
+  width: 155px;
+  height: 610px;
 
-  background-color: #c9a66b;
+  left: 255px;
+  top: -80px;
 
-  left: 265px;
-  top: -70px;
+  transform: rotate(5deg);
 
-  transform: rotate(8deg);
+  background:
+    radial-gradient(
+      circle at 25% 20%,
+      rgba(120, 85, 45, 0.25) 0 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 70% 40%,
+      rgba(255, 230, 170, 0.25) 0 2px,
+      transparent 3px
+    ),
+    radial-gradient(
+      circle at 45% 75%,
+      rgba(110, 75, 40, 0.2) 0 3px,
+      transparent 4px
+    ),
+    #c9a66b;
+
+  background-size:
+    45px 55px,
+    55px 45px,
+    65px 60px;
+
+  border-radius:
+    45% 55% 40% 60% /
+    4% 6% 5% 7%;
 
   z-index: 0;
 }
 
+.path::before,
+.path::after {
+  content: "";
+
+  position: absolute;
+
+  width: 35px;
+  height: 100%;
+
+  top: 0;
+
+  background-color: #c9a66b;
+
+  z-index: -1;
+}
+
+
+/* Bord gauche irrégulier */
+
+.path::before {
+  left: -12px;
+
+  border-radius:
+    70% 30% 65% 35% /
+    8% 12% 7% 10%;
+
+  transform: rotate(-2deg);
+}
+
+
+/* Bord droit irrégulier */
+
+.path::after {
+  right: -15px;
+
+  border-radius:
+    30% 70% 35% 65% /
+    10% 7% 12% 8%;
+
+  transform: rotate(2deg);
+}
 
 /* ======================================== */
 /* DÉCORATIONS                              */
@@ -267,8 +331,9 @@ body {
 
   position: absolute;
 
-  left: 560px;
-  top: 220px;
+  /* Nouvelle position */
+  left: 150px;
+  top: 345px;
 
   z-index: 2;
 }
@@ -406,14 +471,15 @@ body {
 #coffee {
   position: absolute;
 
-  left: 80px;
-  top: 330px;
+  /* Près de l'université */
+  left: 600px;
+  top: 180px;
 
   font-size: 35px;
 
   display: none;
 
-  z-index: 5;
+  z-index: 2;
 }
 
 
@@ -638,4 +704,660 @@ body {
     transform-origin: top center;
   }
 
+}
+
+/* ======================================== */
+/* LEVEL UP                                 */
+/* ======================================== */
+
+#level-up-message {
+  position: absolute;
+
+  left: 50%;
+  top: 80px;
+
+  transform: translateX(-50%);
+
+  padding: 12px 25px;
+
+  background-color: rgba(20, 20, 20, 0.95);
+
+  border: 2px solid #ffd166;
+  border-radius: 8px;
+
+  color: white;
+
+  text-align: center;
+
+  display: none;
+
+  z-index: 200;
+}
+
+.level-up-title {
+  color: #ffd166;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  margin-bottom: 5px;
+}
+
+#level-up-text {
+  font-size: 13px;
+}
+
+/* ======================================== */
+/* SYSTÈME DE MAPS                          */
+/* ======================================== */
+
+.map {
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: none;
+}
+
+.map.active-map {
+  display: block;
+}
+
+
+/* ======================================== */
+/* MAP EXTÉRIEURE                           */
+/* ======================================== */
+
+#map-outside {
+  z-index: 1;
+}
+
+
+/* ======================================== */
+/* UNIVERSITÉ EXTÉRIEURE                    */
+/* ======================================== */
+
+#office-building {
+  position: absolute;
+
+  width: 250px;
+  height: 190px;
+
+  left: 420px;
+  top: 230px;
+
+  background-image: url("school.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+
+  z-index: 3;
+}
+
+
+/* ======================================== */
+/* COLLISIONS UNIVERSITÉ                    */
+/* ======================================== */
+
+.school-wall {
+  position: absolute;
+
+  background: transparent;
+
+  z-index: 4;
+}
+
+
+/* GARDE ICI TES POSITIONS SI TU LES AS
+   DÉJÀ AJUSTÉES COMME TU VOULAIS */
+
+.school-wall-left {
+  left: 420px;
+  top: 230px;
+
+  width: 80px;
+  height: 190px;
+}
+
+.school-wall-right {
+  left: 590px;
+  top: 230px;
+
+  width: 80px;
+  height: 190px;
+}
+
+.school-wall-top {
+  left: 500px;
+  top: 230px;
+
+  width: 90px;
+  height: 105px;
+}
+
+
+/* ======================================== */
+/* PORTE UNIVERSITÉ                         */
+/* ======================================== */
+
+#office-door {
+  position: absolute;
+
+  /* REMETS ICI TES VALEURS PERSONNALISÉES
+     SI TU AVAIS AJUSTÉ LA PORTE */
+
+  left: 495px;
+  top: 330px;
+
+  width: 100px;
+  height: 90px;
+
+  background: transparent;
+
+  border: none;
+  outline: none;
+
+  pointer-events: none;
+
+  z-index: 5;
+}
+
+
+/* ======================================== */
+/* INTÉRIEUR UNIVERSITÉ                     */
+/* ======================================== */
+
+#map-office {
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: #d8d0c3;
+
+  overflow: hidden;
+
+  z-index: 20;
+}
+
+
+/* ======================================== */
+/* SOL                                      */
+/* ======================================== */
+
+.office-floor {
+  position: absolute;
+
+  left: 0;
+  top: 95px;
+
+  width: 100%;
+  height: calc(100% - 95px);
+
+  background-color: #ddd4c6;
+
+  background-image:
+    linear-gradient(
+      rgba(120, 105, 90, 0.12) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(120, 105, 90, 0.12) 1px,
+      transparent 1px
+    );
+
+  background-size: 40px 40px;
+
+  z-index: 0;
+}
+
+
+/* ======================================== */
+/* MUR DU FOND                              */
+/* ======================================== */
+
+.office-back-wall {
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 100%;
+  height: 115px;
+
+  background-color: #c7cbd3;
+
+  border-bottom: 8px solid #657487;
+
+  box-sizing: border-box;
+
+  z-index: 1;
+}
+
+
+/* ======================================== */
+/* FENÊTRES                                 */
+/* ======================================== */
+
+.office-window {
+  position: absolute;
+
+  width: 105px;
+  height: 75px;
+
+  background-image: url("fenetre.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  z-index: 3;
+}
+
+
+.window1 {
+  left: 70px;
+  top: 15px;
+}
+
+
+.window2 {
+  left: 500px;
+  top: 15px;
+}
+
+
+/* ======================================== */
+/* TABLEAU D'AFFICHAGE                      */
+/* ======================================== */
+
+.office-board {
+  position: absolute;
+
+  left: 275px;
+  top: 12px;
+
+  width: 90px;
+  height: 80px;
+
+  background-image: url("tableau epingle.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  z-index: 3;
+}
+
+
+/* ======================================== */
+/* PANNEAU UNIVERSITÉ                       */
+/* ======================================== */
+
+.office-sign {
+  position: absolute;
+
+  left: 390px;
+  top: 20px;
+
+  width: 100px;
+  height: 65px;
+
+  background-image: url("panneau univ.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  z-index: 3;
+}
+
+
+/* ======================================== */
+/* BIBLIOTHÈQUE                             */
+/* ======================================== */
+
+.office-library {
+  position: absolute;
+
+  left: 35px;
+  top: 125px;
+
+  width: 65px;
+  height: 110px;
+
+  background-image: url("bibliotheque.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+
+  z-index: 4;
+}
+
+
+/* ======================================== */
+/* ARMOIRE                                  */
+/* ======================================== */
+
+.office-cabinet {
+  position: absolute;
+
+  right: 30px;
+  top: 120px;
+
+  width: 60px;
+  height: 120px;
+
+  background-image: url("armoire.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+
+  z-index: 4;
+}
+
+
+/* ======================================== */
+/* BUREAUX                                  */
+/* ======================================== */
+
+.office-desk {
+  position: absolute;
+
+  width: 145px;
+  height: 90px;
+
+  background-image: url("bureau.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  z-index: 4;
+}
+
+
+.desk-left {
+  left: 140px;
+  top: 125px;
+}
+
+
+.desk-right {
+  left: 415px;
+  top: 125px;
+}
+
+
+/* ======================================== */
+/* CHAISES                                  */
+/* ======================================== */
+
+.office-chair {
+  position: absolute;
+
+  width: 55px;
+  height: 70px;
+
+  background-image: url("chaise.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  z-index: 5;
+}
+
+
+.chair-left {
+  left: 185px;
+  top: 195px;
+}
+
+
+.chair-right {
+  left: 460px;
+  top: 195px;
+}
+
+
+/* ======================================== */
+/* PLANTE                                   */
+/* ======================================== */
+
+.office-plant {
+  position: absolute;
+
+  left: 55px;
+  bottom: 25px;
+
+  width: 65px;
+  height: 90px;
+
+  background-image: url("fleur.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+
+  z-index: 2;
+}
+
+
+/* ======================================== */
+/* IMPRIMANTE                               */
+/* ======================================== */
+
+#printer {
+  position: absolute;
+
+  right: 80px;
+  top: 285px;
+
+  width: 100px;
+  height: 85px;
+
+  background-image: url("printer.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  z-index: 2;
+}
+
+
+/* ======================================== */
+/* PORTE DE SORTIE                          */
+/* ======================================== */
+
+#office-exit {
+  position: absolute;
+
+  left: 305px;
+  bottom: -5px;
+
+  width: 90px;
+  height: 115px;
+
+  background-image: url("door.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+
+  z-index: 2;
+}
+
+
+/* ======================================== */
+/* JOËL                                     */
+/* ======================================== */
+
+#player {
+  z-index: 30;
+}
+
+/* ======================================== */
+/* SOL INTÉRIEUR                            */
+/* ======================================== */
+
+.office-floor {
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: #d6d0c4;
+
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.06) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      rgba(0, 0, 0, 0.06) 1px,
+      transparent 1px
+    );
+
+  background-size: 40px 40px;
+
+  z-index: 0;
+}
+
+
+/* ======================================== */
+/* MURS INTÉRIEURS                          */
+/* ======================================== */
+
+.office-wall {
+  position: absolute;
+
+  background-color: #555;
+
+  z-index: 2;
+}
+
+
+.wall-top {
+  left: 0;
+  top: 0;
+
+  width: 700px;
+  height: 35px;
+}
+
+
+.wall-left {
+  left: 0;
+  top: 0;
+
+  width: 35px;
+  height: 450px;
+}
+
+
+.wall-right {
+  right: 0;
+  top: 0;
+
+  width: 35px;
+  height: 450px;
+}
+
+
+/* ======================================== */
+/* BUREAUX                                  */
+/* ======================================== */
+
+.desk {
+  position: absolute;
+
+  width: 110px;
+  height: 60px;
+
+  background-color: #795548;
+
+  border: 4px solid #4e342e;
+
+  box-sizing: border-box;
+
+  font-size: 35px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 3;
+}
+
+
+.desk1 {
+  left: 120px;
+  top: 110px;
+}
+
+
+.desk2 {
+  left: 470px;
+  top: 110px;
+}
+
+
+/* ======================================== */
+/* IMPRIMANTE                               */
+/* ======================================== */
+
+#printer {
+  position: absolute;
+
+  left: 530px;
+  top: 250px;
+
+  width: 70px;
+  height: 60px;
+
+  font-size: 45px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 4;
+}
+
+
+/* ======================================== */
+/* SORTIE                                   */
+/* ======================================== */
+
+#office-exit {
+  position: absolute;
+
+  left: 320px;
+  bottom: 5px;
+
+  width: 60px;
+  height: 65px;
+
+  font-size: 45px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 4;
+}
+
+
+/* ======================================== */
+/* JOËL AU-DESSUS DES MAPS                  */
+/* ======================================== */
+
+#player {
+  z-index: 30;
 }
