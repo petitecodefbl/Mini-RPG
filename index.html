@@ -1,381 +1,785 @@
-<!DOCTYPE html>
-<html lang="fr">
+const player = document.getElementById("player");
+const game = document.getElementById("game");
+const obstacles = document.querySelectorAll(".obstacle");
+const trees = document.querySelectorAll(".tree");
 
-<head>
+const npc = document.getElementById("npc");
+const interaction = document.getElementById("interaction");
 
-  <meta charset="UTF-8">
+const dialogue = document.getElementById("dialogue");
+const dialogueText = document.getElementById("dialogue-text");
+const dialogueName = document.getElementById("dialogue-name");
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, user-scalable=no"
-  >
+const coffee = document.getElementById("coffee");
+const questObjective = document.getElementById("quest-objective");
 
-  <title>Mini RPG</title>
+let coffeeQuestActive = false;
+let canPickCoffee = false;
+let hasCoffee = false;
+let coffeeQuestCompleted = false;
 
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
+let canTalk = false;
+let dialogueOpen = false;
+let dialogueStep = 0;
 
-</head>
+let x = 330;
+let y = 205;
 
+const speed = 10;
 
-<body>
+// --------------------
+// STATS DE JOËL
+// --------------------
 
+const joel = {
+  level: 1,
 
-  <div id="game-wrapper">
+  xp: 0,
+  xpToNextLevel: 100,
 
-    <div id="game">
+  health: 100,
+  maxHealth: 100,
 
+  money: 0
+};
 
-      <!-- ======================================== -->
-      <!-- MAP 1 : EXTÉRIEUR                        -->
-      <!-- ======================================== -->
+const levelDisplay =
+  document.getElementById("level");
 
-      <div
-        id="map-outside"
-        class="map active-map"
-      >
+const healthDisplay =
+  document.getElementById("health");
 
+const xpText =
+  document.getElementById("xp-text");
 
-        <!-- CHEMIN -->
+const xpFill =
+  document.getElementById("xp-fill");
 
-        <div class="path"></div>
 
+// --------------------
+// DIALOGUE DE THIRY
+// --------------------
 
-        <!-- CAFÉ -->
+const thiryDialogue = [
 
-        <div id="coffee">
-          ☕
-        </div>
+  {
+    speaker: "Thiry",
+    text: "Joël ! Café ?"
+  },
 
+  {
+    speaker: "Joël",
+    text: "Déjà ??"
+  },
 
-        <!-- DÉCORATIONS -->
+  {
+    speaker: "Thiry",
+    text: "Je me disais qu'une petite pause café ferait pas de mal..."
+  },
 
-        <div class="grass grass1">🌿</div>
-        <div class="grass grass2">🌿</div>
-        <div class="grass grass3">🌿</div>
-        <div class="grass grass4">🌿</div>
+  {
+    speaker: "Joël",
+    text: "Il est 8h..."
+  },
 
-        <div class="flower flower1">🌼</div>
-        <div class="flower flower2">🌼</div>
-        <div class="flower flower3">🌸</div>
+  {
+    speaker: "Thiry",
+    text: "J'ai envie d'un café."
+  },
 
+  {
+    speaker: "Joël",
+    text: "Bon, attends. Je vais voir si je peux t'en trouver un."
+  },
 
-        <!-- ARBRES -->
+  {
+    speaker: "Thiry",
+    text: "Ah ! Je savais que je pouvais compter sur toi."
+  }
 
-        <div
-          class="tree obstacle tree1">
-        </div>
+];
+const thiryCoffeeDialogue = [
 
-        <div
-          class="tree obstacle tree2">
-        </div>
+  {
+    speaker: "Joël",
+    text: "Tiens, ton café."
+  },
 
-        <div
-          class="tree obstacle tree3">
-        </div>
+  {
+    speaker: "Thiry",
+    text: "Ah ! Enfin une bonne nouvelle."
+  },
 
+  {
+    speaker: "Joël",
+    text: "Ça fait même pas cinq minutes..."
+  },
 
-        <!-- ROCHERS -->
+  {
+    speaker: "Thiry",
+    text: "Parfait. Pause café !"
+  }
 
-        <div
-          class="rock obstacle rock1">
-        </div>
+];
 
-        <div
-          class="rock obstacle rock2">
-        </div>
 
 
-        <!-- THIRY -->
+// --------------------
+// POSITION DE DÉPART
+// --------------------
 
-        <div
-          id="npc"
-          class="obstacle npc">
-        </div>
+player.style.left = x + "px";
+player.style.top = y + "px";
 
 
-        <!-- ======================================== -->
-        <!-- UNIVERSITÉ                               -->
-        <!-- ======================================== -->
+// --------------------
+// TOUCHES DU CLAVIER
+// --------------------
 
-        <div id="office-building"></div>
+document.addEventListener("keydown", function(event) {
 
+  const key = event.key.toLowerCase();
 
-        <!-- COLLISIONS UNIVERSITÉ -->
+// --------------------
+// RAMASSER LE CAFÉ
+// --------------------
 
-        <div
-          class="school-wall school-wall-left obstacle">
-        </div>
+if (key === "e" && canPickCoffee && !hasCoffee) {
 
-        <div
-          class="school-wall school-wall-right obstacle">
-        </div>
+  hasCoffee = true;
+  canPickCoffee = false;
 
-        <div
-          class="school-wall school-wall-top obstacle">
-        </div>
+  // Le café disparaît de la carte
+  coffee.style.display = "none";
 
+  // Cache "E — Ramasser"
+  interaction.style.display = "none";
 
-        <!-- PORTE INVISIBLE -->
+  // Met à jour la quête
+  questObjective.textContent =
+    "☑ Café récupéré — Retourner voir Thiry";
 
-        <div id="office-door"></div>
+  return;
+}
+  
+  // --------------------
+  // DIALOGUE
+  // --------------------
 
+ if (key === "e" && canTalk) {
 
-      </div>
-      <!-- FIN MAP EXTÉRIEURE -->
+  // --------------------
+  // QUÊTE DÉJÀ TERMINÉE
+  // --------------------
 
+ if (coffeeQuestCompleted) {
 
+  // Si la boîte est fermée → on l'ouvre
+  if (!dialogueOpen) {
 
-      <!-- ======================================== -->
-      <!-- MAP 2 : INTÉRIEUR UNIVERSITÉ             -->
-      <!-- ======================================== -->
+    dialogueOpen = true;
 
-     <!-- ======================================== -->
-<!-- MAP 2 : INTÉRIEUR UNIVERSITÉ             -->
-<!-- ======================================== -->
+    dialogue.style.display = "block";
 
-<div id="map-office" class="map">
+    dialogueName.textContent = "Thiry";
+    dialogueText.textContent =
+      "On parle après. Là, c'est pause café.";
 
-  <!-- SOL -->
-  <div class="office-floor"></div>
+  }
 
+  // Si elle est déjà ouverte → on la ferme
+  else {
 
-  <!-- MUR DU FOND -->
-  <div class="office-back-wall"></div>
+    dialogueOpen = false;
 
+    dialogue.style.display = "none";
 
-  <!-- FENÊTRES -->
+  }
 
-  <div class="office-window window1"></div>
-  <div class="office-window window2"></div>
+  return;
+}
 
 
-  <!-- TABLEAU D'AFFICHAGE -->
+  // --------------------
+  // CHOISIR LE DIALOGUE
+  // --------------------
 
-  <div class="office-board"></div>
+  let currentDialogue;
 
+  // Joël possède le café
+  if (hasCoffee) {
 
-  <!-- PANNEAU UNIVERSITÉ -->
+    currentDialogue = thiryCoffeeDialogue;
 
-  <div class="office-sign"></div>
+  }
 
+  // Dialogue normal
+  else {
 
-  <!-- BIBLIOTHÈQUE -->
+    currentDialogue = thiryDialogue;
 
-  <div class="office-library obstacle"></div>
+  }
 
 
-  <!-- ARMOIRE -->
+  // --------------------
+  // OUVERTURE
+  // --------------------
 
-  <div class="office-cabinet obstacle"></div>
+  if (!dialogueOpen) {
 
+    dialogueOpen = true;
+    dialogueStep = 0;
 
-  <!-- BUREAU GAUCHE -->
+    dialogue.style.display = "block";
 
-  <div class="office-desk desk-left obstacle"></div>
+    dialogueName.textContent =
+      currentDialogue[dialogueStep].speaker;
 
-  <div class="office-chair chair-left obstacle"></div>
+    dialogueText.textContent =
+      currentDialogue[dialogueStep].text;
 
+  }
 
-  <!-- BUREAU DROIT -->
 
-  <div class="office-desk desk-right obstacle"></div>
+  // --------------------
+  // PHRASE SUIVANTE
+  // --------------------
 
-  <div class="office-chair chair-right obstacle"></div>
+  else {
 
+    dialogueStep++;
 
-  <!-- PLANTE -->
 
-  <div class="office-plant obstacle"></div>
+    if (dialogueStep < currentDialogue.length) {
 
+      dialogueName.textContent =
+        currentDialogue[dialogueStep].speaker;
 
-  <!-- IMPRIMANTE DE LA QUÊTE -->
+      dialogueText.textContent =
+        currentDialogue[dialogueStep].text;
 
-  <div id="printer" class="obstacle"></div>
+    }
 
 
-  <!-- PORTE / SORTIE -->
+    // --------------------
+    // FIN DU DIALOGUE
+    // --------------------
 
-  <div id="office-exit"></div>
+    else {
 
-</div>
+      dialogueOpen = false;
 
+      dialogue.style.display = "none";
 
-      <!-- ======================================== -->
-      <!-- JOËL                                     -->
-      <!-- ======================================== -->
 
-      <!-- Joël reste en dehors des maps -->
+      // Joël avait le café
+      if (hasCoffee) {
 
-      <div id="player"></div>
+        completeCoffeeQuest();
 
+      }
 
+      // Première conversation
+      else if (!coffeeQuestActive) {
 
-      <!-- ======================================== -->
-      <!-- INTERFACE                                -->
-      <!-- ======================================== -->
+        startCoffeeQuest();
 
+      }
 
-      <!-- STATS -->
+    }
 
-      <div id="joel-stats">
+  }
 
+  return;
+}
 
-        <div class="stats-header">
 
-          JOËL
+  // --------------------
+  // POSITION PRÉCÉDENTE
+  // --------------------
 
-          <span id="level">
-            Niv. 1
-          </span>
+  const oldX = x;
+  const oldY = y;
 
-        </div>
 
+  // --------------------
+  // DÉPLACEMENTS
+  // --------------------
 
-        <div class="health">
+  if (key === "z" || event.key === "ArrowUp") {
+    y -= speed;
+  }
 
-          ❤️
+  if (key === "s" || event.key === "ArrowDown") {
+    y += speed;
+  }
 
-          <span id="health">
-            100 / 100
-          </span>
+  if (key === "q" || event.key === "ArrowLeft") {
+    x -= speed;
+  }
 
-        </div>
+  if (key === "d" || event.key === "ArrowRight") {
+    x += speed;
+  }
 
 
-        <div class="xp-line">
+  // --------------------
+  // LIMITES DU TERRAIN
+  // --------------------
 
-          ⭐ XP
+  const gameWidth = game.clientWidth;
+  const gameHeight = game.clientHeight;
 
-          <span id="xp-text">
-            0 / 100
-          </span>
+  const playerWidth = player.offsetWidth;
+  const playerHeight = player.offsetHeight;
 
-        </div>
+  if (x < 0) {
+    x = 0;
+  }
 
+  if (x > gameWidth - playerWidth) {
+    x = gameWidth - playerWidth;
+  }
 
-        <div class="xp-bar">
+  if (y < 0) {
+    y = 0;
+  }
 
-          <div id="xp-fill"></div>
+  if (y > gameHeight - playerHeight) {
+    y = gameHeight - playerHeight;
+  }
 
-        </div>
 
+  // Nouvelle position
 
-      </div>
+  player.style.left = x + "px";
+  player.style.top = y + "px";
 
 
+  // --------------------
+  // HITBOX DE JOËL
+  // --------------------
 
-      <!-- ======================================== -->
-      <!-- LEVEL UP                                 -->
-      <!-- ======================================== -->
+  const fullPlayerRect =
+    player.getBoundingClientRect();
 
-      <div id="level-up-message">
+  const playerRect = {
 
-        <div class="level-up-title">
+    left:
+      fullPlayerRect.left + 10,
 
-          ⭐ NIVEAU SUPÉRIEUR !
+    right:
+      fullPlayerRect.right - 10,
 
-        </div>
+    top:
+      fullPlayerRect.bottom - 25,
 
-        <div id="level-up-text"></div>
+    bottom:
+      fullPlayerRect.bottom
 
-      </div>
+  };
 
 
+  // --------------------
+  // COLLISIONS
+  // --------------------
 
-      <!-- ======================================== -->
-      <!-- INTERACTION                              -->
-      <!-- ======================================== -->
+  let collision = false;
 
-      <div id="interaction">
-        E — Parler
-      </div>
+  obstacles.forEach(function(obstacle) {
 
+    const fullObstacleRect =
+      obstacle.getBoundingClientRect();
 
+    let obstacleRect;
 
-      <!-- ======================================== -->
-      <!-- QUÊTE                                    -->
-      <!-- ======================================== -->
 
-      <div id="quest-box">
+    // Arbre
+    if (obstacle.classList.contains("tree")) {
 
-        <div class="quest-title">
-          ☕ La pause café
-        </div>
+      obstacleRect = {
 
-        <div id="quest-objective">
-          □ Trouver un café pour Thiry
-        </div>
+        left:
+          fullObstacleRect.left + 25,
 
-      </div>
+        right:
+          fullObstacleRect.right - 25,
 
+        top:
+          fullObstacleRect.bottom - 30,
 
+        bottom:
+          fullObstacleRect.bottom
 
-      <!-- ======================================== -->
-      <!-- DIALOGUE                                 -->
-      <!-- ======================================== -->
+      };
 
-      <div id="dialogue">
+    }
 
-        <div id="dialogue-name">
-          Thiry
-        </div>
 
-        <div id="dialogue-text"></div>
+    // Rocher
+    else if (obstacle.classList.contains("rock")) {
 
-        <div class="dialogue-help">
-          E — Continuer
-        </div>
+      obstacleRect = {
 
-      </div>
+        left:
+          fullObstacleRect.left + 10,
 
+        right:
+          fullObstacleRect.right - 10,
 
-    </div>
-    <!-- FIN GAME -->
+        top:
+          fullObstacleRect.top + 20,
 
+        bottom:
+          fullObstacleRect.bottom
 
-  </div>
-  <!-- FIN GAME WRAPPER -->
+      };
 
+    }
 
+// Thiry
+// Thiry
+else if (obstacle.classList.contains("npc")) {
 
-  <!-- ======================================== -->
-  <!-- CONTRÔLES TÉLÉPHONE                      -->
-  <!-- ======================================== -->
+  obstacleRect = fullObstacleRect;
 
-  <div id="mobile-controls">
+}
+  
+    // Autres obstacles
+    else {
 
+      obstacleRect = fullObstacleRect;
 
-    <div id="joystick">
+    }
 
-      <div id="joystick-stick"></div>
 
-    </div>
+    // Collision
 
+    if (
 
-    <button
-      id="mobile-action"
-      type="button"
-    >
+      playerRect.left < obstacleRect.right &&
 
-      E
+      playerRect.right > obstacleRect.left &&
 
-    </button>
+      playerRect.top < obstacleRect.bottom &&
 
+      playerRect.bottom > obstacleRect.top
 
-  </div>
+    ) {
 
+      collision = true;
 
+    }
 
-  <!-- ======================================== -->
-  <!-- JAVASCRIPT                               -->
-  <!-- ======================================== -->
+  });
 
-  <script src="script.js"></script>
 
+  // Retour à l'ancienne position
 
-</body>
+  if (collision) {
 
-</html>
+    x = oldX;
+    y = oldY;
+
+    player.style.left = x + "px";
+    player.style.top = y + "px";
+
+  }
+
+
+  // --------------------
+  // PROFONDEUR DES ARBRES
+  // --------------------
+
+  let playerZ = 10;
+
+  trees.forEach(function(tree) {
+
+    const treeRect =
+      tree.getBoundingClientRect();
+
+    const currentPlayerRect =
+      player.getBoundingClientRect();
+
+    const playerCenterX =
+      currentPlayerRect.left +
+      currentPlayerRect.width / 2;
+
+    const procheDeLarbre =
+
+      playerCenterX >
+      treeRect.left - 20
+
+      &&
+
+      playerCenterX <
+      treeRect.right + 20;
+
+
+    if (
+
+      procheDeLarbre &&
+
+      currentPlayerRect.bottom <
+      treeRect.bottom - 10
+
+    ) {
+
+      playerZ = 1;
+
+    }
+
+  });
+
+  player.style.zIndex = playerZ;
+
+
+  // --------------------
+  // DISTANCE JOËL / THIRY
+  // --------------------
+
+  const playerPosition =
+    player.getBoundingClientRect();
+
+  const npcPosition =
+    npc.getBoundingClientRect();
+
+
+  const playerCenterX =
+    playerPosition.left +
+    playerPosition.width / 2;
+
+  const playerCenterY =
+    playerPosition.top +
+    playerPosition.height / 2;
+
+
+  const npcCenterX =
+    npcPosition.left +
+    npcPosition.width / 2;
+
+  const npcCenterY =
+    npcPosition.top +
+    npcPosition.height / 2;
+
+
+  const distanceX =
+    playerCenterX - npcCenterX;
+
+  const distanceY =
+    playerCenterY - npcCenterY;
+
+
+  const distance = Math.sqrt(
+
+    distanceX * distanceX +
+
+    distanceY * distanceY
+
+  );
+
+
+  // --------------------
+  // AFFICHER "E — PARLER"
+  // --------------------
+
+if (distance < 120) {
+
+  canTalk = true;
+
+  interaction.textContent = "E — Parler";
+  
+  interaction.style.left =
+  npc.offsetLeft + 10 + "px";
+
+interaction.style.top =
+  npc.offsetTop - 35 + "px";
+  
+  interaction.style.display = "block";
+
+}
+
+  else {
+
+    canTalk = false;
+
+    interaction.style.display = "none";
+
+    dialogueOpen = false;
+
+    dialogue.style.display = "none";
+
+  }
+
+  // --------------------
+// DISTANCE JOËL / CAFÉ
+// --------------------
+
+if (coffeeQuestActive && !hasCoffee) {
+
+  const playerPosition =
+    player.getBoundingClientRect();
+
+  const coffeePosition =
+    coffee.getBoundingClientRect();
+
+  const playerCenterX =
+    playerPosition.left +
+    playerPosition.width / 2;
+
+  const playerCenterY =
+    playerPosition.top +
+    playerPosition.height / 2;
+
+  const coffeeCenterX =
+    coffeePosition.left +
+    coffeePosition.width / 2;
+
+  const coffeeCenterY =
+    coffeePosition.top +
+    coffeePosition.height / 2;
+
+  const distanceX =
+    playerCenterX - coffeeCenterX;
+
+  const distanceY =
+    playerCenterY - coffeeCenterY;
+
+  const coffeeDistance =
+    Math.sqrt(
+      distanceX * distanceX +
+      distanceY * distanceY
+    );
+
+  if (coffeeDistance < 80) {
+
+  canPickCoffee = true;
+
+  interaction.textContent = "E — Ramasser";
+
+  // Place l'indication au-dessus du café
+  interaction.style.left =
+    coffee.offsetLeft - 20 + "px";
+
+  interaction.style.top =
+    coffee.offsetTop - 35 + "px";
+
+  interaction.style.display = "block";
+
+  } else {
+
+    canPickCoffee = false;
+
+    // On remet l'interaction avec Thiry
+    if (!canTalk) {
+      interaction.style.display = "none";
+    }
+
+  }
+
+}
+  
+});
+
+
+// --------------------
+// DÉMARRER LA QUÊTE
+// --------------------
+
+function startCoffeeQuest() {
+
+  const questBox =
+    document.getElementById("quest-box");
+
+  coffeeQuestActive = true;
+
+  questBox.style.display = "block";
+
+  coffee.style.display = "block";
+
+}
+
+
+// --------------------
+// TERMINER LA QUÊTE
+// --------------------
+
+function completeCoffeeQuest() {
+
+  coffeeQuestCompleted = true;
+  coffeeQuestActive = false;
+
+  hasCoffee = false;
+
+  questObjective.textContent =
+    "✅ Quête terminée !";
+
+  addXP(40);
+}
+
+  // --------------------
+// AJOUTER DE L'XP
+// --------------------
+
+function addXP(amount) {
+
+  joel.xp += amount;
+
+  // Vérifie si Joël monte de niveau
+  while (joel.xp >= joel.xpToNextLevel) {
+
+    joel.xp -= joel.xpToNextLevel;
+
+    levelUp();
+
+  }
+
+  updateStats();
+
+}
+
+
+// --------------------
+// MONTER DE NIVEAU
+// --------------------
+
+function levelUp() {
+
+  joel.level++;
+
+  // Il faudra 50 XP de plus
+  // pour le niveau suivant
+  joel.xpToNextLevel += 50;
+
+  // +10 points de vie maximum
+  joel.maxHealth += 10;
+
+  // Joël récupère toute sa vie
+  joel.health = joel.maxHealth;
+
+}
+
+
+// --------------------
+// METTRE À JOUR LE HUD
+// --------------------
+
+function updateStats() {
+
+  levelDisplay.textContent =
+    "Niv. " + joel.level;
+
+  healthDisplay.textContent =
+    joel.health + " / " + joel.maxHealth;
+
+  xpText.textContent =
+    joel.xp + " / " + joel.xpToNextLevel;
+
+  const percentage =
+    (joel.xp / joel.xpToNextLevel) * 100;
+
+  xpFill.style.width =
+    percentage + "%";
+
+}
+updateStats();
