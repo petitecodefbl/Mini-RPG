@@ -80,7 +80,7 @@ const speed = 10;
 
 
 // ========================================
-// QUÊTE CAFÉ
+// QUÊTE 1 : CAFÉ
 // ========================================
 
 let coffeeQuestActive = false;
@@ -91,7 +91,7 @@ let hasCoffee = false;
 
 
 // ========================================
-// QUÊTE IMPRIMANTE
+// QUÊTE 2 : IMPRIMANTE
 // ========================================
 
 let printerQuestAvailable = false;
@@ -111,6 +111,17 @@ let printerFixed = false;
 let printerStep = 0;
 
 let printerMessageOpen = false;
+
+
+// ========================================
+// QUÊTE 3 : TRISTAN
+// ========================================
+
+let tristanQuestAvailable = false;
+
+let tristanQuestActive = false;
+
+let tristanQuestCompleted = false;
 
 
 // ========================================
@@ -183,7 +194,7 @@ let joystickActive = false;
 
 
 // ========================================
-// DIALOGUE CAFÉ
+// DIALOGUE QUÊTE 1 : CAFÉ
 // ========================================
 
 const thiryDialogue = [
@@ -256,7 +267,7 @@ const thiryCoffeeDialogue = [
 
 
 // ========================================
-// QUÊTE IMPRIMANTE
+// QUÊTE 2 : IMPRIMANTE
 // ========================================
 
 const printerQuestDialogue = [
@@ -328,6 +339,35 @@ const printerQuestCompleteDialogue = [
   {
     speaker: "Joël",
     text: "...Si tu veux."
+  }
+
+];
+
+
+// ========================================
+// QUÊTE 3 : TRISTAN
+// ========================================
+
+const tristanQuestDialogue = [
+
+  {
+    speaker: "Thiry",
+    text: "Au fait Joël, Tristan te cherche."
+  },
+
+  {
+    speaker: "Joël",
+    text: "Tristan ? Il est où ?"
+  },
+
+  {
+    speaker: "Thiry",
+    text: "À l'université. Il avait l'air d'avoir besoin de toi."
+  },
+
+  {
+    speaker: "Joël",
+    text: "Bon... j'y retourne."
   }
 
 ];
@@ -615,16 +655,7 @@ document.addEventListener(
     }
 
 
-    // ====================================
-    // PROFONDEUR
-    // ====================================
-
     updatePlayerDepth();
-
-
-    // ====================================
-    // INTERACTIONS
-    // ====================================
 
     updateInteractions();
 
@@ -641,8 +672,6 @@ function hasCollision() {
   const playerFullRect =
     player.getBoundingClientRect();
 
-
-  // Hitbox uniquement sur les pieds de Joël
 
   const playerRect = {
 
@@ -664,10 +693,6 @@ function hasCollision() {
   let obstacles;
 
 
-  // ======================================
-  // OBSTACLES EXTÉRIEURS
-  // ======================================
-
   if (
     currentMap === "outside"
   ) {
@@ -678,11 +703,6 @@ function hasCollision() {
       );
 
   }
-
-
-  // ======================================
-  // OBSTACLES INTÉRIEURS
-  // ======================================
 
   else {
 
@@ -783,11 +803,6 @@ function hasCollision() {
           right:
             fullRect.right - 8,
 
-          /*
-            Seulement la partie basse
-            du PNG bloque Joël.
-          */
-
           top:
             fullRect.top +
             fullRect.height * 0.55,
@@ -801,7 +816,7 @@ function hasCollision() {
 
 
       // ==================================
-      // AUTRES OBSTACLES
+      // AUTRES
       // ==================================
 
       else {
@@ -811,10 +826,6 @@ function hasCollision() {
 
       }
 
-
-      // ==================================
-      // TEST COLLISION
-      // ==================================
 
       if (
 
@@ -929,9 +940,7 @@ function updateInteractions() {
     "none";
 
 
-  // ======================================
-  // PAS DE "E — ..." PENDANT UN DIALOGUE
-  // ======================================
+  // Aucun E pendant un dialogue
 
   if (dialogueOpen) {
 
@@ -994,8 +1003,6 @@ function updateInteractions() {
       );
 
 
-    // Zone large déjà validée
-
     if (
       doorDistanceX < 140 &&
       doorDistanceY < 160
@@ -1042,7 +1049,7 @@ function updateInteractions() {
         rectanglesNear(
           playerRect,
           coffeeRect,
-          40
+          25
         )
       ) {
 
@@ -1083,12 +1090,6 @@ function updateInteractions() {
     const npcRect =
       npc.getBoundingClientRect();
 
-
-    /*
-      Distance réduite.
-      Avant : 60
-      Maintenant : 35
-    */
 
     if (
       rectanglesNear(
@@ -1202,8 +1203,6 @@ function updateInteractions() {
         canExaminePrinter = true;
 
 
-        // ÉTAPE 1
-
         if (
           printerStep === 0
         ) {
@@ -1214,8 +1213,6 @@ function updateInteractions() {
         }
 
 
-        // ÉTAPE 2
-
         else if (
           printerStep === 1
         ) {
@@ -1225,8 +1222,6 @@ function updateInteractions() {
 
         }
 
-
-        // ÉTAPE 3
 
         else if (
           printerStep === 2
@@ -1263,7 +1258,7 @@ function updateInteractions() {
 
 
 // ========================================
-// PROXIMITÉ ENTRE DEUX ÉLÉMENTS
+// PROXIMITÉ
 // ========================================
 
 function rectanglesNear(
@@ -1292,7 +1287,7 @@ function rectanglesNear(
 
 
 // ========================================
-// DIALOGUE AVEC THIRY
+// DIALOGUE THIRY
 // ========================================
 
 function handleThiryDialogue() {
@@ -1301,10 +1296,26 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // RETOUR APRÈS RÉPARATION
+  // QUÊTE 3 : TRISTAN
   // ======================================
 
   if (
+    tristanQuestAvailable &&
+    !tristanQuestActive &&
+    !tristanQuestCompleted
+  ) {
+
+    currentDialogue =
+      tristanQuestDialogue;
+
+  }
+
+
+  // ======================================
+  // RETOUR APRÈS RÉPARATION
+  // ======================================
+
+  else if (
     printerFixed &&
     printerQuestActive &&
     !printerQuestCompleted
@@ -1359,7 +1370,7 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // OUVRIR LE DIALOGUE
+  // OUVRIR
   // ======================================
 
   if (
@@ -1387,11 +1398,6 @@ function handleThiryDialogue() {
       ].text;
 
 
-    /*
-      Cache immédiatement
-      E — Parler.
-    */
-
     interaction.style.display =
       "none";
 
@@ -1402,7 +1408,7 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // PHRASE SUIVANTE
+  // SUIVANT
   // ======================================
 
   dialogueStep++;
@@ -1431,7 +1437,7 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // FIN DU DIALOGUE
+  // FIN
   // ======================================
 
   dialogueOpen = false;
@@ -1442,10 +1448,25 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // FIN QUÊTE IMPRIMANTE
+  // DÉMARRER QUÊTE 3
   // ======================================
 
   if (
+    tristanQuestAvailable &&
+    !tristanQuestActive &&
+    !tristanQuestCompleted
+  ) {
+
+    startTristanQuest();
+
+  }
+
+
+  // ======================================
+  // TERMINER QUÊTE IMPRIMANTE
+  // ======================================
+
+  else if (
     printerFixed &&
     printerQuestActive &&
     !printerQuestCompleted
@@ -1457,7 +1478,7 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // FIN QUÊTE CAFÉ
+  // TERMINER QUÊTE CAFÉ
   // ======================================
 
   else if (
@@ -1470,7 +1491,7 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // DÉBUT QUÊTE IMPRIMANTE
+  // DÉMARRER QUÊTE IMPRIMANTE
   // ======================================
 
   else if (
@@ -1484,7 +1505,7 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // DÉBUT QUÊTE CAFÉ
+  // DÉMARRER QUÊTE CAFÉ
   // ======================================
 
   else if (
@@ -1503,7 +1524,7 @@ function handleThiryDialogue() {
 
 
 // ========================================
-// QUÊTE CAFÉ
+// QUÊTE 1 : CAFÉ
 // ========================================
 
 function startCoffeeQuest() {
@@ -1549,14 +1570,16 @@ function completeCoffeeQuest() {
     "☕ La pause café";
 
 
+  /*
+    TRANSITION VERS LA QUÊTE 2
+  */
+
   questObjective.textContent =
-    "✅ Quête terminée !";
+    "💬 Reparler à Thiry";
 
 
   addXP(40);
 
-
-  // Débloque la quête suivante
 
   printerQuestAvailable =
     true;
@@ -1568,7 +1591,7 @@ function completeCoffeeQuest() {
 
 
 // ========================================
-// DÉMARRER QUÊTE IMPRIMANTE
+// QUÊTE 2 : IMPRIMANTE
 // ========================================
 
 function startPrinterQuest() {
@@ -1629,7 +1652,7 @@ function examinePrinter() {
 
 
   // ======================================
-  // ÉTAPE 1 : DIAGNOSTIC
+  // ÉTAPE 1
   // ======================================
 
   if (
@@ -1653,7 +1676,7 @@ function examinePrinter() {
 
 
   // ======================================
-  // ÉTAPE 2 : CÂBLE
+  // ÉTAPE 2
   // ======================================
 
   if (
@@ -1677,7 +1700,7 @@ function examinePrinter() {
 
 
   // ======================================
-  // ÉTAPE 3 : RÉPARATION
+  // ÉTAPE 3
   // ======================================
 
   if (
@@ -1692,8 +1715,6 @@ function examinePrinter() {
 
     printerFixed = true;
 
-
-    // LED VERTE
 
     printer.classList.add(
       "fixed"
@@ -1726,13 +1747,63 @@ function completePrinterQuest() {
     "🖨️ Problème réseau";
 
 
+  /*
+    TRANSITION VERS LA QUÊTE 3
+  */
+
   questObjective.textContent =
-    "✅ Quête terminée !";
+    "💬 Reparler à Thiry";
 
 
-  // 40 café + 60 imprimante = niveau 2
+  /*
+    40 XP café
+    + 60 XP imprimante
+    = niveau 2
+  */
 
   addXP(60);
+
+
+  // Débloquer Tristan uniquement niveau 2
+
+  if (
+    joel.level >= 2
+  ) {
+
+    tristanQuestAvailable =
+      true;
+
+  }
+
+
+  updateInteractions();
+
+}
+
+
+// ========================================
+// QUÊTE 3 : TRISTAN
+// ========================================
+
+function startTristanQuest() {
+
+  tristanQuestAvailable =
+    false;
+
+  tristanQuestActive =
+    true;
+
+
+  questBox.style.display =
+    "block";
+
+
+  questTitle.textContent =
+    "👤 Tristan vous cherche";
+
+
+  questObjective.textContent =
+    "□ Retourner à l'université";
 
 
   updateInteractions();
@@ -1773,8 +1844,6 @@ function changeMap(mapName) {
     );
 
 
-    // Devant la porte intérieure
-
     x = 325;
 
     y = 320;
@@ -1798,8 +1867,6 @@ function changeMap(mapName) {
       "active-map"
     );
 
-
-    // Devant l'université
 
     x = 525;
 
