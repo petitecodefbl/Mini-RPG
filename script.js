@@ -889,8 +889,8 @@ function updateInteractions() {
     */
 
     if (
-      doorDistanceX < 90 &&
-      doorDistanceY < 100
+      doorDistanceX < 140 &&
+      doorDistanceY < 160
     ) {
 
       canEnterOffice = true;
