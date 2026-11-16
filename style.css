@@ -10,13 +10,13 @@ body {
 }
 
 body {
+  min-height: 100vh;
+
   background-color: #222;
 
   display: flex;
   justify-content: center;
   align-items: center;
-
-  min-height: 100vh;
 
   overflow: hidden;
 
@@ -41,10 +41,10 @@ body {
 /* ======================================== */
 
 #game {
+  position: relative;
+
   width: 700px;
   height: 450px;
-
-  position: relative;
 
   overflow: hidden;
 
@@ -85,7 +85,7 @@ body {
 
 
 /* ======================================== */
-/* SYSTÈME DE MAPS                          */
+/* MAPS                                     */
 /* ======================================== */
 
 .map {
@@ -119,10 +119,10 @@ body {
 /* ======================================== */
 
 #player {
+  position: absolute;
+
   width: 50px;
   height: 90px;
-
-  position: absolute;
 
   left: 330px;
   top: 205px;
@@ -181,6 +181,7 @@ body {
   z-index: 0;
 }
 
+
 .path::before,
 .path::after {
   content: "";
@@ -197,6 +198,7 @@ body {
   z-index: -1;
 }
 
+
 .path::before {
   left: -12px;
 
@@ -206,6 +208,7 @@ body {
 
   transform: rotate(-2deg);
 }
+
 
 .path::after {
   right: -15px;
@@ -235,15 +238,18 @@ body {
   z-index: 2;
 }
 
+
 .tree1 {
   left: 100px;
   top: 80px;
 }
 
+
 .tree2 {
   left: 520px;
   top: 70px;
 }
+
 
 .tree3 {
   left: 200px;
@@ -269,10 +275,12 @@ body {
   z-index: 2;
 }
 
+
 .rock1 {
   left: 10px;
   top: 220px;
 }
+
 
 .rock2 {
   left: 300px;
@@ -293,43 +301,52 @@ body {
   z-index: 1;
 }
 
+
 .grass {
   font-size: 20px;
 }
 
+
 .flower {
   font-size: 16px;
 }
+
 
 .grass1 {
   left: 50px;
   top: 250px;
 }
 
+
 .grass2 {
   left: 600px;
   top: 200px;
 }
+
 
 .grass3 {
   left: 450px;
   top: 130px;
 }
 
+
 .grass4 {
   left: 120px;
   top: 370px;
 }
+
 
 .flower1 {
   left: 80px;
   top: 200px;
 }
 
+
 .flower2 {
   left: 580px;
   top: 350px;
 }
+
 
 .flower3 {
   left: 470px;
@@ -400,7 +417,7 @@ body {
 
 
 /* ======================================== */
-/* COLLISIONS UNIVERSITÉ                    */
+/* COLLISIONS DE L'UNIVERSITÉ               */
 /* ======================================== */
 
 .school-wall {
@@ -411,6 +428,9 @@ body {
   z-index: 4;
 }
 
+
+/* CÔTÉ GAUCHE */
+
 .school-wall-left {
   left: 420px;
   top: 230px;
@@ -419,6 +439,9 @@ body {
   height: 190px;
 }
 
+
+/* CÔTÉ DROIT */
+
 .school-wall-right {
   left: 590px;
   top: 230px;
@@ -426,6 +449,9 @@ body {
   width: 80px;
   height: 190px;
 }
+
+
+/* PARTIE HAUTE */
 
 .school-wall-top {
   left: 500px;
@@ -437,26 +463,36 @@ body {
 
 
 /* ======================================== */
-/* PORTE INVISIBLE UNIVERSITÉ               */
+/* ENTRÉE DE L'UNIVERSITÉ                   */
 /* ======================================== */
 
 #office-door {
   position: absolute;
 
-  left: 495px;
-  top: 330px;
+  /*
+    HITBOX INVISIBLE DEVANT
+    LES PORTES DE SCHOOL.PNG
+  */
 
-  width: 100px;
-  height: 90px;
+  left: 505px;
+  top: 345px;
+
+  width: 80px;
+  height: 75px;
 
   background: transparent;
 
   border: none;
   outline: none;
 
+  /*
+    Elle sert au JS uniquement.
+    Ce n'est PAS un obstacle.
+  */
+
   pointer-events: none;
 
-  z-index: 5;
+  z-index: 10;
 }
 
 
@@ -554,10 +590,12 @@ body {
   z-index: 3;
 }
 
+
 .window1 {
   left: 70px;
   top: 15px;
 }
+
 
 .window2 {
   left: 500px;
@@ -671,10 +709,12 @@ body {
   z-index: 4;
 }
 
+
 .desk-left {
   left: 140px;
   top: 125px;
 }
+
 
 .desk-right {
   left: 415px;
@@ -700,10 +740,12 @@ body {
   z-index: 5;
 }
 
+
 .chair-left {
   left: 185px;
   top: 195px;
 }
+
 
 .chair-right {
   left: 460px;
@@ -836,6 +878,7 @@ body {
   z-index: 100;
 }
 
+
 #dialogue-name {
   margin-bottom: 10px;
 
@@ -845,10 +888,12 @@ body {
   font-size: 18px;
 }
 
+
 #dialogue-text {
   font-size: 16px;
   line-height: 1.4;
 }
+
 
 .dialogue-help {
   margin-top: 12px;
@@ -889,6 +934,7 @@ body {
   z-index: 100;
 }
 
+
 .quest-title {
   margin-bottom: 8px;
 
@@ -896,6 +942,7 @@ body {
 
   font-weight: bold;
 }
+
 
 #quest-objective {
   font-size: 13px;
@@ -928,11 +975,13 @@ body {
   z-index: 100;
 }
 
+
 .stats-header {
   margin-bottom: 8px;
 
   font-weight: bold;
 }
+
 
 #level {
   float: right;
@@ -940,11 +989,13 @@ body {
   color: #ffd166;
 }
 
+
 .health {
   margin-bottom: 7px;
 
   font-size: 13px;
 }
+
 
 .xp-line {
   margin-bottom: 5px;
@@ -952,9 +1003,11 @@ body {
   font-size: 13px;
 }
 
+
 #xp-text {
   float: right;
 }
+
 
 .xp-bar {
   width: 100%;
@@ -966,6 +1019,7 @@ body {
 
   overflow: hidden;
 }
+
 
 #xp-fill {
   width: 0%;
@@ -1005,6 +1059,7 @@ body {
   z-index: 200;
 }
 
+
 .level-up-title {
   margin-bottom: 5px;
 
@@ -1013,6 +1068,7 @@ body {
   font-size: 18px;
   font-weight: bold;
 }
+
 
 #level-up-text {
   font-size: 13px;
@@ -1066,6 +1122,7 @@ body {
 
   box-sizing: border-box;
 }
+
 
 #joystick-stick {
   position: absolute;
@@ -1135,6 +1192,7 @@ body {
     box-sizing: border-box;
   }
 
+
   #game-wrapper {
     transform: scale(0.5);
 
@@ -1157,6 +1215,7 @@ body {
 
     box-sizing: border-box;
   }
+
 
   #game-wrapper {
     transform: scale(0.65);
