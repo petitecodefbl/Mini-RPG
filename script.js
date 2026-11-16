@@ -70,7 +70,7 @@ let canExaminePrinter = false;
 
 
 // ========================================
-// POSITION JOËL
+// POSITION DE JOËL
 // ========================================
 
 let x = 330;
@@ -102,6 +102,14 @@ let printerQuestCompleted = false;
 
 let printerFixed = false;
 
+
+// 0 = pas diagnostiquée
+// 1 = problème réseau détecté
+// 2 = mauvais port trouvé
+// 3 = imprimante réparée
+
+let printerStep = 0;
+
 let printerMessageOpen = false;
 
 
@@ -115,7 +123,7 @@ let dialogueStep = 0;
 
 
 // ========================================
-// STATS
+// STATS DE JOËL
 // ========================================
 
 const joel = {
@@ -292,7 +300,7 @@ const printerQuestDialogue = [
 
 
 // ========================================
-// RETOUR IMPRIMANTE
+// RETOUR QUÊTE IMPRIMANTE
 // ========================================
 
 const printerQuestCompleteDialogue = [
@@ -329,9 +337,12 @@ const printerQuestCompleteDialogue = [
 // INITIALISATION
 // ========================================
 
-player.style.left = x + "px";
+player.style.left =
+  x + "px";
 
-player.style.top = y + "px";
+player.style.top =
+  y + "px";
+
 
 updateStats();
 
@@ -351,7 +362,7 @@ document.addEventListener(
 
 
     // ====================================
-    // MESSAGE APRÈS RÉPARATION
+    // FERMER MESSAGE IMPRIMANTE
     // ====================================
 
     if (
@@ -366,14 +377,16 @@ document.addEventListener(
       dialogue.style.display =
         "none";
 
+
       updateInteractions();
 
       return;
+
     }
 
 
     // ====================================
-    // ENTRER
+    // ENTRER DANS L'UNIVERSITÉ
     // ====================================
 
     if (
@@ -384,11 +397,12 @@ document.addEventListener(
       changeMap("office");
 
       return;
+
     }
 
 
     // ====================================
-    // SORTIR
+    // SORTIR DE L'UNIVERSITÉ
     // ====================================
 
     if (
@@ -399,11 +413,12 @@ document.addEventListener(
       changeMap("outside");
 
       return;
+
     }
 
 
     // ====================================
-    // EXAMINER IMPRIMANTE
+    // INTERAGIR AVEC L'IMPRIMANTE
     // ====================================
 
     if (
@@ -413,14 +428,15 @@ document.addEventListener(
       !printerFixed
     ) {
 
-      fixPrinter();
+      examinePrinter();
 
       return;
+
     }
 
 
     // ====================================
-    // CAFÉ
+    // RAMASSER LE CAFÉ
     // ====================================
 
     if (
@@ -433,21 +449,26 @@ document.addEventListener(
 
       canPickCoffee = false;
 
+
       coffee.style.display =
         "none";
+
 
       questObjective.textContent =
         "☑ Café récupéré — Retourner voir Thiry";
 
+
       interaction.style.display =
         "none";
 
+
       return;
+
     }
 
 
     // ====================================
-    // THIRY
+    // PARLER À THIRY
     // ====================================
 
     if (
@@ -458,16 +479,21 @@ document.addEventListener(
       handleThiryDialogue();
 
       return;
+
     }
 
 
     // ====================================
-    // DÉPLACEMENT
+    // POSITION AVANT DÉPLACEMENT
     // ====================================
 
     const oldX = x;
     const oldY = y;
 
+
+    // ====================================
+    // DÉPLACEMENT
+    // ====================================
 
     if (
       key === "z" ||
@@ -510,7 +536,7 @@ document.addEventListener(
 
 
     // ====================================
-    // LIMITES
+    // LIMITES DU TERRAIN
     // ====================================
 
     const gameWidth =
@@ -570,12 +596,13 @@ document.addEventListener(
 
 
     // ====================================
-    // COLLISION
+    // COLLISIONS
     // ====================================
 
     if (hasCollision()) {
 
       x = oldX;
+
       y = oldY;
 
 
@@ -588,7 +615,16 @@ document.addEventListener(
     }
 
 
+    // ====================================
+    // PROFONDEUR
+    // ====================================
+
     updatePlayerDepth();
+
+
+    // ====================================
+    // INTERACTIONS
+    // ====================================
 
     updateInteractions();
 
@@ -606,10 +642,7 @@ function hasCollision() {
     player.getBoundingClientRect();
 
 
-  /*
-    HITBOX DE JOËL :
-    UNIQUEMENT SES PIEDS
-  */
+  // Hitbox uniquement sur les pieds de Joël
 
   const playerRect = {
 
@@ -631,6 +664,10 @@ function hasCollision() {
   let obstacles;
 
 
+  // ======================================
+  // OBSTACLES EXTÉRIEURS
+  // ======================================
+
   if (
     currentMap === "outside"
   ) {
@@ -641,6 +678,11 @@ function hasCollision() {
       );
 
   }
+
+
+  // ======================================
+  // OBSTACLES INTÉRIEURS
+  // ======================================
 
   else {
 
@@ -661,11 +703,12 @@ function hasCollision() {
       const fullRect =
         obstacle.getBoundingClientRect();
 
+
       let obstacleRect;
 
 
       // ==================================
-      // ARBRES : TRONC UNIQUEMENT
+      // ARBRE
       // ==================================
 
       if (
@@ -694,7 +737,7 @@ function hasCollision() {
 
 
       // ==================================
-      // ROCHERS
+      // ROCHER
       // ==================================
 
       else if (
@@ -724,7 +767,6 @@ function hasCollision() {
 
       // ==================================
       // MEUBLES
-      // HITBOX SUR LE BAS DU PNG
       // ==================================
 
       else if (
@@ -733,14 +775,6 @@ function hasCollision() {
         )
       ) {
 
-        /*
-          Les PNG ont beaucoup
-          de transparence.
-
-          On ne bloque donc que
-          la partie basse du meuble.
-        */
-
         obstacleRect = {
 
           left:
@@ -748,6 +782,11 @@ function hasCollision() {
 
           right:
             fullRect.right - 8,
+
+          /*
+            Seulement la partie basse
+            du PNG bloque Joël.
+          */
 
           top:
             fullRect.top +
@@ -762,7 +801,7 @@ function hasCollision() {
 
 
       // ==================================
-      // AUTRES
+      // AUTRES OBSTACLES
       // ==================================
 
       else {
@@ -772,6 +811,10 @@ function hasCollision() {
 
       }
 
+
+      // ==================================
+      // TEST COLLISION
+      // ==================================
 
       if (
 
@@ -803,15 +846,10 @@ function hasCollision() {
 
 
 // ========================================
-// PROFONDEUR
+// PROFONDEUR DE JOËL
 // ========================================
 
 function updatePlayerDepth() {
-
-  /*
-    MAP INTÉRIEURE = z-index 20
-    JOËL DOIT RESTER AU-DESSUS.
-  */
 
   let playerZ = 30;
 
@@ -891,6 +929,17 @@ function updateInteractions() {
     "none";
 
 
+  // ======================================
+  // PAS DE "E — ..." PENDANT UN DIALOGUE
+  // ======================================
+
+  if (dialogueOpen) {
+
+    return;
+
+  }
+
+
   const playerRect =
     player.getBoundingClientRect();
 
@@ -945,10 +994,7 @@ function updateInteractions() {
       );
 
 
-    /*
-      ON GARDE LA GRANDE ZONE
-      QUE TU AS VALIDÉE.
-    */
+    // Zone large déjà validée
 
     if (
       doorDistanceX < 140 &&
@@ -1038,11 +1084,17 @@ function updateInteractions() {
       npc.getBoundingClientRect();
 
 
+    /*
+      Distance réduite.
+      Avant : 60
+      Maintenant : 35
+    */
+
     if (
       rectanglesNear(
         playerRect,
         npcRect,
-        60
+        35
       )
     ) {
 
@@ -1150,8 +1202,40 @@ function updateInteractions() {
         canExaminePrinter = true;
 
 
-        interaction.textContent =
-          "E — Examiner";
+        // ÉTAPE 1
+
+        if (
+          printerStep === 0
+        ) {
+
+          interaction.textContent =
+            "E — Diagnostiquer";
+
+        }
+
+
+        // ÉTAPE 2
+
+        else if (
+          printerStep === 1
+        ) {
+
+          interaction.textContent =
+            "E — Vérifier le câble";
+
+        }
+
+
+        // ÉTAPE 3
+
+        else if (
+          printerStep === 2
+        ) {
+
+          interaction.textContent =
+            "E — Rebrancher";
+
+        }
 
 
         interaction.style.left =
@@ -1179,7 +1263,7 @@ function updateInteractions() {
 
 
 // ========================================
-// PROXIMITÉ
+// PROXIMITÉ ENTRE DEUX ÉLÉMENTS
 // ========================================
 
 function rectanglesNear(
@@ -1208,7 +1292,7 @@ function rectanglesNear(
 
 
 // ========================================
-// DIALOGUE THIRY
+// DIALOGUE AVEC THIRY
 // ========================================
 
 function handleThiryDialogue() {
@@ -1275,7 +1359,7 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // OUVERTURE
+  // OUVRIR LE DIALOGUE
   // ======================================
 
   if (
@@ -1303,13 +1387,22 @@ function handleThiryDialogue() {
       ].text;
 
 
+    /*
+      Cache immédiatement
+      E — Parler.
+    */
+
+    interaction.style.display =
+      "none";
+
+
     return;
 
   }
 
 
   // ======================================
-  // SUIVANT
+  // PHRASE SUIVANTE
   // ======================================
 
   dialogueStep++;
@@ -1338,7 +1431,7 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // FIN
+  // FIN DU DIALOGUE
   // ======================================
 
   dialogueOpen = false;
@@ -1348,7 +1441,9 @@ function handleThiryDialogue() {
     "none";
 
 
-  // QUÊTE IMPRIMANTE TERMINÉE
+  // ======================================
+  // FIN QUÊTE IMPRIMANTE
+  // ======================================
 
   if (
     printerFixed &&
@@ -1361,7 +1456,9 @@ function handleThiryDialogue() {
   }
 
 
-  // CAFÉ TERMINÉ
+  // ======================================
+  // FIN QUÊTE CAFÉ
+  // ======================================
 
   else if (
     hasCoffee
@@ -1372,7 +1469,9 @@ function handleThiryDialogue() {
   }
 
 
-  // LANCER QUÊTE IMPRIMANTE
+  // ======================================
+  // DÉBUT QUÊTE IMPRIMANTE
+  // ======================================
 
   else if (
     printerQuestAvailable &&
@@ -1384,7 +1483,9 @@ function handleThiryDialogue() {
   }
 
 
-  // LANCER QUÊTE CAFÉ
+  // ======================================
+  // DÉBUT QUÊTE CAFÉ
+  // ======================================
 
   else if (
     !coffeeQuestActive &&
@@ -1394,6 +1495,9 @@ function handleThiryDialogue() {
     startCoffeeQuest();
 
   }
+
+
+  updateInteractions();
 
 }
 
@@ -1422,8 +1526,15 @@ function startCoffeeQuest() {
   coffee.style.display =
     "block";
 
+
+  updateInteractions();
+
 }
 
+
+// ========================================
+// TERMINER QUÊTE CAFÉ
+// ========================================
 
 function completeCoffeeQuest() {
 
@@ -1445,6 +1556,8 @@ function completeCoffeeQuest() {
   addXP(40);
 
 
+  // Débloque la quête suivante
+
   printerQuestAvailable =
     true;
 
@@ -1455,7 +1568,7 @@ function completeCoffeeQuest() {
 
 
 // ========================================
-// QUÊTE IMPRIMANTE
+// DÉMARRER QUÊTE IMPRIMANTE
 // ========================================
 
 function startPrinterQuest() {
@@ -1464,6 +1577,15 @@ function startPrinterQuest() {
 
   printerQuestAvailable =
     false;
+
+  printerStep = 0;
+
+  printerFixed = false;
+
+
+  printer.classList.remove(
+    "fixed"
+  );
 
 
   questBox.style.display =
@@ -1484,32 +1606,18 @@ function startPrinterQuest() {
 
 
 // ========================================
-// RÉPARER IMPRIMANTE
+// DIAGNOSTIC IMPRIMANTE
 // ========================================
 
-function fixPrinter() {
-
-  printerFixed = true;
-
-  canExaminePrinter = false;
-
-
-  /*
-    LED VERTE
-  */
-
-  printer.classList.add(
-    "fixed"
-  );
-
+function examinePrinter() {
 
   interaction.style.display =
     "none";
 
 
-  printerMessageOpen = true;
-
   dialogueOpen = true;
+
+  printerMessageOpen = true;
 
 
   dialogue.style.display =
@@ -1520,12 +1628,85 @@ function fixPrinter() {
     "Joël";
 
 
-  dialogueText.textContent =
-    "Le câble réseau est branché dans le mauvais port... évidemment.";
+  // ======================================
+  // ÉTAPE 1 : DIAGNOSTIC
+  // ======================================
+
+  if (
+    printerStep === 0
+  ) {
+
+    dialogueText.textContent =
+      "Hmm... imprimante hors ligne. Elle récupère une adresse en 169.254.";
 
 
-  questObjective.textContent =
-    "☑ Imprimante reconnectée — Retourner voir Thiry";
+    questObjective.textContent =
+      "□ Vérifier la connexion réseau de l'imprimante";
+
+
+    printerStep = 1;
+
+
+    return;
+
+  }
+
+
+  // ======================================
+  // ÉTAPE 2 : CÂBLE
+  // ======================================
+
+  if (
+    printerStep === 1
+  ) {
+
+    dialogueText.textContent =
+      "Pas de DHCP... Voyons le câble. Ah. Il est branché sur le mauvais port.";
+
+
+    questObjective.textContent =
+      "□ Rebrancher correctement l'imprimante";
+
+
+    printerStep = 2;
+
+
+    return;
+
+  }
+
+
+  // ======================================
+  // ÉTAPE 3 : RÉPARATION
+  // ======================================
+
+  if (
+    printerStep === 2
+  ) {
+
+    dialogueText.textContent =
+      "Voilà. Nouvelle IP... et elle répond au ping.";
+
+
+    printerStep = 3;
+
+    printerFixed = true;
+
+
+    // LED VERTE
+
+    printer.classList.add(
+      "fixed"
+    );
+
+
+    questObjective.textContent =
+      "☑ Imprimante reconnectée — Retourner voir Thiry";
+
+
+    return;
+
+  }
 
 }
 
@@ -1549,13 +1730,7 @@ function completePrinterQuest() {
     "✅ Quête terminée !";
 
 
-  /*
-    40 XP DU CAFÉ
-    +
-    60 XP IMPRIMANTE
-    =
-    LEVEL 2
-  */
+  // 40 café + 60 imprimante = niveau 2
 
   addXP(60);
 
@@ -1589,7 +1764,8 @@ function changeMap(mapName) {
     mapName === "office"
   ) {
 
-    currentMap = "office";
+    currentMap =
+      "office";
 
 
     mapOffice.classList.add(
@@ -1597,12 +1773,10 @@ function changeMap(mapName) {
     );
 
 
-    /*
-      APPARITION DEVANT
-      LA PORTE INTÉRIEURE
-    */
+    // Devant la porte intérieure
 
     x = 325;
+
     y = 320;
 
   }
@@ -1616,7 +1790,8 @@ function changeMap(mapName) {
     mapName === "outside"
   ) {
 
-    currentMap = "outside";
+    currentMap =
+      "outside";
 
 
     mapOutside.classList.add(
@@ -1624,12 +1799,10 @@ function changeMap(mapName) {
     );
 
 
-    /*
-      APPARITION DEVANT
-      L'UNIVERSITÉ
-    */
+    // Devant l'université
 
     x = 525;
+
     y = 330;
 
   }
@@ -1783,7 +1956,7 @@ function updateStats() {
 
 
 // ========================================
-// JOYSTICK
+// JOYSTICK MOBILE
 // ========================================
 
 function updateJoystick(event) {
@@ -1868,6 +2041,10 @@ function updateJoystick(event) {
 }
 
 
+// ========================================
+// JOYSTICK : APPUYER
+// ========================================
+
 joystick.addEventListener(
   "pointerdown",
   function(event) {
@@ -1885,6 +2062,10 @@ joystick.addEventListener(
   }
 );
 
+
+// ========================================
+// JOYSTICK : BOUGER
+// ========================================
 
 joystick.addEventListener(
   "pointermove",
@@ -1904,6 +2085,10 @@ joystick.addEventListener(
   }
 );
 
+
+// ========================================
+// ARRÊTER JOYSTICK
+// ========================================
 
 function stopJoystick() {
 
@@ -2065,7 +2250,7 @@ mobileAction.addEventListener(
 
 
 // ========================================
-// INITIALISATION
+// PREMIÈRE DÉTECTION
 // ========================================
 
 updateInteractions();
