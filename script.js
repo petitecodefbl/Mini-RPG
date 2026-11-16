@@ -1,15 +1,11 @@
 // ========================================
-// ÉLÉMENTS
+// ÉLÉMENTS DU JEU
 // ========================================
 
-const player =
-  document.getElementById("player");
+const player = document.getElementById("player");
+const game = document.getElementById("game");
 
-const game =
-  document.getElementById("game");
-
-const npc =
-  document.getElementById("npc");
+const npc = document.getElementById("npc");
 
 const interaction =
   document.getElementById("interaction");
@@ -17,11 +13,11 @@ const interaction =
 const dialogue =
   document.getElementById("dialogue");
 
-const dialogueText =
-  document.getElementById("dialogue-text");
-
 const dialogueName =
   document.getElementById("dialogue-name");
+
+const dialogueText =
+  document.getElementById("dialogue-text");
 
 const coffee =
   document.getElementById("coffee");
@@ -34,12 +30,6 @@ const questTitle =
 
 const questObjective =
   document.getElementById("quest-objective");
-
-const levelUpMessage =
-  document.getElementById("level-up-message");
-
-const levelUpText =
-  document.getElementById("level-up-text");
 
 
 // ========================================
@@ -80,6 +70,16 @@ let canExaminePrinter = false;
 
 
 // ========================================
+// POSITION JOËL
+// ========================================
+
+let x = 330;
+let y = 205;
+
+const speed = 10;
+
+
+// ========================================
 // QUÊTE CAFÉ
 // ========================================
 
@@ -102,6 +102,8 @@ let printerQuestCompleted = false;
 
 let printerFixed = false;
 
+let printerMessageOpen = false;
+
 
 // ========================================
 // DIALOGUE
@@ -110,18 +112,6 @@ let printerFixed = false;
 let dialogueOpen = false;
 
 let dialogueStep = 0;
-
-let printerMessageOpen = false;
-
-
-// ========================================
-// JOËL
-// ========================================
-
-let x = 330;
-let y = 205;
-
-const speed = 10;
 
 
 // ========================================
@@ -157,6 +147,12 @@ const xpText =
 const xpFill =
   document.getElementById("xp-fill");
 
+const levelUpMessage =
+  document.getElementById("level-up-message");
+
+const levelUpText =
+  document.getElementById("level-up-text");
+
 
 // ========================================
 // MOBILE
@@ -172,13 +168,14 @@ const mobileAction =
   document.getElementById("mobile-action");
 
 let joystickX = 0;
+
 let joystickY = 0;
 
 let joystickActive = false;
 
 
 // ========================================
-// DIALOGUES
+// DIALOGUE CAFÉ
 // ========================================
 
 const thiryDialogue = [
@@ -221,6 +218,10 @@ const thiryDialogue = [
 ];
 
 
+// ========================================
+// RETOUR CAFÉ
+// ========================================
+
 const thiryCoffeeDialogue = [
 
   {
@@ -245,6 +246,10 @@ const thiryCoffeeDialogue = [
 
 ];
 
+
+// ========================================
+// QUÊTE IMPRIMANTE
+// ========================================
 
 const printerQuestDialogue = [
 
@@ -286,6 +291,10 @@ const printerQuestDialogue = [
 ];
 
 
+// ========================================
+// RETOUR IMPRIMANTE
+// ========================================
+
 const printerQuestCompleteDialogue = [
 
   {
@@ -317,16 +326,16 @@ const printerQuestCompleteDialogue = [
 
 
 // ========================================
-// POSITION INITIALE
+// INITIALISATION
 // ========================================
 
-player.style.left =
-  x + "px";
+player.style.left = x + "px";
 
-player.style.top =
-  y + "px";
+player.style.top = y + "px";
 
 updateStats();
+
+updateInteractions();
 
 
 // ========================================
@@ -342,7 +351,7 @@ document.addEventListener(
 
 
     // ====================================
-    // FERMER MESSAGE IMPRIMANTE
+    // MESSAGE APRÈS RÉPARATION
     // ====================================
 
     if (
@@ -357,12 +366,14 @@ document.addEventListener(
       dialogue.style.display =
         "none";
 
+      updateInteractions();
+
       return;
     }
 
 
     // ====================================
-    // ENTRER DANS L'UNIVERSITÉ
+    // ENTRER
     // ====================================
 
     if (
@@ -392,7 +403,7 @@ document.addEventListener(
 
 
     // ====================================
-    // IMPRIMANTE
+    // EXAMINER IMPRIMANTE
     // ====================================
 
     if (
@@ -516,7 +527,9 @@ document.addEventListener(
 
 
     if (x < 0) {
+
       x = 0;
+
     }
 
 
@@ -532,7 +545,9 @@ document.addEventListener(
 
 
     if (y < 0) {
+
       y = 0;
+
     }
 
 
@@ -555,13 +570,14 @@ document.addEventListener(
 
 
     // ====================================
-    // COLLISIONS
+    // COLLISION
     // ====================================
 
     if (hasCollision()) {
 
       x = oldX;
       y = oldY;
+
 
       player.style.left =
         x + "px";
@@ -572,16 +588,7 @@ document.addEventListener(
     }
 
 
-    // ====================================
-    // PROFONDEUR
-    // ====================================
-
     updatePlayerDepth();
-
-
-    // ====================================
-    // INTERACTIONS
-    // ====================================
 
     updateInteractions();
 
@@ -595,23 +602,28 @@ document.addEventListener(
 
 function hasCollision() {
 
-  const fullPlayerRect =
+  const playerFullRect =
     player.getBoundingClientRect();
 
+
+  /*
+    HITBOX DE JOËL :
+    UNIQUEMENT SES PIEDS
+  */
 
   const playerRect = {
 
     left:
-      fullPlayerRect.left + 10,
+      playerFullRect.left + 12,
 
     right:
-      fullPlayerRect.right - 10,
+      playerFullRect.right - 12,
 
     top:
-      fullPlayerRect.bottom - 25,
+      playerFullRect.bottom - 22,
 
     bottom:
-      fullPlayerRect.bottom
+      playerFullRect.bottom
 
   };
 
@@ -652,7 +664,9 @@ function hasCollision() {
       let obstacleRect;
 
 
-      // ARBRE
+      // ==================================
+      // ARBRES : TRONC UNIQUEMENT
+      // ==================================
 
       if (
         obstacle.classList.contains(
@@ -663,10 +677,10 @@ function hasCollision() {
         obstacleRect = {
 
           left:
-            fullRect.left + 25,
+            fullRect.left + 28,
 
           right:
-            fullRect.right - 25,
+            fullRect.right - 28,
 
           top:
             fullRect.bottom - 30,
@@ -679,7 +693,9 @@ function hasCollision() {
       }
 
 
-      // ROCHER
+      // ==================================
+      // ROCHERS
+      // ==================================
 
       else if (
         obstacle.classList.contains(
@@ -706,7 +722,48 @@ function hasCollision() {
       }
 
 
+      // ==================================
+      // MEUBLES
+      // HITBOX SUR LE BAS DU PNG
+      // ==================================
+
+      else if (
+        obstacle.classList.contains(
+          "furniture"
+        )
+      ) {
+
+        /*
+          Les PNG ont beaucoup
+          de transparence.
+
+          On ne bloque donc que
+          la partie basse du meuble.
+        */
+
+        obstacleRect = {
+
+          left:
+            fullRect.left + 8,
+
+          right:
+            fullRect.right - 8,
+
+          top:
+            fullRect.top +
+            fullRect.height * 0.55,
+
+          bottom:
+            fullRect.bottom
+
+        };
+
+      }
+
+
+      // ==================================
       // AUTRES
+      // ==================================
 
       else {
 
@@ -750,6 +807,11 @@ function hasCollision() {
 // ========================================
 
 function updatePlayerDepth() {
+
+  /*
+    MAP INTÉRIEURE = z-index 20
+    JOËL DOIT RESTER AU-DESSUS.
+  */
 
   let playerZ = 30;
 
@@ -829,6 +891,10 @@ function updateInteractions() {
     "none";
 
 
+  const playerRect =
+    player.getBoundingClientRect();
+
+
   // ======================================
   // EXTÉRIEUR
   // ======================================
@@ -837,12 +903,9 @@ function updateInteractions() {
     currentMap === "outside"
   ) {
 
-    const playerRect =
-      player.getBoundingClientRect();
-
 
     // ====================================
-    // PORTE UNIVERSITÉ
+    // UNIVERSITÉ
     // ====================================
 
     const doorRect =
@@ -883,36 +946,36 @@ function updateInteractions() {
 
 
     /*
-      GRANDE ZONE DE DÉTECTION
-      POUR QUE "E — ENTRER"
-      APPARAISSE FACILEMENT.
+      ON GARDE LA GRANDE ZONE
+      QUE TU AS VALIDÉE.
     */
 
     if (
-      doorDistanceX < 200 &&
-      doorDistanceY < 190
+      doorDistanceX < 140 &&
+      doorDistanceY < 160
     ) {
 
       canEnterOffice = true;
 
+
       interaction.textContent =
         "E — Entrer";
 
-      /*
-        POSITION FIXE AU-DESSUS
-        DE LA PORTE
-      */
 
       interaction.style.left =
         "505px";
 
+
       interaction.style.top =
         "315px";
+
 
       interaction.style.display =
         "block";
 
+
       return;
+
     }
 
 
@@ -939,23 +1002,29 @@ function updateInteractions() {
 
         canPickCoffee = true;
 
+
         interaction.textContent =
           "E — Ramasser";
+
 
         interaction.style.left =
           coffee.offsetLeft -
           20 +
           "px";
 
+
         interaction.style.top =
           coffee.offsetTop -
           35 +
           "px";
 
+
         interaction.style.display =
           "block";
 
+
         return;
+
       }
 
     }
@@ -979,18 +1048,22 @@ function updateInteractions() {
 
       canTalk = true;
 
+
       interaction.textContent =
         "E — Parler";
+
 
       interaction.style.left =
         npc.offsetLeft +
         10 +
         "px";
 
+
       interaction.style.top =
         npc.offsetTop -
         35 +
         "px";
+
 
       interaction.style.display =
         "block";
@@ -1008,11 +1081,10 @@ function updateInteractions() {
     currentMap === "office"
   ) {
 
-    const playerRect =
-      player.getBoundingClientRect();
 
-
+    // ====================================
     // SORTIE
+    // ====================================
 
     const exitRect =
       officeExit.getBoundingClientRect();
@@ -1022,33 +1094,41 @@ function updateInteractions() {
       rectanglesNear(
         playerRect,
         exitRect,
-        45
+        55
       )
     ) {
 
       canExitOffice = true;
 
+
       interaction.textContent =
         "E — Sortir";
+
 
       interaction.style.left =
         officeExit.offsetLeft -
         5 +
         "px";
 
+
       interaction.style.top =
         officeExit.offsetTop -
         35 +
         "px";
 
+
       interaction.style.display =
         "block";
 
+
       return;
+
     }
 
 
+    // ====================================
     // IMPRIMANTE
+    // ====================================
 
     if (
       printerQuestActive &&
@@ -1063,24 +1143,28 @@ function updateInteractions() {
         rectanglesNear(
           playerRect,
           printerRect,
-          50
+          60
         )
       ) {
 
         canExaminePrinter = true;
 
+
         interaction.textContent =
           "E — Examiner";
 
+
         interaction.style.left =
           printer.offsetLeft -
-          10 +
+          5 +
           "px";
+
 
         interaction.style.top =
           printer.offsetTop -
           35 +
           "px";
+
 
         interaction.style.display =
           "block";
@@ -1132,7 +1216,9 @@ function handleThiryDialogue() {
   let currentDialogue;
 
 
-  // FIN IMPRIMANTE
+  // ======================================
+  // RETOUR APRÈS RÉPARATION
+  // ======================================
 
   if (
     printerFixed &&
@@ -1146,7 +1232,9 @@ function handleThiryDialogue() {
   }
 
 
-  // CAFÉ RAPPORTÉ
+  // ======================================
+  // RETOUR CAFÉ
+  // ======================================
 
   else if (
     hasCoffee
@@ -1158,7 +1246,9 @@ function handleThiryDialogue() {
   }
 
 
+  // ======================================
   // DONNER QUÊTE IMPRIMANTE
+  // ======================================
 
   else if (
     printerQuestAvailable &&
@@ -1172,7 +1262,9 @@ function handleThiryDialogue() {
   }
 
 
-  // DÉPART
+  // ======================================
+  // PREMIÈRE RENCONTRE
+  // ======================================
 
   else {
 
@@ -1182,7 +1274,9 @@ function handleThiryDialogue() {
   }
 
 
-  // OUVRIR
+  // ======================================
+  // OUVERTURE
+  // ======================================
 
   if (
     !dialogueOpen
@@ -1214,7 +1308,9 @@ function handleThiryDialogue() {
   }
 
 
+  // ======================================
   // SUIVANT
+  // ======================================
 
   dialogueStep++;
 
@@ -1241,13 +1337,18 @@ function handleThiryDialogue() {
   }
 
 
+  // ======================================
   // FIN
+  // ======================================
 
   dialogueOpen = false;
+
 
   dialogue.style.display =
     "none";
 
+
+  // QUÊTE IMPRIMANTE TERMINÉE
 
   if (
     printerFixed &&
@@ -1260,6 +1361,8 @@ function handleThiryDialogue() {
   }
 
 
+  // CAFÉ TERMINÉ
+
   else if (
     hasCoffee
   ) {
@@ -1268,6 +1371,8 @@ function handleThiryDialogue() {
 
   }
 
+
+  // LANCER QUÊTE IMPRIMANTE
 
   else if (
     printerQuestAvailable &&
@@ -1278,6 +1383,8 @@ function handleThiryDialogue() {
 
   }
 
+
+  // LANCER QUÊTE CAFÉ
 
   else if (
     !coffeeQuestActive &&
@@ -1341,6 +1448,9 @@ function completeCoffeeQuest() {
   printerQuestAvailable =
     true;
 
+
+  updateInteractions();
+
 }
 
 
@@ -1365,16 +1475,32 @@ function startPrinterQuest() {
 
 
   questObjective.textContent =
-    "□ Aller voir l'imprimante";
+    "□ Entrer dans l'université et trouver l'imprimante";
+
+
+  updateInteractions();
 
 }
 
+
+// ========================================
+// RÉPARER IMPRIMANTE
+// ========================================
 
 function fixPrinter() {
 
   printerFixed = true;
 
   canExaminePrinter = false;
+
+
+  /*
+    LED VERTE
+  */
+
+  printer.classList.add(
+    "fixed"
+  );
 
 
   interaction.style.display =
@@ -1404,6 +1530,10 @@ function fixPrinter() {
 }
 
 
+// ========================================
+// TERMINER QUÊTE IMPRIMANTE
+// ========================================
+
 function completePrinterQuest() {
 
   printerQuestCompleted = true;
@@ -1419,7 +1549,18 @@ function completePrinterQuest() {
     "✅ Quête terminée !";
 
 
+  /*
+    40 XP DU CAFÉ
+    +
+    60 XP IMPRIMANTE
+    =
+    LEVEL 2
+  */
+
   addXP(60);
+
+
+  updateInteractions();
 
 }
 
@@ -1434,10 +1575,15 @@ function changeMap(mapName) {
     "active-map"
   );
 
+
   mapOffice.classList.remove(
     "active-map"
   );
 
+
+  // ======================================
+  // ENTRER
+  // ======================================
 
   if (
     mapName === "office"
@@ -1452,8 +1598,8 @@ function changeMap(mapName) {
 
 
     /*
-      APPARITION À L'INTÉRIEUR
-      DEVANT LA SORTIE
+      APPARITION DEVANT
+      LA PORTE INTÉRIEURE
     */
 
     x = 325;
@@ -1461,6 +1607,10 @@ function changeMap(mapName) {
 
   }
 
+
+  // ======================================
+  // SORTIR
+  // ======================================
 
   else if (
     mapName === "outside"
@@ -1488,8 +1638,10 @@ function changeMap(mapName) {
   player.style.left =
     x + "px";
 
+
   player.style.top =
     y + "px";
+
 
   player.style.zIndex =
     30;
@@ -1526,6 +1678,7 @@ function addXP(amount) {
     joel.xp -=
       joel.xpToNextLevel;
 
+
     levelUp();
 
   }
@@ -1536,13 +1689,20 @@ function addXP(amount) {
 }
 
 
+// ========================================
+// LEVEL UP
+// ========================================
+
 function levelUp() {
 
   joel.level++;
 
+
   joel.xpToNextLevel += 50;
 
+
   joel.maxHealth += 10;
+
 
   joel.health =
     joel.maxHealth;
@@ -1552,6 +1712,10 @@ function levelUp() {
 
 }
 
+
+// ========================================
+// NOTIFICATION LEVEL UP
+// ========================================
 
 function showLevelUp() {
 
@@ -1578,6 +1742,10 @@ function showLevelUp() {
 
 }
 
+
+// ========================================
+// HUD
+// ========================================
 
 function updateStats() {
 
@@ -1741,6 +1909,7 @@ function stopJoystick() {
 
   joystickActive = false;
 
+
   joystickX = 0;
 
   joystickY = 0;
@@ -1896,7 +2065,7 @@ mobileAction.addEventListener(
 
 
 // ========================================
-// PREMIÈRE DÉTECTION
+// INITIALISATION
 // ========================================
 
 updateInteractions();
