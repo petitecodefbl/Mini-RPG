@@ -1167,3 +1167,38 @@ body {
   }
 
 }
+
+/* ======================================== */
+/* ÉTAT IMPRIMANTE                          */
+/* ======================================== */
+
+#printer {
+  position: absolute;
+}
+
+#printer-status {
+  position: absolute;
+
+  right: 14px;
+  top: 18px;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background-color: #d9534f;
+
+  box-shadow:
+    0 0 4px rgba(217, 83, 79, 0.9);
+
+  z-index: 10;
+}
+
+#printer.fixed #printer-status {
+  background-color: #5cb85c;
+
+  box-shadow:
+    0 0 6px rgba(92, 184, 92, 0.9);
+}
+
