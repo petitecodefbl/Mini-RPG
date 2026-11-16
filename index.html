@@ -23,10 +23,6 @@
 <body>
 
 
-  <!-- ======================================== -->
-  <!-- CONTENEUR DU JEU                         -->
-  <!-- ======================================== -->
-
   <div id="game-wrapper">
 
     <div id="game">
@@ -92,13 +88,11 @@
         </div>
 
 
-        <!-- ======================================== -->
-        <!-- THIRY                                    -->
-        <!-- ======================================== -->
+        <!-- THIRY -->
 
         <div
           id="npc"
-          class="obstacle npc">
+          class="npc obstacle">
         </div>
 
 
@@ -109,7 +103,7 @@
         <div id="office-building"></div>
 
 
-        <!-- COLLISIONS DE L'UNIVERSITÉ -->
+        <!-- COLLISIONS UNIVERSITÉ -->
 
         <div
           class="school-wall school-wall-left obstacle">
@@ -124,7 +118,10 @@
         </div>
 
 
-        <!-- ZONE INVISIBLE DE LA PORTE -->
+        <!-- ZONE D'ENTRÉE -->
+
+        <!-- IMPORTANT :
+             ce div n'est PAS un obstacle -->
 
         <div id="office-door"></div>
 
@@ -138,68 +135,23 @@
       <!-- MAP 2 : INTÉRIEUR UNIVERSITÉ             -->
       <!-- ======================================== -->
 
-   <!-- ======================================== -->
-<!-- MAP 2 : INTÉRIEUR UNIVERSITÉ             -->
-<!-- ======================================== -->
-
-<div id="map-office" class="map">
-
-  <div class="office-floor"></div>
-  <div class="office-back-wall"></div>
-
-  <!-- FENÊTRES -->
-  <div class="office-window window1"></div>
-  <div class="office-window window2"></div>
-
-  <!-- DÉCORATION -->
-  <div class="office-board"></div>
-  <div class="office-sign"></div>
-
-  <!-- BIBLIOTHÈQUE -->
-  <div class="office-library furniture obstacle"></div>
-
-  <!-- ARMOIRE -->
-  <div class="office-cabinet furniture obstacle"></div>
-
-  <!-- BUREAU GAUCHE -->
-  <div class="office-desk desk-left furniture obstacle"></div>
-  <div class="office-chair chair-left furniture obstacle"></div>
-
-  <!-- BUREAU DROIT -->
-  <div class="office-desk desk-right furniture obstacle"></div>
-  <div class="office-chair chair-right furniture obstacle"></div>
-
-  <!-- PLANTE -->
-  <div class="office-plant furniture obstacle"></div>
-
-  <!-- IMPRIMANTE -->
-  <div id="printer" class="furniture obstacle">
-    <div id="printer-status"></div>
-  </div>
-
-  <!-- SORTIE -->
-  <div id="office-exit"></div>
-
-</div>
+      <div
+        id="map-office"
+        class="map"
+      >
 
 
-        <!-- ======================================== -->
-        <!-- SOL                                      -->
-        <!-- ======================================== -->
+        <!-- SOL -->
 
         <div class="office-floor"></div>
 
 
-        <!-- ======================================== -->
-        <!-- MUR DU FOND                              -->
-        <!-- ======================================== -->
+        <!-- MUR -->
 
         <div class="office-back-wall"></div>
 
 
-        <!-- ======================================== -->
-        <!-- FENÊTRES                                 -->
-        <!-- ======================================== -->
+        <!-- FENÊTRES -->
 
         <div
           class="office-window window1">
@@ -210,85 +162,77 @@
         </div>
 
 
-        <!-- ======================================== -->
-        <!-- TABLEAU D'AFFICHAGE                      -->
-        <!-- ======================================== -->
+        <!-- TABLEAU -->
 
         <div class="office-board"></div>
 
 
-        <!-- ======================================== -->
-        <!-- PANNEAU UNIVERSITÉ                       -->
-        <!-- ======================================== -->
+        <!-- PANNEAU UNIVERSITÉ -->
 
         <div class="office-sign"></div>
 
 
-        <!-- ======================================== -->
-        <!-- BIBLIOTHÈQUE                             -->
-        <!-- ======================================== -->
+        <!-- BIBLIOTHÈQUE -->
 
         <div
-          class="office-library obstacle">
+          class="office-library furniture obstacle">
+        </div>
+
+
+        <!-- ARMOIRE -->
+
+        <div
+          class="office-cabinet furniture obstacle">
+        </div>
+
+
+        <!-- BUREAU GAUCHE -->
+
+        <div
+          class="office-desk desk-left furniture obstacle">
+        </div>
+
+
+        <div
+          class="office-chair chair-left furniture obstacle">
+        </div>
+
+
+        <!-- BUREAU DROIT -->
+
+        <div
+          class="office-desk desk-right furniture obstacle">
+        </div>
+
+
+        <div
+          class="office-chair chair-right furniture obstacle">
+        </div>
+
+
+        <!-- PLANTE -->
+
+        <div
+          class="office-plant furniture obstacle">
         </div>
 
 
         <!-- ======================================== -->
-        <!-- ARMOIRE                                  -->
-        <!-- ======================================== -->
-
-        <div
-          class="office-cabinet obstacle">
-        </div>
-
-
-        <!-- ======================================== -->
-        <!-- BUREAU GAUCHE                            -->
-        <!-- ======================================== -->
-
-        <div
-          class="office-desk desk-left obstacle">
-        </div>
-
-        <div
-          class="office-chair chair-left obstacle">
-        </div>
-
-
-        <!-- ======================================== -->
-        <!-- BUREAU DROIT                             -->
-        <!-- ======================================== -->
-
-        <div
-          class="office-desk desk-right obstacle">
-        </div>
-
-        <div
-          class="office-chair chair-right obstacle">
-        </div>
-
-
-        <!-- ======================================== -->
-        <!-- PLANTE                                   -->
-        <!-- ======================================== -->
-
-        <div
-          class="office-plant obstacle">
-        </div>
-
-
-        <!-- ======================================== -->
-        <!-- IMPRIMANTE DE LA QUÊTE                   -->
+        <!-- IMPRIMANTE                               -->
         <!-- ======================================== -->
 
         <div
           id="printer"
-          class="obstacle">
+          class="furniture obstacle"
+        >
+
+          <div id="printer-status"></div>
+
         </div>
 
 
         <!-- ======================================== -->
-        <!-- PORTE DE SORTIE                          -->
+        <!-- SORTIE                                   -->
         <!-- ======================================== -->
 
         <div id="office-exit"></div>
@@ -304,9 +248,8 @@
       <!-- ======================================== -->
 
       <!--
-        IMPORTANT :
-        Joël reste EN DEHORS des deux maps.
-        Il reste donc visible quand on change de map.
+        Joël est volontairement EN DEHORS
+        de map-outside et map-office.
       -->
 
       <div id="player"></div>
@@ -314,13 +257,11 @@
 
 
       <!-- ======================================== -->
-      <!-- INTERFACE                                -->
+      <!-- HUD                                      -->
       <!-- ======================================== -->
 
 
-      <!-- ======================================== -->
-      <!-- STATS DE JOËL                            -->
-      <!-- ======================================== -->
+      <!-- STATS -->
 
       <div id="joel-stats">
 
@@ -375,11 +316,16 @@
 
       <div id="level-up-message">
 
+
         <div class="level-up-title">
+
           ⭐ NIVEAU SUPÉRIEUR !
+
         </div>
 
+
         <div id="level-up-text"></div>
+
 
       </div>
 
@@ -390,7 +336,9 @@
       <!-- ======================================== -->
 
       <div id="interaction">
+
         E — Parler
+
       </div>
 
 
@@ -401,13 +349,20 @@
 
       <div id="quest-box">
 
+
         <div class="quest-title">
+
           ☕ La pause café
+
         </div>
 
+
         <div id="quest-objective">
+
           □ Trouver un café pour Thiry
+
         </div>
+
 
       </div>
 
@@ -419,25 +374,33 @@
 
       <div id="dialogue">
 
+
         <div id="dialogue-name">
+
           Thiry
+
         </div>
+
 
         <div id="dialogue-text"></div>
 
+
         <div class="dialogue-help">
+
           E — Continuer
+
         </div>
+
 
       </div>
 
 
     </div>
-    <!-- FIN #game -->
+    <!-- FIN GAME -->
 
 
   </div>
-  <!-- FIN #game-wrapper -->
+  <!-- FIN GAME WRAPPER -->
 
 
 
