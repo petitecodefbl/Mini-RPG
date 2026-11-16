@@ -5,6 +5,7 @@
 html,
 body {
   margin: 0;
+
   width: 100%;
   height: 100%;
 }
@@ -25,7 +26,7 @@ body {
 
 
 /* ======================================== */
-/* CONTENEUR DU JEU                         */
+/* CONTENEUR                                */
 /* ======================================== */
 
 #game-wrapper {
@@ -104,13 +105,12 @@ body {
   display: block;
 }
 
-
-/* ======================================== */
-/* MAP EXTÉRIEURE                           */
-/* ======================================== */
-
 #map-outside {
   z-index: 1;
+}
+
+#map-office {
+  z-index: 20;
 }
 
 
@@ -162,17 +162,11 @@ body {
       rgba(255, 230, 170, 0.25) 0 2px,
       transparent 3px
     ),
-    radial-gradient(
-      circle at 45% 75%,
-      rgba(110, 75, 40, 0.2) 0 3px,
-      transparent 4px
-    ),
     #c9a66b;
 
   background-size:
     45px 55px,
-    55px 45px,
-    65px 60px;
+    55px 45px;
 
   border-radius:
     45% 55% 40% 60% /
@@ -180,7 +174,6 @@ body {
 
   z-index: 0;
 }
-
 
 .path::before,
 .path::after {
@@ -198,17 +191,13 @@ body {
   z-index: -1;
 }
 
-
 .path::before {
   left: -12px;
 
   border-radius:
     70% 30% 65% 35% /
     8% 12% 7% 10%;
-
-  transform: rotate(-2deg);
 }
-
 
 .path::after {
   right: -15px;
@@ -216,8 +205,6 @@ body {
   border-radius:
     30% 70% 35% 65% /
     10% 7% 12% 8%;
-
-  transform: rotate(2deg);
 }
 
 
@@ -238,18 +225,15 @@ body {
   z-index: 2;
 }
 
-
 .tree1 {
   left: 100px;
   top: 80px;
 }
 
-
 .tree2 {
   left: 520px;
   top: 70px;
 }
-
 
 .tree3 {
   left: 200px;
@@ -268,19 +252,17 @@ body {
   height: 50px;
 
   background-image: url("rock.png");
-  background-size: 100% 100%;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 
   z-index: 2;
 }
 
-
 .rock1 {
   left: 10px;
   top: 220px;
 }
-
 
 .rock2 {
   left: 300px;
@@ -289,7 +271,7 @@ body {
 
 
 /* ======================================== */
-/* DÉCORATIONS EXTÉRIEURES                  */
+/* DÉCORATIONS                              */
 /* ======================================== */
 
 .grass,
@@ -301,52 +283,43 @@ body {
   z-index: 1;
 }
 
-
 .grass {
   font-size: 20px;
 }
 
-
 .flower {
   font-size: 16px;
 }
-
 
 .grass1 {
   left: 50px;
   top: 250px;
 }
 
-
 .grass2 {
   left: 600px;
   top: 200px;
 }
-
 
 .grass3 {
   left: 450px;
   top: 130px;
 }
 
-
 .grass4 {
   left: 120px;
   top: 370px;
 }
-
 
 .flower1 {
   left: 80px;
   top: 200px;
 }
 
-
 .flower2 {
   left: 580px;
   top: 350px;
 }
-
 
 .flower3 {
   left: 470px;
@@ -395,7 +368,7 @@ body {
 
 
 /* ======================================== */
-/* UNIVERSITÉ EXTÉRIEURE                    */
+/* UNIVERSITÉ                               */
 /* ======================================== */
 
 #office-building {
@@ -417,7 +390,7 @@ body {
 
 
 /* ======================================== */
-/* COLLISIONS DE L'UNIVERSITÉ               */
+/* HITBOX UNIVERSITÉ                        */
 /* ======================================== */
 
 .school-wall {
@@ -429,56 +402,55 @@ body {
 }
 
 
-/* CÔTÉ GAUCHE */
+/*
+  IMPORTANT :
+  LES HITBOX COMMENCENT PLUS BAS.
+  LE HAUT TRANSPARENT DE SCHOOL.PNG
+  NE BLOQUE PLUS JOËL.
+*/
 
 .school-wall-left {
   left: 420px;
-  top: 230px;
+  top: 300px;
 
-  width: 80px;
-  height: 190px;
+  width: 85px;
+  height: 120px;
 }
-
-
-/* CÔTÉ DROIT */
 
 .school-wall-right {
-  left: 590px;
-  top: 230px;
+  left: 585px;
+  top: 300px;
 
-  width: 80px;
-  height: 190px;
+  width: 85px;
+  height: 120px;
 }
 
-
-/* PARTIE HAUTE */
-
 .school-wall-top {
-  left: 500px;
-  top: 230px;
+  left: 505px;
+  top: 300px;
 
-  width: 90px;
-  height: 105px;
+  width: 80px;
+  height: 50px;
 }
 
 
 /* ======================================== */
-/* ENTRÉE DE L'UNIVERSITÉ                   */
+/* ENTRÉE UNIVERSITÉ                        */
 /* ======================================== */
 
 #office-door {
   position: absolute;
 
   /*
-    HITBOX INVISIBLE DEVANT
-    LES PORTES DE SCHOOL.PNG
+    PASSAGE LIBRE DEVANT
+    LES PORTES DE L'UNIVERSITÉ
   */
 
   left: 505px;
-  top: 345px;
+  top: 350px;
 
   width: 80px;
-  height: 75px;
+  height: 70px;
 
   background: transparent;
 
@@ -486,8 +458,9 @@ body {
   outline: none;
 
   /*
-    Elle sert au JS uniquement.
-    Ce n'est PAS un obstacle.
+    PAS UN OBSTACLE.
+    LE JS UTILISE SEULEMENT
+    SA POSITION.
   */
 
   pointer-events: none;
@@ -497,7 +470,7 @@ body {
 
 
 /* ======================================== */
-/* INTÉRIEUR UNIVERSITÉ                     */
+/* INTÉRIEUR                                */
 /* ======================================== */
 
 #map-office {
@@ -512,13 +485,11 @@ body {
   overflow: hidden;
 
   background-color: #ddd4c6;
-
-  z-index: 20;
 }
 
 
 /* ======================================== */
-/* SOL INTÉRIEUR                            */
+/* SOL                                      */
 /* ======================================== */
 
 .office-floor {
@@ -550,7 +521,7 @@ body {
 
 
 /* ======================================== */
-/* MUR DU FOND                              */
+/* MUR INTÉRIEUR                            */
 /* ======================================== */
 
 .office-back-wall {
@@ -590,12 +561,10 @@ body {
   z-index: 3;
 }
 
-
 .window1 {
   left: 70px;
   top: 15px;
 }
-
 
 .window2 {
   left: 500px;
@@ -604,7 +573,7 @@ body {
 
 
 /* ======================================== */
-/* TABLEAU D'AFFICHAGE                      */
+/* TABLEAU                                  */
 /* ======================================== */
 
 .office-board {
@@ -709,12 +678,10 @@ body {
   z-index: 4;
 }
 
-
 .desk-left {
   left: 140px;
   top: 125px;
 }
-
 
 .desk-right {
   left: 415px;
@@ -740,12 +707,10 @@ body {
   z-index: 5;
 }
 
-
 .chair-left {
   left: 185px;
   top: 195px;
 }
-
 
 .chair-right {
   left: 460px;
@@ -798,7 +763,7 @@ body {
 
 
 /* ======================================== */
-/* PORTE DE SORTIE                          */
+/* SORTIE                                   */
 /* ======================================== */
 
 #office-exit {
@@ -826,24 +791,23 @@ body {
 #interaction {
   position: absolute;
 
-  left: 535px;
-  top: 150px;
-
   padding: 6px 10px;
 
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.88);
 
   color: white;
 
-  font-size: 13px;
-
+  border: 2px solid white;
   border-radius: 5px;
 
-  display: none;
+  font-size: 13px;
+  font-weight: bold;
 
   white-space: nowrap;
 
-  z-index: 50;
+  display: none;
+
+  z-index: 150;
 }
 
 
@@ -878,7 +842,6 @@ body {
   z-index: 100;
 }
 
-
 #dialogue-name {
   margin-bottom: 10px;
 
@@ -888,12 +851,10 @@ body {
   font-size: 18px;
 }
 
-
 #dialogue-text {
   font-size: 16px;
   line-height: 1.4;
 }
-
 
 .dialogue-help {
   margin-top: 12px;
@@ -934,7 +895,6 @@ body {
   z-index: 100;
 }
 
-
 .quest-title {
   margin-bottom: 8px;
 
@@ -943,14 +903,13 @@ body {
   font-weight: bold;
 }
 
-
 #quest-objective {
   font-size: 13px;
 }
 
 
 /* ======================================== */
-/* STATS DE JOËL                            */
+/* STATS                                    */
 /* ======================================== */
 
 #joel-stats {
@@ -975,13 +934,11 @@ body {
   z-index: 100;
 }
 
-
 .stats-header {
   margin-bottom: 8px;
 
   font-weight: bold;
 }
-
 
 #level {
   float: right;
@@ -989,13 +946,11 @@ body {
   color: #ffd166;
 }
 
-
 .health {
   margin-bottom: 7px;
 
   font-size: 13px;
 }
-
 
 .xp-line {
   margin-bottom: 5px;
@@ -1003,11 +958,9 @@ body {
   font-size: 13px;
 }
 
-
 #xp-text {
   float: right;
 }
-
 
 .xp-bar {
   width: 100%;
@@ -1019,7 +972,6 @@ body {
 
   overflow: hidden;
 }
-
 
 #xp-fill {
   width: 0%;
@@ -1059,7 +1011,6 @@ body {
   z-index: 200;
 }
 
-
 .level-up-title {
   margin-bottom: 5px;
 
@@ -1069,14 +1020,13 @@ body {
   font-weight: bold;
 }
 
-
 #level-up-text {
   font-size: 13px;
 }
 
 
 /* ======================================== */
-/* CONTRÔLES MOBILE                         */
+/* MOBILE                                   */
 /* ======================================== */
 
 #mobile-controls {
@@ -1101,9 +1051,7 @@ body {
 }
 
 
-/* ======================================== */
-/* JOYSTICK                                 */
-/* ======================================== */
+/* JOYSTICK */
 
 #joystick {
   position: relative;
@@ -1123,7 +1071,6 @@ body {
   box-sizing: border-box;
 }
 
-
 #joystick-stick {
   position: absolute;
 
@@ -1141,9 +1088,7 @@ body {
 }
 
 
-/* ======================================== */
-/* BOUTON E                                 */
-/* ======================================== */
+/* BOUTON E */
 
 #mobile-action {
   width: 80px;
@@ -1166,7 +1111,7 @@ body {
 
 
 /* ======================================== */
-/* APPAREILS TACTILES                       */
+/* TACTILE                                  */
 /* ======================================== */
 
 @media (pointer: coarse) {
@@ -1179,7 +1124,7 @@ body {
 
 
 /* ======================================== */
-/* PETITS ÉCRANS                            */
+/* PETIT ÉCRAN                              */
 /* ======================================== */
 
 @media (max-width: 750px) {
@@ -1192,7 +1137,6 @@ body {
     box-sizing: border-box;
   }
 
-
   #game-wrapper {
     transform: scale(0.5);
 
@@ -1203,7 +1147,7 @@ body {
 
 
 /* ======================================== */
-/* TÉLÉPHONE EN PAYSAGE                     */
+/* MOBILE PAYSAGE                           */
 /* ======================================== */
 
 @media (max-height: 600px) and (pointer: coarse) {
@@ -1215,7 +1159,6 @@ body {
 
     box-sizing: border-box;
   }
-
 
   #game-wrapper {
     transform: scale(0.65);
