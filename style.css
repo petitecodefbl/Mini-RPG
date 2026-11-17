@@ -1214,10 +1214,10 @@ body {
   position: absolute;
 
   left: 360px;
-  top: 175px;
+  top: 190px;
 
-  width: 75px;
-  height: 165px;
+  width: 70px;
+  height: 140px;
 
   background-image: url("tristant.png");
   background-size: contain;
