@@ -1428,7 +1428,7 @@ function updateInteractions() {
 
           interaction.style.top =
             tristanT.offsetTop -
-            35 +
+            20 +
             "px";
 
 
