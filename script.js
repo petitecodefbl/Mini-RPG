@@ -114,14 +114,14 @@ let printerMessageOpen = false;
 
 
 // ========================================
-// QUÊTE 3 : TRISTAN
+// QUÊTE 3 : TRISTANT
 // ========================================
 
-let tristanQuestAvailable = false;
+let tristanTQuestAvailable = false;
 
-let tristanQuestActive = false;
+let tristanTQuestActive = false;
 
-let tristanQuestCompleted = false;
+let tristanTQuestCompleted = false;
 
 
 // ========================================
@@ -345,10 +345,10 @@ const printerQuestCompleteDialogue = [
 
 
 // ========================================
-// QUÊTE 3 : TRISTAN
+// QUÊTE 3 : TRISTANT
 // ========================================
 
-const tristanQuestDialogue = [
+const tristanTQuestDialogue = [
 
   {
     speaker: "Thiry",
@@ -1782,7 +1782,7 @@ function completePrinterQuest() {
 
 
 // ========================================
-// QUÊTE 3 : TRISTAN
+// QUÊTE 3 : TRISTANT
 // ========================================
 
 function startTristanQuest() {
@@ -1799,7 +1799,7 @@ function startTristanQuest() {
 
 
   questTitle.textContent =
-    "👤 Tristan vous cherche";
+    "👤 TristanT vous cherche";
 
 
   questObjective.textContent =
