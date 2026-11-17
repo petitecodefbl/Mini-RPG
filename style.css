@@ -1202,3 +1202,103 @@ body {
     0 0 6px rgba(92, 184, 92, 0.9);
 }
 
+/* ======================================== */
+/* TRISTANT                                 */
+/* ======================================== */
+
+#tristant {
+  position: absolute;
+
+  left: 360px;
+  top: 195px;
+
+  width: 48px;
+  height: 90px;
+
+  background-image: url("tristant.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+
+  display: none;
+
+  z-index: 8;
+}
+
+
+/* ======================================== */
+/* PC DU PROFESSEUR                         */
+/* ======================================== */
+
+#professor-pc {
+  position: absolute;
+
+  left: 255px;
+  top: 150px;
+
+  width: 110px;
+  height: 80px;
+
+  background-image: url("bureau.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  display: none;
+
+  z-index: 4;
+}
+
+
+/* ======================================== */
+/* INDICATEUR PC                            */
+/* ======================================== */
+
+#professor-pc-status {
+  position: absolute;
+
+  left: 300px;
+  top: 135px;
+
+  width: 24px;
+  height: 24px;
+
+  display: none;
+
+  justify-content: center;
+  align-items: center;
+
+  background-color: #d9534f;
+
+  border: 2px solid white;
+  border-radius: 50%;
+
+  color: white;
+
+  font-size: 16px;
+  font-weight: bold;
+
+  z-index: 20;
+}
+
+
+/* PC RÉPARÉ */
+
+#professor-pc.fixed + #professor-pc-status {
+  background-color: #5cb85c;
+}
+
+
+/* ======================================== */
+/* TRISTANT VISIBLE                         */
+/* ======================================== */
+
+#tristant.visible,
+#professor-pc.visible {
+  display: block;
+}
+
+#professor-pc-status.visible {
+  display: flex;
+}
+
