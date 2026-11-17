@@ -1,788 +1,573 @@
-// ========================================
-// ELEMENTS DU JEU
-// ========================================
+    // ========================================
+    // ELEMENTS DU JEU
+    // ========================================
 
-const player = document.getElementById("player");
-const game = document.getElementById("game");
+    const player = document.getElementById("player");
+    const game = document.getElementById("game");
 
-const npc = document.getElementById("npc");
+    const npc = document.getElementById("npc");
 
-const interaction =
-  document.getElementById("interaction");
+    const interaction =
+      document.getElementById("interaction");
 
-const dialogue =
-  document.getElementById("dialogue");
+    const dialogue =
+      document.getElementById("dialogue");
 
-const dialogueName =
-  document.getElementById("dialogue-name");
+    const dialogueName =
+      document.getElementById("dialogue-name");
 
-const dialogueText =
-  document.getElementById("dialogue-text");
+    const dialogueText =
+      document.getElementById("dialogue-text");
 
-const coffee =
-  document.getElementById("coffee");
+    const coffee =
+      document.getElementById("coffee");
 
-const questBox =
-  document.getElementById("quest-box");
+    const questBox =
+      document.getElementById("quest-box");
 
-const questTitle =
-  document.querySelector(".quest-title");
+    const questTitle =
+      document.querySelector(".quest-title");
 
-const questObjective =
-  document.getElementById("quest-objective");
+    const questObjective =
+      document.getElementById("quest-objective");
 
 
-// ========================================
-// MAPS
-// ========================================
+    // ========================================
+    // MAPS
+    // ========================================
 
-const mapOutside =
-  document.getElementById("map-outside");
+    const mapOutside =
+      document.getElementById("map-outside");
 
-const mapOffice =
-  document.getElementById("map-office");
+    const mapOffice =
+      document.getElementById("map-office");
 
-const officeDoor =
-  document.getElementById("office-door");
+    const officeDoor =
+      document.getElementById("office-door");
 
-const officeExit =
-  document.getElementById("office-exit");
+    const officeExit =
+      document.getElementById("office-exit");
 
-const printer =
-  document.getElementById("printer");
+    const printer =
+      document.getElementById("printer");
 
 
-// ========================================
-// TRISTANT + PC DU PROF
-// ========================================
+    // ========================================
+    // TRISTANT + PC DU PROF
+    // ========================================
 
-const tristanT =
-  document.getElementById("tristant");
+    const tristanT =
+      document.getElementById("tristant");
 
-const professorPC =
-  document.getElementById("professor-pc");
+    const professorPC =
+      document.getElementById("professor-pc");
 
-const professorPCStatus =
-  document.getElementById("professor-pc-status");
+    const professorPCStatus =
+      document.getElementById("professor-pc-status");
 
 
-let currentMap = "outside";
+    let currentMap = "outside";
 
+    // ========================================
+    // TIKTOK
+    // ========================================
 
-// ========================================
-// INTERACTIONS
-// ========================================
+    const tiktokScreen =
+      document.getElementById("tiktok-screen");
 
-let canTalk = false;
+    const tiktokMessage =
+      document.getElementById("tiktok-message");
 
-let canPickCoffee = false;
+    const tiktokChoices =
+      document.querySelectorAll(".tiktok-choice");
 
-let canEnterOffice = false;
+    // ========================================
+    // INTERACTIONS
+    // ========================================
 
-let canExitOffice = false;
+    let canTalk = false;
 
-let canExaminePrinter = false;
+    let canPickCoffee = false;
 
-let canTalkTristanT = false;
+    let canEnterOffice = false;
 
-let canExamineProfessorPC = false;
+    let canExitOffice = false;
 
+    let canExaminePrinter = false;
 
-// ========================================
-// POSITION DE JOEL
-// ========================================
+    let canTalkTristanT = false;
 
-let x = 330;
-let y = 205;
+    let canExamineProfessorPC = false;
 
-const speed = 10;
 
+    // ========================================
+    // POSITION DE JOEL
+    // ========================================
 
-// ========================================
-// QUETE 1 : CAFE
-// ========================================
+    let x = 330;
+    let y = 205;
 
-let coffeeQuestActive = false;
+    const speed = 10;
 
-let coffeeQuestCompleted = false;
 
-let hasCoffee = false;
+    // ========================================
+    // QUETE 1 : CAFE
+    // ========================================
 
+    let coffeeQuestActive = false;
 
-// ========================================
-// QUETE 2 : IMPRIMANTE
-// ========================================
+    let coffeeQuestCompleted = false;
 
-let printerQuestAvailable = false;
+    let hasCoffee = false;
 
-let printerQuestActive = false;
 
-let printerQuestCompleted = false;
+    // ========================================
+    // QUETE 2 : IMPRIMANTE
+    // ========================================
 
-let printerFixed = false;
+    let printerQuestAvailable = false;
 
+    let printerQuestActive = false;
 
-// 0 = pas diagnostiquee
-// 1 = probleme reseau detecte
-// 2 = mauvais port trouve
-// 3 = imprimante reparee
+    let printerQuestCompleted = false;
 
-let printerStep = 0;
+    let printerFixed = false;
 
-let printerMessageOpen = false;
 
+    // 0 = pas diagnostiquee
+    // 1 = probleme reseau detecte
+    // 2 = mauvais port trouve
+    // 3 = imprimante reparee
 
-// ========================================
-// QUETE 3 : TRISTANT
-// ========================================
+    let printerStep = 0;
 
-let tristanTQuestAvailable = false;
+    let printerMessageOpen = false;
 
-let tristanTQuestActive = false;
 
-let tristanTQuestCompleted = false;
+    // ========================================
+    // QUETE 3 : TRISTANT
+    // ========================================
 
+    let tristanTQuestAvailable = false;
 
-// 0 = parler a TristanT
-// 1 = examiner le PC du prof
-// 2 = aider TristanT
-// 3 = reparler a TristanT
+    let tristanTQuestActive = false;
 
-let tristanTStep = 0;
+    let tristanTQuestCompleted = false;
 
-let professorPCMessageOpen = false;
 
+    // 0 = parler a TristanT
+    // 1 = examiner le PC du prof
+    // 2 = aider TristanT
+    // 3 = reparler a TristanT
 
-// ========================================
-// DIALOGUE
-// ========================================
+    let tristanTStep = 0;
 
-let dialogueOpen = false;
+    let professorPCMessageOpen = false;
 
-let dialogueStep = 0;
+    // ========================================
+    // QUETE 4 : TIKTOK
+    // ========================================
 
+    let tiktokQuestAvailable = false;
 
-// ========================================
-// STATS DE JOEL
-// ========================================
+    let tiktokQuestActive = false;
 
-const joel = {
+    let tiktokQuestCompleted = false;
 
-  level: 1,
+    let tiktokOpen = false;
 
-  xp: 0,
+    let tiktokChoiceMade = false;
 
-  xpToNextLevel: 100,
+    // ========================================
+    // DIALOGUE
+    // ========================================
 
-  health: 100,
+    let dialogueOpen = false;
 
-  maxHealth: 100,
+    let dialogueStep = 0;
 
-  money: 0
 
-};
+    // ========================================
+    // STATS DE JOEL
+    // ========================================
 
+    const joel = {
 
-const levelDisplay =
-  document.getElementById("level");
+      level: 1,
 
-const healthDisplay =
-  document.getElementById("health");
+      xp: 0,
 
-const xpText =
-  document.getElementById("xp-text");
+      xpToNextLevel: 100,
 
-const xpFill =
-  document.getElementById("xp-fill");
+      health: 100,
 
-const levelUpMessage =
-  document.getElementById("level-up-message");
+      maxHealth: 100,
 
-const levelUpText =
-  document.getElementById("level-up-text");
+      money: 0
 
+    };
 
-// ========================================
-// MOBILE
-// ========================================
 
-const joystick =
-  document.getElementById("joystick");
+    const levelDisplay =
+      document.getElementById("level");
 
-const joystickStick =
-  document.getElementById("joystick-stick");
+    const healthDisplay =
+      document.getElementById("health");
 
-const mobileAction =
-  document.getElementById("mobile-action");
+    const xpText =
+      document.getElementById("xp-text");
 
-let joystickX = 0;
+    const xpFill =
+      document.getElementById("xp-fill");
 
-let joystickY = 0;
+    const levelUpMessage =
+      document.getElementById("level-up-message");
 
-let joystickActive = false;
+    const levelUpText =
+      document.getElementById("level-up-text");
 
 
-// ========================================
-// DIALOGUE QUETE 1 : CAFE
-// ========================================
+    // ========================================
+    // MOBILE
+    // ========================================
 
-const thiryDialogue = [
+    const joystick =
+      document.getElementById("joystick");
 
-  {
-    speaker: "Thiry",
-    text: "Joel ! Cafe ?"
-  },
+    const joystickStick =
+      document.getElementById("joystick-stick");
 
-  {
-    speaker: "Joel",
-    text: "Deja ??"
-  },
+    const mobileAction =
+      document.getElementById("mobile-action");
 
-  {
-    speaker: "Thiry",
-    text: "Je me disais qu'une petite pause cafe ferait pas de mal..."
-  },
+    let joystickX = 0;
 
-  {
-    speaker: "Joel",
-    text: "Il est 8h..."
-  },
+    let joystickY = 0;
 
-  {
-    speaker: "Thiry",
-    text: "J'ai envie d'un cafe."
-  },
+    let joystickActive = false;
 
-  {
-    speaker: "Joel",
-    text: "Bon, attends. Je vais voir si je peux t'en trouver un."
-  },
 
-  {
-    speaker: "Thiry",
-    text: "Ah ! Je savais que je pouvais compter sur toi."
-  }
+    // ========================================
+    // DIALOGUE QUETE 1 : CAFE
+    // ========================================
 
-];
+    const thiryDialogue = [
 
+      {
+        speaker: "Thiry",
+        text: "Joel ! Cafe ?"
+      },
 
-// ========================================
-// RETOUR CAFE
-// ========================================
+      {
+        speaker: "Joel",
+        text: "Deja ??"
+      },
 
-const thiryCoffeeDialogue = [
+      {
+        speaker: "Thiry",
+        text: "Je me disais qu'une petite pause cafe ferait pas de mal..."
+      },
 
-  {
-    speaker: "Joel",
-    text: "Tiens, ton cafe."
-  },
+      {
+        speaker: "Joel",
+        text: "Il est 8h..."
+      },
 
-  {
-    speaker: "Thiry",
-    text: "Ah ! Enfin une bonne nouvelle."
-  },
+      {
+        speaker: "Thiry",
+        text: "J'ai envie d'un cafe."
+      },
 
-  {
-    speaker: "Joel",
-    text: "Ca fait meme pas cinq minutes..."
-  },
+      {
+        speaker: "Joel",
+        text: "Bon, attends. Je vais voir si je peux t'en trouver un."
+      },
 
-  {
-    speaker: "Thiry",
-    text: "Parfait. Pause cafe !"
-  }
+      {
+        speaker: "Thiry",
+        text: "Ah ! Je savais que je pouvais compter sur toi."
+      }
 
-];
+    ];
 
 
-// ========================================
-// QUETE 2 : IMPRIMANTE
-// ========================================
+    // ========================================
+    // RETOUR CAFE
+    // ========================================
 
-const printerQuestDialogue = [
+    const thiryCoffeeDialogue = [
 
-  {
-    speaker: "Joel",
-    text: "Bon, maintenant je vais peut-etre pouvoir bosser."
-  },
+      {
+        speaker: "Joel",
+        text: "Tiens, ton cafe."
+      },
 
-  {
-    speaker: "Thiry",
-    text: "Oh putain !"
-  },
+      {
+        speaker: "Thiry",
+        text: "Ah ! Enfin une bonne nouvelle."
+      },
 
-  {
-    speaker: "Joel",
-    text: "Quoi encore ?"
-  },
+      {
+        speaker: "Joel",
+        text: "Ca fait meme pas cinq minutes..."
+      },
 
-  {
-    speaker: "Thiry",
-    text: "J'ai une imprimante qui repond plus sur le reseau, fait chier..."
-  },
+      {
+        speaker: "Thiry",
+        text: "Parfait. Pause cafe !"
+      }
 
-  {
-    speaker: "Joel",
-    text: "T'as verifie le cable ?"
-  },
+    ];
 
-  {
-    speaker: "Thiry",
-    text: "C'est toi l'admin reseau..."
-  },
 
-  {
-    speaker: "Joel",
-    text: "Bon. Je vais voir."
-  }
+    // ========================================
+    // QUETE 2 : IMPRIMANTE
+    // ========================================
 
-];
+    const printerQuestDialogue = [
 
+      {
+        speaker: "Joel",
+        text: "Bon, maintenant je vais peut-etre pouvoir bosser."
+      },
 
-// ========================================
-// RETOUR QUETE IMPRIMANTE
-// ========================================
+      {
+        speaker: "Thiry",
+        text: "Oh putain !"
+      },
 
-const printerQuestCompleteDialogue = [
+      {
+        speaker: "Joel",
+        text: "Quoi encore ?"
+      },
 
-  {
-    speaker: "Joel",
-    text: "C'est bon, ton imprimante est reconnectee."
-  },
+      {
+        speaker: "Thiry",
+        text: "J'ai une imprimante qui repond plus sur le reseau, fait chier..."
+      },
 
-  {
-    speaker: "Thiry",
-    text: "Ah ! C'etait quoi ?"
-  },
+      {
+        speaker: "Joel",
+        text: "T'as verifie le cable ?"
+      },
 
-  {
-    speaker: "Joel",
-    text: "Le cable reseau etait branche dans le mauvais port."
-  },
+      {
+        speaker: "Thiry",
+        text: "C'est toi l'admin reseau..."
+      },
 
-  {
-    speaker: "Thiry",
-    text: "Donc c'etait bien un probleme reseau."
-  },
+      {
+        speaker: "Joel",
+        text: "Bon. Je vais voir."
+      }
 
-  {
-    speaker: "Joel",
-    text: "Si tu veux..."
-  }
+    ];
 
-];
 
+    // ========================================
+    // RETOUR QUETE IMPRIMANTE
+    // ========================================
 
-// ========================================
-// THIRY -> TRISTANT
-// ========================================
+    const printerQuestCompleteDialogue = [
 
-const tristanTQuestDialogue = [
+      {
+        speaker: "Joel",
+        text: "C'est bon, ton imprimante est reconnectee."
+      },
 
-  {
-    speaker: "Thiry",
-    text: "Au fait Joel, TristanT te cherche."
-  },
+      {
+        speaker: "Thiry",
+        text: "Ah ! C'etait quoi ?"
+      },
 
-  {
-    speaker: "Joel",
-    text: "TristanT ? Il est ou ?"
-  },
+      {
+        speaker: "Joel",
+        text: "Le cable reseau etait branche dans le mauvais port."
+      },
 
-  {
-    speaker: "Thiry",
-    text: "A l'universite. Il avait l'air d'avoir besoin de toi."
-  },
+      {
+        speaker: "Thiry",
+        text: "Donc c'etait bien un probleme reseau."
+      },
 
-  {
-    speaker: "Joel",
-    text: "Bon... j'y retourne."
-  }
+      {
+        speaker: "Joel",
+        text: "Si tu veux..."
+      }
 
-];
+    ];
 
 
-// ========================================
-// PREMIER DIALOGUE AVEC TRISTANT
-// ========================================
+    // ========================================
+    // THIRY -> TRISTANT
+    // ========================================
 
-const tristanTDialogue = [
+    const tristanTQuestDialogue = [
 
-  {
-    speaker: "TristanT",
-    text: "Ah Joel ! J'ai fini avec le PC d'un prof mais apparemment ca bug toujours."
-  },
+      {
+        speaker: "Thiry",
+        text: "Au fait Joel, TristanT te cherche."
+      },
 
-  {
-    speaker: "Joel",
-    text: "Donc t'as pas fini."
-  },
+      {
+        speaker: "Joel",
+        text: "TristanT ? Il est ou ?"
+      },
 
-  {
-    speaker: "TristanT",
-    text: "J'ai tout fait ! Mises a jour, nettoyage, redemarrage..."
-  },
+      {
+        speaker: "Thiry",
+        text: "A l'universite. Il avait l'air d'avoir besoin de toi."
+      },
 
-  {
-    speaker: "TristanT",
-    text: "Faut aller se faire foutre a un moment, les utilisateurs sont chiants aussi !"
-  },
+      {
+        speaker: "Joel",
+        text: "Bon... j'y retourne."
+      }
 
-  {
-    speaker: "Joel",
-    text: "Vas-y, je regarde avec toi."
-  }
+    ];
 
-];
 
+    // ========================================
+    // PREMIER DIALOGUE AVEC TRISTANT
+    // ========================================
 
-// ========================================
-// DIALOGUE FINAL TRISTANT
-// ========================================
+    const tristanTDialogue = [
 
-const tristanTCompleteDialogue = [
+      {
+        speaker: "TristanT",
+        text: "Ah Joel ! J'ai fini avec le PC d'un prof mais apparemment ca bug toujours."
+      },
 
-  {
-    speaker: "TristanT",
-    text: "Voila ! La c'est fini."
-  },
+      {
+        speaker: "Joel",
+        text: "Donc t'as pas fini..."
+      },
 
-  {
-    speaker: "Joel",
-    text: "La, oui."
-  },
 
-  {
-    speaker: "TristanT",
-    text: "Donc j'avais presque fini."
-  },
+      {
+        speaker: "TristanT",
+        text: "Faut aller se faire foutre a un moment, les utilisateurs sont chiants aussi !"
+      },
 
-  {
-    speaker: "Joel",
-    text: "Non."
-  },
+      {
+        speaker: "Joel",
+        text: "Vas-y, je regarde avec toi."
+      }
 
-  {
-    speaker: "TristanT",
-    text: "AHAHAHAHA !"
-  }
+    ];
 
-];
+    // ========================================
+    // QUETE 4 : TIKTOK
+    // ========================================
 
+    const tiktokQuestDialogue = [
 
-// ========================================
-// INITIALISATION
-// ========================================
+      {
+        speaker: "TristanT",
+        text: "Joel, viens voir deux secondes."
+      },
 
-player.style.left =
-  x + "px";
+      {
+        speaker: "Joel",
+        text: "Quoi encore ?"
+      },
 
-player.style.top =
-  y + "px";
+      {
+        speaker: "TristanT",
+        text: "Mon TikTok est completement foutu."
+      },
 
+      {
+        speaker: "Joel",
+        text: "Comment ca ?"
+      },
 
-hideTristanT();
+      {
+        speaker: "TristanT",
+        text: "Regarde mon Pour Toi."
+      },
 
-updateStats();
+      {
+        speaker: "Joel",
+        text: "..."
+      },
 
-updateInteractions();
+      {
+        speaker: "Joel",
+        text: "Y a litteralement que des meufs."
+      },
 
+      {
+        speaker: "TristanT",
+        text: "C'est l'algorithme frere, j'y peux rien."
+      },
 
-// ========================================
-// CLAVIER
-// ========================================
+      {
+        speaker: "Joel",
+        text: "Bien sur. L'algorithme."
+      }
 
-document.addEventListener(
-  "keydown",
-  function(event) {
+    ];
 
-    const key =
-      event.key.toLowerCase();
+    // ========================================
+    // DIALOGUE FINAL TRISTANT
+    // ========================================
 
+    const tristanTCompleteDialogue = [
 
-    // ====================================
-    // FERMER MESSAGE IMPRIMANTE
-    // ====================================
+      {
+        speaker: "TristanT",
+        text: "Voila ! La c'est fini."
+      },
 
-    if (
-      key === "e" &&
-      printerMessageOpen
-    ) {
+      {
+        speaker: "Joel",
+        text: "Maintenant, oui."
+      },
 
-      printerMessageOpen = false;
+      {
+        speaker: "TristanT",
+        text: "Donc j'avais presque fini."
+      },
 
-      dialogueOpen = false;
+      {
+        speaker: "Joel",
+        text: "Non."
+      },
 
-      dialogue.style.display =
-        "none";
+      {
+        speaker: "TristanT",
+        text: "Courgette !"
+      }
 
+    ];
 
-      updateInteractions();
+    const tiktokCompleteDialogue = [
 
-      return;
+      {
+        speaker: "TristanT",
+        text: "Attends attends, regarde celle-la..."
+      },
 
-    }
+      {
+        speaker: "Joel",
+        text: "On etait pas sur l'audiovisuel ?"
+      },
 
+      {
+        speaker: "TristanT",
+        text: "Faut aller se faire foutre a un moment."
+      },
 
-    // ====================================
-    // FERMER MESSAGE PC DU PROF
-    // ====================================
+      {
+        speaker: "Joel",
+        text: "On vient vraiment de perdre deux minutes."
+      }
 
-    if (
-      key === "e" &&
-      professorPCMessageOpen
-    ) {
-
-      professorPCMessageOpen = false;
-
-      dialogueOpen = false;
-
-      dialogue.style.display =
-        "none";
-
-
-      updateInteractions();
-
-      return;
-
-    }
-
-
-    // ====================================
-    // ENTRER DANS L'UNIVERSITE
-    // ====================================
-
-    if (
-      key === "e" &&
-      canEnterOffice
-    ) {
-
-      changeMap("office");
-
-      return;
-
-    }
-
-
-    // ====================================
-    // SORTIR DE L'UNIVERSITE
-    // ====================================
-
-    if (
-      key === "e" &&
-      canExitOffice
-    ) {
-
-      changeMap("outside");
-
-      return;
-
-    }
-
-
-    // ====================================
-    // INTERAGIR AVEC L'IMPRIMANTE
-    // ====================================
-
-    if (
-      key === "e" &&
-      canExaminePrinter &&
-      printerQuestActive &&
-      !printerFixed
-    ) {
-
-      examinePrinter();
-
-      return;
-
-    }
-
-
-    // ====================================
-    // INTERAGIR AVEC LE PC DU PROF
-    // ====================================
-
-    if (
-      key === "e" &&
-      canExamineProfessorPC &&
-      tristanTQuestActive
-    ) {
-
-      examineProfessorPC();
-
-      return;
-
-    }
-
-
-    // ====================================
-    // PARLER A TRISTANT
-    // ====================================
-
-    if (
-      key === "e" &&
-      canTalkTristanT
-    ) {
-
-      handleTristanTDialogue();
-
-      return;
-
-    }
-
-
-    // ====================================
-    // RAMASSER LE CAFE
-    // ====================================
-
-    if (
-      key === "e" &&
-      canPickCoffee &&
-      !hasCoffee
-    ) {
-
-      hasCoffee = true;
-
-      canPickCoffee = false;
-
-
-      coffee.style.display =
-        "none";
-
-
-      questObjective.textContent =
-        "☑ Cafe recupere - Retourner voir Thiry";
-
-
-      interaction.style.display =
-        "none";
-
-
-      return;
-
-    }
-
-
-    // ====================================
-    // PARLER A THIRY
-    // ====================================
-
-    if (
-      key === "e" &&
-      canTalk
-    ) {
-
-      handleThiryDialogue();
-
-      return;
-
-    }
-
-
-    // ====================================
-    // POSITION AVANT DEPLACEMENT
-    // ====================================
-
-    const oldX = x;
-    const oldY = y;
-
-
-    // ====================================
-    // DEPLACEMENT
-    // ====================================
-
-    if (
-      key === "z" ||
-      event.key === "ArrowUp"
-    ) {
-
-      y -= speed;
-
-    }
-
-
-    if (
-      key === "s" ||
-      event.key === "ArrowDown"
-    ) {
-
-      y += speed;
-
-    }
-
-
-    if (
-      key === "q" ||
-      event.key === "ArrowLeft"
-    ) {
-
-      x -= speed;
-
-    }
-
-
-    if (
-      key === "d" ||
-      event.key === "ArrowRight"
-    ) {
-
-      x += speed;
-
-    }
-
-
-    // ====================================
-    // LIMITES DU TERRAIN
-    // ====================================
-
-    const gameWidth =
-      game.clientWidth;
-
-    const gameHeight =
-      game.clientHeight;
-
-    const playerWidth =
-      player.offsetWidth;
-
-    const playerHeight =
-      player.offsetHeight;
-
-
-    if (x < 0) {
-
-      x = 0;
-
-    }
-
-
-    if (
-      x >
-      gameWidth - playerWidth
-    ) {
-
-      x =
-        gameWidth - playerWidth;
-
-    }
-
-
-    if (y < 0) {
-
-      y = 0;
-
-    }
-
-
-    if (
-      y >
-      gameHeight - playerHeight
-    ) {
-
-      y =
-        gameHeight - playerHeight;
-
-    }
-
+    ];
+    // ========================================
+    // INITIALISATION
+    // ========================================
 
     player.style.left =
       x + "px";
@@ -791,629 +576,826 @@ document.addEventListener(
       y + "px";
 
 
-    // ====================================
-    // COLLISIONS
-    // ====================================
+    hideTristanT();
 
-    if (hasCollision()) {
-
-      x = oldX;
-
-      y = oldY;
-
-
-      player.style.left =
-        x + "px";
-
-      player.style.top =
-        y + "px";
-
-    }
-
-
-    updatePlayerDepth();
+    updateStats();
 
     updateInteractions();
 
-  }
-);
 
+    // ========================================
+    // CLAVIER
+    // ========================================
 
-// ========================================
-// COLLISIONS
-// ========================================
+    document.addEventListener(
+      "keydown",
+      function(event) {
 
-function hasCollision() {
+        const key =
+          event.key.toLowerCase();
 
-  const playerFullRect =
-    player.getBoundingClientRect();
 
+        // ====================================
+        // FERMER MESSAGE IMPRIMANTE
+        // ====================================
 
-  const playerRect = {
+        if (
+          key === "e" &&
+          printerMessageOpen
+        ) {
 
-    left:
-      playerFullRect.left + 12,
+          printerMessageOpen = false;
 
-    right:
-      playerFullRect.right - 12,
+          dialogueOpen = false;
 
-    top:
-      playerFullRect.bottom - 22,
+          dialogue.style.display =
+            "none";
 
-    bottom:
-      playerFullRect.bottom
 
-  };
+          updateInteractions();
 
+          return;
 
-  let obstacles;
+        }
 
 
-  if (
-    currentMap === "outside"
-  ) {
+        // ====================================
+        // FERMER MESSAGE PC DU PROF
+        // ====================================
 
-    obstacles =
-      mapOutside.querySelectorAll(
-        ".obstacle"
-      );
+        if (
+          key === "e" &&
+          professorPCMessageOpen
+        ) {
 
-  }
+          professorPCMessageOpen = false;
 
-  else {
+          dialogueOpen = false;
 
-    obstacles =
-      mapOffice.querySelectorAll(
-        ".obstacle"
-      );
+          dialogue.style.display =
+            "none";
 
-  }
 
+          updateInteractions();
 
-  let collision = false;
+          return;
 
+        }
 
-  obstacles.forEach(
-    function(obstacle) {
 
+        // ====================================
+        // ENTRER DANS L'UNIVERSITE
+        // ====================================
 
-      // Element cache = aucune collision
+        if (
+          key === "e" &&
+          canEnterOffice
+        ) {
 
-      if (
-        window.getComputedStyle(
-          obstacle
-        ).display === "none"
-      ) {
+          changeMap("office");
 
-        return;
+          return;
 
-      }
+        }
 
 
-      const fullRect =
-        obstacle.getBoundingClientRect();
+        // ====================================
+        // SORTIR DE L'UNIVERSITE
+        // ====================================
 
+        if (
+          key === "e" &&
+          canExitOffice
+        ) {
 
-      let obstacleRect;
+          changeMap("outside");
 
+          return;
 
-      // ==================================
-      // ARBRE
-      // ==================================
+        }
 
-      if (
-        obstacle.classList.contains(
-          "tree"
-        )
-      ) {
 
-        obstacleRect = {
+        // ====================================
+        // INTERAGIR AVEC L'IMPRIMANTE
+        // ====================================
 
-          left:
-            fullRect.left + 28,
+        if (
+          key === "e" &&
+          canExaminePrinter &&
+          printerQuestActive &&
+          !printerFixed
+        ) {
 
-          right:
-            fullRect.right - 28,
+          examinePrinter();
 
-          top:
-            fullRect.bottom - 30,
+          return;
 
-          bottom:
-            fullRect.bottom
+        }
 
-        };
 
-      }
+        // ====================================
+        // INTERAGIR AVEC LE PC DU PROF
+        // ====================================
 
+        if (
+          key === "e" &&
+          canExamineProfessorPC &&
+          tristanTQuestActive
+        ) {
 
-      // ==================================
-      // ROCHER
-      // ==================================
+          examineProfessorPC();
 
-      else if (
-        obstacle.classList.contains(
-          "rock"
-        )
-      ) {
+          return;
 
-        obstacleRect = {
+        }
 
-          left:
-            fullRect.left + 10,
 
-          right:
-            fullRect.right - 10,
+        // ====================================
+        // PARLER A TRISTANT
+        // ====================================
 
-          top:
-            fullRect.top + 20,
+        if (
+          key === "e" &&
+          canTalkTristanT
+        ) {
 
-          bottom:
-            fullRect.bottom
+          handleTristanTDialogue();
 
-        };
+          return;
 
-      }
+        }
 
 
-      // ==================================
-      // TRISTANT
-      // ==================================
+        // ====================================
+        // RAMASSER LE CAFE
+        // ====================================
 
-      else if (
-        obstacle.id === "tristant"
-      ) {
+        if (
+          key === "e" &&
+          canPickCoffee &&
+          !hasCoffee
+        ) {
 
-        obstacleRect = {
+          hasCoffee = true;
 
-          left:
-            fullRect.left + 10,
+          canPickCoffee = false;
 
-          right:
-            fullRect.right - 10,
 
-          top:
-            fullRect.bottom - 25,
+          coffee.style.display =
+            "none";
 
-          bottom:
-            fullRect.bottom
 
-        };
+          questObjective.textContent =
+            "☑ Cafe recupere - Retourner voir Thiry";
 
-      }
 
+          interaction.style.display =
+            "none";
 
-      // ==================================
-      // MEUBLES
-      // ==================================
 
-      else if (
-        obstacle.classList.contains(
-          "furniture"
-        )
-      ) {
+          return;
 
-        obstacleRect = {
+        }
 
-          left:
-            fullRect.left + 8,
 
-          right:
-            fullRect.right - 8,
+        // ====================================
+        // PARLER A THIRY
+        // ====================================
 
-          top:
-            fullRect.top +
-            fullRect.height * 0.55,
+        if (
+          key === "e" &&
+          canTalk
+        ) {
 
-          bottom:
-            fullRect.bottom
+          handleThiryDialogue();
 
-        };
+          return;
 
-      }
+        }
 
 
-      // ==================================
-      // AUTRES
-      // ==================================
+        // ====================================
+        // POSITION AVANT DEPLACEMENT
+        // ====================================
 
-      else {
+        const oldX = x;
+        const oldY = y;
 
-        obstacleRect =
-          fullRect;
 
-      }
+        // ====================================
+        // DEPLACEMENT
+        // ====================================
 
+        if (
+          key === "z" ||
+          event.key === "ArrowUp"
+        ) {
 
-      if (
+          y -= speed;
 
-        playerRect.left <
-        obstacleRect.right &&
-
-        playerRect.right >
-        obstacleRect.left &&
-
-        playerRect.top <
-        obstacleRect.bottom &&
-
-        playerRect.bottom >
-        obstacleRect.top
-
-      ) {
-
-        collision = true;
-
-      }
-
-    }
-  );
-
-
-  return collision;
-
-}
-
-
-// ========================================
-// PROFONDEUR DE JOEL
-// ========================================
-
-function updatePlayerDepth() {
-
-  let playerZ = 30;
-
-
-  if (
-    currentMap === "outside"
-  ) {
-
-    const trees =
-      mapOutside.querySelectorAll(
-        ".tree"
-      );
-
-
-    trees.forEach(
-      function(tree) {
-
-        const treeRect =
-          tree.getBoundingClientRect();
-
-        const playerRect =
-          player.getBoundingClientRect();
-
-
-        const centerX =
-          playerRect.left +
-          playerRect.width / 2;
+        }
 
 
         if (
-
-          centerX >
-          treeRect.left - 20 &&
-
-          centerX <
-          treeRect.right + 20 &&
-
-          playerRect.bottom <
-          treeRect.bottom - 10
-
+          key === "s" ||
+          event.key === "ArrowDown"
         ) {
 
-          playerZ = 5;
+          y += speed;
 
         }
+
+
+        if (
+          key === "q" ||
+          event.key === "ArrowLeft"
+        ) {
+
+          x -= speed;
+
+        }
+
+
+        if (
+          key === "d" ||
+          event.key === "ArrowRight"
+        ) {
+
+          x += speed;
+
+        }
+
+
+        // ====================================
+        // LIMITES DU TERRAIN
+        // ====================================
+
+        const gameWidth =
+          game.clientWidth;
+
+        const gameHeight =
+          game.clientHeight;
+
+        const playerWidth =
+          player.offsetWidth;
+
+        const playerHeight =
+          player.offsetHeight;
+
+
+        if (x < 0) {
+
+          x = 0;
+
+        }
+
+
+        if (
+          x >
+          gameWidth - playerWidth
+        ) {
+
+          x =
+            gameWidth - playerWidth;
+
+        }
+
+
+        if (y < 0) {
+
+          y = 0;
+
+        }
+
+
+        if (
+          y >
+          gameHeight - playerHeight
+        ) {
+
+          y =
+            gameHeight - playerHeight;
+
+        }
+
+
+        player.style.left =
+          x + "px";
+
+        player.style.top =
+          y + "px";
+
+
+        // ====================================
+        // COLLISIONS
+        // ====================================
+
+        if (hasCollision()) {
+
+          x = oldX;
+
+          y = oldY;
+
+
+          player.style.left =
+            x + "px";
+
+          player.style.top =
+            y + "px";
+
+        }
+
+
+        updatePlayerDepth();
+
+        updateInteractions();
 
       }
     );
 
-  }
+
+    // ========================================
+    // COLLISIONS
+    // ========================================
+
+    function hasCollision() {
+
+      const playerFullRect =
+        player.getBoundingClientRect();
 
 
-  player.style.zIndex =
-    playerZ;
+      const playerRect = {
 
-}
+        left:
+          playerFullRect.left + 12,
 
+        right:
+          playerFullRect.right - 12,
 
-// ========================================
-// INTERACTIONS
-// ========================================
+        top:
+          playerFullRect.bottom - 22,
 
-function updateInteractions() {
+        bottom:
+          playerFullRect.bottom
 
-  canTalk = false;
-
-  canPickCoffee = false;
-
-  canEnterOffice = false;
-
-  canExitOffice = false;
-
-  canExaminePrinter = false;
-
-  canTalkTristanT = false;
-
-  canExamineProfessorPC = false;
+      };
 
 
-  interaction.style.display =
-    "none";
+      let obstacles;
 
 
-  // Aucun E pendant un dialogue
+      if (
+        currentMap === "outside"
+      ) {
 
-  if (dialogueOpen) {
+        obstacles =
+          mapOutside.querySelectorAll(
+            ".obstacle"
+          );
 
-    return;
+      }
 
-  }
+      else {
 
+        obstacles =
+          mapOffice.querySelectorAll(
+            ".obstacle"
+          );
 
-  const playerRect =
-    player.getBoundingClientRect();
-
-
-  // ======================================
-  // EXTERIEUR
-  // ======================================
-
-  if (
-    currentMap === "outside"
-  ) {
-
-
-    // ====================================
-    // UNIVERSITE
-    // ====================================
-
-    const doorRect =
-      officeDoor.getBoundingClientRect();
+      }
 
 
-    const playerCenterX =
-      playerRect.left +
-      playerRect.width / 2;
+      let collision = false;
 
 
-    const playerFeetY =
-      playerRect.bottom;
+      obstacles.forEach(
+        function(obstacle) {
 
 
-    const doorCenterX =
-      doorRect.left +
-      doorRect.width / 2;
+          // Element cache = aucune collision
+
+          if (
+            window.getComputedStyle(
+              obstacle
+            ).display === "none"
+          ) {
+
+            return;
+
+          }
 
 
-    const doorCenterY =
-      doorRect.top +
-      doorRect.height / 2;
+          const fullRect =
+            obstacle.getBoundingClientRect();
 
 
-    const doorDistanceX =
-      Math.abs(
-        playerCenterX -
-        doorCenterX
+          let obstacleRect;
+
+
+          // ==================================
+          // ARBRE
+          // ==================================
+
+          if (
+            obstacle.classList.contains(
+              "tree"
+            )
+          ) {
+
+            obstacleRect = {
+
+              left:
+                fullRect.left + 28,
+
+              right:
+                fullRect.right - 28,
+
+              top:
+                fullRect.bottom - 30,
+
+              bottom:
+                fullRect.bottom
+
+            };
+
+          }
+
+
+          // ==================================
+          // ROCHER
+          // ==================================
+
+          else if (
+            obstacle.classList.contains(
+              "rock"
+            )
+          ) {
+
+            obstacleRect = {
+
+              left:
+                fullRect.left + 10,
+
+              right:
+                fullRect.right - 10,
+
+              top:
+                fullRect.top + 20,
+
+              bottom:
+                fullRect.bottom
+
+            };
+
+          }
+
+
+          // ==================================
+          // TRISTANT
+          // ==================================
+
+          else if (
+            obstacle.id === "tristant"
+          ) {
+
+            obstacleRect = {
+
+              left:
+                fullRect.left + 10,
+
+              right:
+                fullRect.right - 10,
+
+              top:
+                fullRect.bottom - 25,
+
+              bottom:
+                fullRect.bottom
+
+            };
+
+          }
+
+
+          // ==================================
+          // MEUBLES
+          // ==================================
+
+          else if (
+            obstacle.classList.contains(
+              "furniture"
+            )
+          ) {
+
+            obstacleRect = {
+
+              left:
+                fullRect.left + 8,
+
+              right:
+                fullRect.right - 8,
+
+              top:
+                fullRect.top +
+                fullRect.height * 0.55,
+
+              bottom:
+                fullRect.bottom
+
+            };
+
+          }
+
+
+          // ==================================
+          // AUTRES
+          // ==================================
+
+          else {
+
+            obstacleRect =
+              fullRect;
+
+          }
+
+
+          if (
+
+            playerRect.left <
+            obstacleRect.right &&
+
+            playerRect.right >
+            obstacleRect.left &&
+
+            playerRect.top <
+            obstacleRect.bottom &&
+
+            playerRect.bottom >
+            obstacleRect.top
+
+          ) {
+
+            collision = true;
+
+          }
+
+        }
       );
 
 
-    const doorDistanceY =
-      Math.abs(
-        playerFeetY -
-        doorCenterY
-      );
-
-
-    if (
-      doorDistanceX < 140 &&
-      doorDistanceY < 160
-    ) {
-
-      canEnterOffice = true;
-
-
-      interaction.textContent =
-        "E - Entrer";
-
-
-      interaction.style.left =
-        "505px";
-
-
-      interaction.style.top =
-        "315px";
-
-
-      interaction.style.display =
-        "block";
-
-
-      return;
+      return collision;
 
     }
 
 
-    // ====================================
-    // CAFE
-    // ====================================
+    // ========================================
+    // PROFONDEUR DE JOEL
+    // ========================================
 
-    if (
-      coffeeQuestActive &&
-      !hasCoffee
-    ) {
+    function updatePlayerDepth() {
 
-      const coffeeRect =
-        coffee.getBoundingClientRect();
+      let playerZ = 30;
 
 
       if (
-        rectanglesNear(
-          playerRect,
-          coffeeRect,
-          25
-        )
+        currentMap === "outside"
       ) {
 
-        canPickCoffee = true;
+        const trees =
+          mapOutside.querySelectorAll(
+            ".tree"
+          );
 
 
-        interaction.textContent =
-          "E - Ramasser";
+        trees.forEach(
+          function(tree) {
+
+            const treeRect =
+              tree.getBoundingClientRect();
+
+            const playerRect =
+              player.getBoundingClientRect();
 
 
-        interaction.style.left =
-          coffee.offsetLeft -
-          20 +
-          "px";
+            const centerX =
+              playerRect.left +
+              playerRect.width / 2;
 
 
-        interaction.style.top =
-          coffee.offsetTop -
-          35 +
-          "px";
+            if (
+
+              centerX >
+              treeRect.left - 20 &&
+
+              centerX <
+              treeRect.right + 20 &&
+
+              playerRect.bottom <
+              treeRect.bottom - 10
+
+            ) {
+
+              playerZ = 5;
+
+            }
+
+          }
+        );
+
+      }
 
 
-        interaction.style.display =
-          "block";
+      player.style.zIndex =
+        playerZ;
 
+    }
+
+
+    // ========================================
+    // INTERACTIONS
+    // ========================================
+
+    function updateInteractions() {
+
+      canTalk = false;
+
+      canPickCoffee = false;
+
+      canEnterOffice = false;
+
+      canExitOffice = false;
+
+      canExaminePrinter = false;
+
+      canTalkTristanT = false;
+
+      canExamineProfessorPC = false;
+
+
+      interaction.style.display =
+        "none";
+
+
+      // Aucun E pendant un dialogue
+
+      if (dialogueOpen) {
 
         return;
 
       }
 
-    }
+
+      const playerRect =
+        player.getBoundingClientRect();
 
 
-    // ====================================
-    // THIRY
-    // ====================================
-
-    const npcRect =
-      npc.getBoundingClientRect();
-
-
-    if (
-      rectanglesNear(
-        playerRect,
-        npcRect,
-        35
-      )
-    ) {
-
-      canTalk = true;
-
-
-      interaction.textContent =
-        "E - Parler";
-
-
-      interaction.style.left =
-        npc.offsetLeft +
-        10 +
-        "px";
-
-
-      interaction.style.top =
-        npc.offsetTop -
-        35 +
-        "px";
-
-
-      interaction.style.display =
-        "block";
-
-    }
-
-  }
-
-
-  // ======================================
-  // INTERIEUR
-  // ======================================
-
-  if (
-    currentMap === "office"
-  ) {
-
-
-    // ====================================
-    // SORTIE
-    // ====================================
-
-    const exitRect =
-      officeExit.getBoundingClientRect();
-
-
-    if (
-      rectanglesNear(
-        playerRect,
-        exitRect,
-        55
-      )
-    ) {
-
-      canExitOffice = true;
-
-
-      interaction.textContent =
-        "E - Sortir";
-
-
-      interaction.style.left =
-        officeExit.offsetLeft -
-        5 +
-        "px";
-
-
-      interaction.style.top =
-        officeExit.offsetTop -
-        35 +
-        "px";
-
-
-      interaction.style.display =
-        "block";
-
-
-      return;
-
-    }
-
-
-    // ====================================
-    // TRISTANT
-    // ====================================
-
-    if (
-      tristanTQuestActive &&
-      !tristanTQuestCompleted &&
-      tristanT &&
-      window.getComputedStyle(
-        tristanT
-      ).display !== "none"
-    ) {
-
-      const tristanTRect =
-        tristanT.getBoundingClientRect();
-
+      // ======================================
+      // EXTERIEUR
+      // ======================================
 
       if (
-        rectanglesNear(
-          playerRect,
-          tristanTRect,
-          35
-        )
+        currentMap === "outside"
       ) {
 
-        // On parle a TristanT seulement
-        // au debut ou a la fin
+
+        // ====================================
+        // UNIVERSITE
+        // ====================================
+
+        const doorRect =
+          officeDoor.getBoundingClientRect();
+
+
+        const playerCenterX =
+          playerRect.left +
+          playerRect.width / 2;
+
+
+        const playerFeetY =
+          playerRect.bottom;
+
+
+        const doorCenterX =
+          doorRect.left +
+          doorRect.width / 2;
+
+
+        const doorCenterY =
+          doorRect.top +
+          doorRect.height / 2;
+
+
+        const doorDistanceX =
+          Math.abs(
+            playerCenterX -
+            doorCenterX
+          );
+
+
+        const doorDistanceY =
+          Math.abs(
+            playerFeetY -
+            doorCenterY
+          );
+
 
         if (
-          tristanTStep === 0 ||
-          tristanTStep === 3
+          doorDistanceX < 140 &&
+          doorDistanceY < 160
         ) {
 
-          canTalkTristanT = true;
+          canEnterOffice = true;
+
+
+          interaction.textContent =
+            "E - Entrer";
+
+
+          interaction.style.left =
+            "505px";
+
+
+          interaction.style.top =
+            "315px";
+
+
+          interaction.style.display =
+            "block";
+
+
+          return;
+
+        }
+
+
+        // ====================================
+        // CAFE
+        // ====================================
+
+        if (
+          coffeeQuestActive &&
+          !hasCoffee
+        ) {
+
+          const coffeeRect =
+            coffee.getBoundingClientRect();
+
+
+          if (
+            rectanglesNear(
+              playerRect,
+              coffeeRect,
+              25
+            )
+          ) {
+
+            canPickCoffee = true;
+
+
+            interaction.textContent =
+              "E - Ramasser";
+
+
+            interaction.style.left =
+              coffee.offsetLeft -
+              20 +
+              "px";
+
+
+            interaction.style.top =
+              coffee.offsetTop -
+              35 +
+              "px";
+
+
+            interaction.style.display =
+              "block";
+
+
+            return;
+
+          }
+
+        }
+
+
+        // ====================================
+        // THIRY
+        // ====================================
+
+        const npcRect =
+          npc.getBoundingClientRect();
+
+
+        if (
+          rectanglesNear(
+            playerRect,
+            npcRect,
+            35
+          )
+        ) {
+
+          canTalk = true;
 
 
           interaction.textContent =
@@ -1421,14 +1403,66 @@ function updateInteractions() {
 
 
           interaction.style.left =
-            tristanT.offsetLeft -
+            npc.offsetLeft +
+            10 +
+            "px";
+
+
+          interaction.style.top =
+            npc.offsetTop -
+            35 +
+            "px";
+
+
+          interaction.style.display =
+            "block";
+
+        }
+
+      }
+
+
+      // ======================================
+      // INTERIEUR
+      // ======================================
+
+      if (
+        currentMap === "office"
+      ) {
+
+
+        // ====================================
+        // SORTIE
+        // ====================================
+
+        const exitRect =
+          officeExit.getBoundingClientRect();
+
+
+        if (
+          rectanglesNear(
+            playerRect,
+            exitRect,
+            55
+          )
+        ) {
+
+          canExitOffice = true;
+
+
+          interaction.textContent =
+            "E - Sortir";
+
+
+          interaction.style.left =
+            officeExit.offsetLeft -
             5 +
             "px";
 
 
           interaction.style.top =
-            tristanT.offsetTop -
-            20 +
+            officeExit.offsetTop -
+            35 +
             "px";
 
 
@@ -1440,74 +1474,901 @@ function updateInteractions() {
 
         }
 
+
+        // ====================================
+        // TRISTANT
+        // ====================================
+
+        if (
+          (
+            tristanTQuestActive ||
+            tiktokQuestAvailable ||
+            tiktokQuestActive
+          ) &&
+          tristanT &&
+          window.getComputedStyle(
+            tristanT
+          ).display !== "none"
+        ) {
+
+          const tristanTRect =
+            tristanT.getBoundingClientRect();
+
+
+          if (
+            rectanglesNear(
+              playerRect,
+              tristanTRect,
+              35
+            )
+          ) {
+
+            // On parle a TristanT seulement
+            // au debut ou a la fin
+
+            if (
+              tristanTStep === 0 ||
+              tristanTStep === 3 ||
+              tiktokQuestAvailable
+            ) {
+
+              canTalkTristanT = true;
+
+
+              interaction.textContent =
+                "E - Parler";
+
+
+              interaction.style.left =
+                tristanT.offsetLeft -
+                5 +
+                "px";
+
+
+              interaction.style.top =
+                tristanT.offsetTop -
+                20 +
+                "px";
+
+
+              interaction.style.display =
+                "block";
+
+
+              return;
+
+            }
+
+          }
+
+        }
+
+
+        // ====================================
+        // PC DU PROFESSEUR
+        // ====================================
+
+        if (
+          tristanTQuestActive &&
+          !tristanTQuestCompleted &&
+          professorPC &&
+          (
+            tristanTStep === 1 ||
+            tristanTStep === 2
+          )
+        ) {
+
+          const pcRect =
+            professorPC.getBoundingClientRect();
+
+
+          if (
+            rectanglesNear(
+              playerRect,
+              pcRect,
+              40
+            )
+          ) {
+
+            canExamineProfessorPC = true;
+
+
+            if (
+              tristanTStep === 1
+            ) {
+
+              interaction.textContent =
+                "E - Examiner";
+
+            }
+
+
+            else if (
+              tristanTStep === 2
+            ) {
+
+              interaction.textContent =
+                "E - Aider TristanT";
+
+            }
+
+
+            interaction.style.left =
+              professorPC.offsetLeft -
+              5 +
+              "px";
+
+
+            interaction.style.top =
+              professorPC.offsetTop -
+              35 +
+              "px";
+
+
+            interaction.style.display =
+              "block";
+
+
+            return;
+
+          }
+
+        }
+
+
+        // ====================================
+        // IMPRIMANTE
+        // ====================================
+
+        if (
+          printerQuestActive &&
+          !printerFixed
+        ) {
+
+          const printerRect =
+            printer.getBoundingClientRect();
+
+
+          if (
+            rectanglesNear(
+              playerRect,
+              printerRect,
+              60
+            )
+          ) {
+
+            canExaminePrinter = true;
+
+
+            if (
+              printerStep === 0
+            ) {
+
+              interaction.textContent =
+                "E - Diagnostiquer";
+
+            }
+
+
+            else if (
+              printerStep === 1
+            ) {
+
+              interaction.textContent =
+                "E - Verifier le cable";
+
+            }
+
+
+            else if (
+              printerStep === 2
+            ) {
+
+              interaction.textContent =
+                "E - Rebrancher";
+
+            }
+
+
+            interaction.style.left =
+              printer.offsetLeft -
+              5 +
+              "px";
+
+
+            interaction.style.top =
+              printer.offsetTop -
+              35 +
+              "px";
+
+
+            interaction.style.display =
+              "block";
+
+          }
+
+        }
+
       }
 
     }
 
 
-    // ====================================
-    // PC DU PROFESSEUR
-    // ====================================
+    // ========================================
+    // PROXIMITE
+    // ========================================
 
-    if (
-      tristanTQuestActive &&
-      !tristanTQuestCompleted &&
-      professorPC &&
-      (
-        tristanTStep === 1 ||
-        tristanTStep === 2
-      )
+    function rectanglesNear(
+      rect1,
+      rect2,
+      margin
     ) {
 
-      const pcRect =
-        professorPC.getBoundingClientRect();
+      return (
 
+        rect1.right >
+        rect2.left - margin &&
+
+        rect1.left <
+        rect2.right + margin &&
+
+        rect1.bottom >
+        rect2.top - margin &&
+
+        rect1.top <
+        rect2.bottom + margin
+
+      );
+
+    }
+
+
+    // ========================================
+    // DIALOGUE THIRY
+    // ========================================
+
+    function handleThiryDialogue() {
+
+      let currentDialogue;
+
+
+      // ======================================
+      // QUETE 3 : TRISTANT
+      // ======================================
 
       if (
-        rectanglesNear(
-          playerRect,
-          pcRect,
-          40
-        )
+        tristanTQuestAvailable &&
+        !tristanTQuestActive &&
+        !tristanTQuestCompleted
       ) {
 
-        canExamineProfessorPC = true;
+        currentDialogue =
+          tristanTQuestDialogue;
+
+      }
 
 
-        if (
-          tristanTStep === 1
-        ) {
+      // ======================================
+      // RETOUR APRES REPARATION
+      // ======================================
 
-          interaction.textContent =
-            "E - Examiner";
+      else if (
+        printerFixed &&
+        printerQuestActive &&
+        !printerQuestCompleted
+      ) {
 
-        }
+        currentDialogue =
+          printerQuestCompleteDialogue;
 
-
-        else if (
-          tristanTStep === 2
-        ) {
-
-          interaction.textContent =
-            "E - Aider TristanT";
-
-        }
+      }
 
 
-        interaction.style.left =
-          professorPC.offsetLeft -
-          5 +
-          "px";
+      // ======================================
+      // RETOUR CAFE
+      // ======================================
+
+      else if (
+        hasCoffee
+      ) {
+
+        currentDialogue =
+          thiryCoffeeDialogue;
+
+      }
 
 
-        interaction.style.top =
-          professorPC.offsetTop -
-          35 +
-          "px";
+      // ======================================
+      // DONNER QUETE IMPRIMANTE
+      // ======================================
+
+      else if (
+        printerQuestAvailable &&
+        !printerQuestActive &&
+        !printerQuestCompleted
+      ) {
+
+        currentDialogue =
+          printerQuestDialogue;
+
+      }
+
+
+      // ======================================
+      // PREMIERE RENCONTRE
+      // ======================================
+
+      else {
+
+        currentDialogue =
+          thiryDialogue;
+
+      }
+
+
+      // ======================================
+      // OUVRIR
+      // ======================================
+
+      if (
+        !dialogueOpen
+      ) {
+
+        dialogueOpen = true;
+
+        dialogueStep = 0;
+
+
+        dialogue.style.display =
+          "block";
+
+
+        dialogueName.textContent =
+          currentDialogue[
+            dialogueStep
+          ].speaker;
+
+
+        dialogueText.textContent =
+          currentDialogue[
+            dialogueStep
+          ].text;
 
 
         interaction.style.display =
-          "block";
+          "none";
+
+
+        return;
+
+      }
+
+
+      // ======================================
+      // SUIVANT
+      // ======================================
+
+      dialogueStep++;
+
+
+      if (
+        dialogueStep <
+        currentDialogue.length
+      ) {
+
+        dialogueName.textContent =
+          currentDialogue[
+            dialogueStep
+          ].speaker;
+
+
+        dialogueText.textContent =
+          currentDialogue[
+            dialogueStep
+          ].text;
+
+
+        return;
+
+      }
+
+
+      // ======================================
+      // FIN
+      // ======================================
+
+      dialogueOpen = false;
+
+
+      dialogue.style.display =
+        "none";
+
+
+      // ======================================
+      // DEMARRER QUETE 3
+      // ======================================
+
+      if (
+        tristanTQuestAvailable &&
+        !tristanTQuestActive &&
+        !tristanTQuestCompleted
+      ) {
+
+        startTristanTQuest();
+
+      }
+
+
+      // ======================================
+      // TERMINER QUETE IMPRIMANTE
+      // ======================================
+
+      else if (
+        printerFixed &&
+        printerQuestActive &&
+        !printerQuestCompleted
+      ) {
+
+        completePrinterQuest();
+
+      }
+
+
+      // ======================================
+      // TERMINER QUETE CAFE
+      // ======================================
+
+      else if (
+        hasCoffee
+      ) {
+
+        completeCoffeeQuest();
+
+      }
+
+
+      // ======================================
+      // DEMARRER QUETE IMPRIMANTE
+      // ======================================
+
+      else if (
+        printerQuestAvailable &&
+        !printerQuestActive
+      ) {
+
+        startPrinterQuest();
+
+      }
+
+
+      // ======================================
+      // DEMARRER QUETE CAFE
+      // ======================================
+
+      else if (
+        !coffeeQuestActive &&
+        !coffeeQuestCompleted
+      ) {
+
+        startCoffeeQuest();
+
+      }
+
+
+      updateInteractions();
+
+    }
+
+
+    // ========================================
+    // DIALOGUE TRISTANT
+    // ========================================
+
+    function handleTristanTDialogue() {
+
+      let currentDialogue;
+
+      if (
+        tiktokQuestAvailable &&
+        !tiktokQuestActive &&
+        !tiktokQuestCompleted
+      ) {
+        currentDialogue = tiktokQuestDialogue;
+      }
+
+      else if (tristanTStep === 0) {
+        currentDialogue = tristanTDialogue;
+      }
+
+      else if (
+        tristanTStep === 3 &&
+        !tristanTQuestCompleted
+      ) {
+        currentDialogue = tristanTCompleteDialogue;
+      }
+
+      else {
+        return;
+      }
+
+      if (!dialogueOpen) {
+        dialogueOpen = true;
+        dialogueStep = 0;
+        dialogue.style.display = "block";
+        dialogueName.textContent = currentDialogue[dialogueStep].speaker;
+        dialogueText.textContent = currentDialogue[dialogueStep].text;
+        interaction.style.display = "none";
+        return;
+      }
+
+      dialogueStep++;
+
+      if (dialogueStep < currentDialogue.length) {
+        dialogueName.textContent = currentDialogue[dialogueStep].speaker;
+        dialogueText.textContent = currentDialogue[dialogueStep].text;
+        return;
+      }
+
+      dialogueOpen = false;
+      dialogue.style.display = "none";
+
+      if (
+        tiktokQuestAvailable &&
+        !tiktokQuestActive &&
+        !tiktokQuestCompleted
+      ) {
+        startTikTokQuest();
+      }
+
+      else if (tristanTStep === 0) {
+        tristanTStep = 1;
+        questTitle.textContent = "💻 Pourtant, j'ai fini";
+        questObjective.textContent = "□ Examiner le PC du professeur";
+      }
+
+      else if (
+        tristanTStep === 3 &&
+        !tristanTQuestCompleted
+      ) {
+        completeTristanTQuest();
+      }
+
+      updateInteractions();
+    }
+
+
+    // ========================================
+    // TERMINER QUETE TRISTANT
+    // ========================================
+
+    function completeTristanTQuest() {
+
+      tristanTQuestCompleted = true;
+      tristanTQuestActive = false;
+
+      questTitle.textContent = "💻 Pourtant, j'ai fini";
+      questObjective.textContent =
+        "💬 TristanT semble vouloir te montrer un truc";
+
+      addXP(75);
+
+      tiktokQuestAvailable = true;
+
+      updateInteractions();
+    }
+
+
+    // ========================================
+    // DEMARRER QUETE TIKTOK
+    // ========================================
+
+    function startTikTokQuest() {
+
+      tiktokQuestAvailable = false;
+      tiktokQuestActive = true;
+      tiktokChoiceMade = false;
+
+      questTitle.textContent = "📱 L'algorithme";
+      questObjective.textContent =
+        "□ Regarder le TikTok de TristanT";
+
+      tiktokOpen = true;
+      tiktokScreen.style.display = "block";
+      tiktokMessage.textContent =
+        "TristanT : Choisis, y a que des bonnes videos.";
+    }
+
+
+    // ========================================
+    // CHOIX TIKTOK
+    // ========================================
+
+    tiktokChoices.forEach(function(button) {
+
+      button.addEventListener("click", function() {
+
+        if (!tiktokQuestActive || tiktokChoiceMade) {
+          return;
+        }
+
+        const choice = button.dataset.choice;
+
+        if (choice === "burger") {
+          tiktokMessage.textContent =
+            "TristanT : Ah lui je l'ai deja enregistre. On ira apres.";
+        }
+
+        else if (choice === "video") {
+          tiktokMessage.textContent =
+            "Joel : Celle-la. Pour une fois, regarde un truc sur l'audiovisuel.";
+        }
+
+        else if (choice === "girl") {
+          tiktokMessage.textContent =
+            "Joel : TristanT... t'as deja like.";
+        }
+
+        tiktokChoiceMade = true;
+
+        setTimeout(
+          finishTikTokChoice,
+          1800
+        );
+      });
+    });
+
+
+    // ========================================
+    // FIN DU CHOIX TIKTOK
+    // ========================================
+
+    function finishTikTokChoice() {
+
+      tiktokOpen = false;
+      tiktokScreen.style.display = "none";
+
+      dialogueOpen = true;
+      dialogue.style.display = "block";
+
+      dialogueName.textContent = "TristanT";
+      dialogueText.textContent =
+        "Attends attends, regarde celle-la...";
+
+      setTimeout(function() {
+        dialogueName.textContent = "Joel";
+        dialogueText.textContent =
+          "On etait pas sur l'audiovisuel ?";
+      }, 1500);
+
+      setTimeout(function() {
+        dialogueName.textContent = "TristanT";
+        dialogueText.textContent =
+          "Faut aller se faire foutre a un moment.";
+      }, 3000);
+
+      setTimeout(function() {
+        dialogue.style.display = "none";
+        dialogueOpen = false;
+        completeTikTokQuest();
+      }, 4800);
+    }
+
+
+    // ========================================
+    // TERMINER QUETE TIKTOK
+    // ========================================
+
+    function completeTikTokQuest() {
+
+      tiktokQuestCompleted = true;
+      tiktokQuestActive = false;
+
+      questTitle.textContent = "📱 L'algorithme";
+      questObjective.textContent =
+        "✅ 2 minutes de productivite perdues";
+
+      addXP(25);
+
+      updateInteractions();
+    }
+
+
+    // ========================================
+    // QUETE 1 : CAFE
+    // ========================================
+
+    function startCoffeeQuest() {
+
+      coffeeQuestActive = true;
+
+
+      questBox.style.display =
+        "block";
+
+
+      questTitle.textContent =
+        "☕ La pause cafe";
+
+
+      questObjective.textContent =
+        "□ Trouver un cafe pour Thiry";
+
+
+      coffee.style.display =
+        "block";
+
+
+      updateInteractions();
+
+    }
+
+
+    // ========================================
+    // TERMINER QUETE CAFE
+    // ========================================
+
+    function completeCoffeeQuest() {
+
+      coffeeQuestCompleted = true;
+
+      coffeeQuestActive = false;
+
+      hasCoffee = false;
+
+
+      questTitle.textContent =
+        "☕ La pause cafe";
+
+
+      questObjective.textContent =
+        "💬 Reparler a Thiry";
+
+
+      addXP(40);
+
+
+      printerQuestAvailable =
+        true;
+
+
+      updateInteractions();
+
+    }
+
+
+    // ========================================
+    // QUETE 2 : IMPRIMANTE
+    // ========================================
+
+    function startPrinterQuest() {
+
+      printerQuestActive = true;
+
+      printerQuestAvailable =
+        false;
+
+      printerStep = 0;
+
+      printerFixed = false;
+
+
+      printer.classList.remove(
+        "fixed"
+      );
+
+
+      questBox.style.display =
+        "block";
+
+
+      questTitle.textContent =
+        "🖨️ Probleme reseau";
+
+
+      questObjective.textContent =
+        "□ Entrer dans l'universite et trouver l'imprimante";
+
+
+      updateInteractions();
+
+    }
+
+
+    // ========================================
+    // DIAGNOSTIC IMPRIMANTE
+    // ========================================
+
+    function examinePrinter() {
+
+      interaction.style.display =
+        "none";
+
+
+      dialogueOpen = true;
+
+      printerMessageOpen = true;
+
+
+      dialogue.style.display =
+        "block";
+
+
+      dialogueName.textContent =
+        "Joel";
+
+
+      // ======================================
+      // ETAPE 1
+      // ======================================
+
+      if (
+        printerStep === 0
+      ) {
+
+        dialogueText.textContent =
+          "Hmm... imprimante hors ligne. Elle recupere une adresse en 169.254.";
+
+
+        questObjective.textContent =
+          "□ Verifier la connexion reseau de l'imprimante";
+
+
+        printerStep = 1;
+
+
+        return;
+
+      }
+
+
+      // ======================================
+      // ETAPE 2
+      // ======================================
+
+      if (
+        printerStep === 1
+      ) {
+
+        dialogueText.textContent =
+          "Pas de DHCP... Voyons le cable. Ah. Il est branche sur le mauvais port.";
+
+
+        questObjective.textContent =
+          "□ Rebrancher correctement l'imprimante";
+
+
+        printerStep = 2;
+
+
+        return;
+
+      }
+
+
+      // ======================================
+      // ETAPE 3
+      // ======================================
+
+      if (
+        printerStep === 2
+      ) {
+
+        dialogueText.textContent =
+          "Voila. Nouvelle IP... et elle repond au ping.";
+
+
+        printerStep = 3;
+
+        printerFixed = true;
+
+
+        printer.classList.add(
+          "fixed"
+        );
+
+
+        questObjective.textContent =
+          "☑ Imprimante reconnectee - Retourner voir Thiry";
 
 
         return;
@@ -1517,1488 +2378,780 @@ function updateInteractions() {
     }
 
 
-    // ====================================
-    // IMPRIMANTE
-    // ====================================
+    // ========================================
+    // TERMINER QUETE IMPRIMANTE
+    // ========================================
 
-    if (
-      printerQuestActive &&
-      !printerFixed
-    ) {
+    function completePrinterQuest() {
 
-      const printerRect =
-        printer.getBoundingClientRect();
+      printerQuestCompleted = true;
 
+      printerQuestActive = false;
+
+
+      questTitle.textContent =
+        "🖨️ Probleme reseau";
+
+
+      questObjective.textContent =
+        "💬 Reparler a Thiry";
+
+
+      // 40 XP cafe + 60 XP imprimante = niveau 2
+
+      addXP(60);
+
+
+      // Debloquer TristanT au niveau 2
 
       if (
-        rectanglesNear(
-          playerRect,
-          printerRect,
-          60
-        )
+        joel.level >= 2
       ) {
 
-        canExaminePrinter = true;
+        tristanTQuestAvailable =
+          true;
+
+      }
 
 
-        if (
-          printerStep === 0
-        ) {
+      updateInteractions();
 
-          interaction.textContent =
-            "E - Diagnostiquer";
-
-        }
+    }
 
 
-        else if (
-          printerStep === 1
-        ) {
+    // ========================================
+    // QUETE 3 : TRISTANT
+    // ========================================
 
-          interaction.textContent =
-            "E - Verifier le cable";
+    function startTristanTQuest() {
 
-        }
+      tristanTQuestAvailable =
+        false;
 
+      tristanTQuestActive =
+        true;
 
-        else if (
-          printerStep === 2
-        ) {
+      tristanTQuestCompleted =
+        false;
 
-          interaction.textContent =
-            "E - Rebrancher";
-
-        }
+      tristanTStep = 0;
 
 
-        interaction.style.left =
-          printer.offsetLeft -
-          5 +
-          "px";
+      showTristanT();
 
 
-        interaction.style.top =
-          printer.offsetTop -
-          35 +
-          "px";
+      questBox.style.display =
+        "block";
 
 
-        interaction.style.display =
+      questTitle.textContent =
+        "👤 TristanT vous cherche";
+
+
+      questObjective.textContent =
+        "□ Retourner a l'universite et parler a TristanT";
+
+
+      updateInteractions();
+
+    }
+
+
+    // ========================================
+    // AFFICHER TRISTANT + PC
+    // ========================================
+
+    function showTristanT() {
+
+      if (tristanT) {
+
+        tristanT.style.display =
           "block";
+
+      }
+
+
+      if (professorPC) {
+
+        professorPC.style.display =
+          "block";
+
+      }
+
+
+      if (professorPCStatus) {
+
+        professorPCStatus.style.display =
+          "flex";
+
+        professorPCStatus.textContent =
+          "!";
 
       }
 
     }
 
-  }
 
-}
+    // ========================================
+    // CACHER TRISTANT + PC AU DEBUT
+    // ========================================
 
+    function hideTristanT() {
 
-// ========================================
-// PROXIMITE
-// ========================================
+      if (tristanT) {
 
-function rectanglesNear(
-  rect1,
-  rect2,
-  margin
-) {
+        tristanT.style.display =
+          "none";
 
-  return (
+      }
 
-    rect1.right >
-    rect2.left - margin &&
 
-    rect1.left <
-    rect2.right + margin &&
+      if (professorPC) {
 
-    rect1.bottom >
-    rect2.top - margin &&
+        professorPC.style.display =
+          "none";
 
-    rect1.top <
-    rect2.bottom + margin
+      }
 
-  );
 
-}
+      if (professorPCStatus) {
 
+        professorPCStatus.style.display =
+          "none";
 
-// ========================================
-// DIALOGUE THIRY
-// ========================================
-
-function handleThiryDialogue() {
-
-  let currentDialogue;
-
-
-  // ======================================
-  // QUETE 3 : TRISTANT
-  // ======================================
-
-  if (
-    tristanTQuestAvailable &&
-    !tristanTQuestActive &&
-    !tristanTQuestCompleted
-  ) {
-
-    currentDialogue =
-      tristanTQuestDialogue;
-
-  }
-
-
-  // ======================================
-  // RETOUR APRES REPARATION
-  // ======================================
-
-  else if (
-    printerFixed &&
-    printerQuestActive &&
-    !printerQuestCompleted
-  ) {
-
-    currentDialogue =
-      printerQuestCompleteDialogue;
-
-  }
-
-
-  // ======================================
-  // RETOUR CAFE
-  // ======================================
-
-  else if (
-    hasCoffee
-  ) {
-
-    currentDialogue =
-      thiryCoffeeDialogue;
-
-  }
-
-
-  // ======================================
-  // DONNER QUETE IMPRIMANTE
-  // ======================================
-
-  else if (
-    printerQuestAvailable &&
-    !printerQuestActive &&
-    !printerQuestCompleted
-  ) {
-
-    currentDialogue =
-      printerQuestDialogue;
-
-  }
-
-
-  // ======================================
-  // PREMIERE RENCONTRE
-  // ======================================
-
-  else {
-
-    currentDialogue =
-      thiryDialogue;
-
-  }
-
-
-  // ======================================
-  // OUVRIR
-  // ======================================
-
-  if (
-    !dialogueOpen
-  ) {
-
-    dialogueOpen = true;
-
-    dialogueStep = 0;
-
-
-    dialogue.style.display =
-      "block";
-
-
-    dialogueName.textContent =
-      currentDialogue[
-        dialogueStep
-      ].speaker;
-
-
-    dialogueText.textContent =
-      currentDialogue[
-        dialogueStep
-      ].text;
-
-
-    interaction.style.display =
-      "none";
-
-
-    return;
-
-  }
-
-
-  // ======================================
-  // SUIVANT
-  // ======================================
-
-  dialogueStep++;
-
-
-  if (
-    dialogueStep <
-    currentDialogue.length
-  ) {
-
-    dialogueName.textContent =
-      currentDialogue[
-        dialogueStep
-      ].speaker;
-
-
-    dialogueText.textContent =
-      currentDialogue[
-        dialogueStep
-      ].text;
-
-
-    return;
-
-  }
-
-
-  // ======================================
-  // FIN
-  // ======================================
-
-  dialogueOpen = false;
-
-
-  dialogue.style.display =
-    "none";
-
-
-  // ======================================
-  // DEMARRER QUETE 3
-  // ======================================
-
-  if (
-    tristanTQuestAvailable &&
-    !tristanTQuestActive &&
-    !tristanTQuestCompleted
-  ) {
-
-    startTristanTQuest();
-
-  }
-
-
-  // ======================================
-  // TERMINER QUETE IMPRIMANTE
-  // ======================================
-
-  else if (
-    printerFixed &&
-    printerQuestActive &&
-    !printerQuestCompleted
-  ) {
-
-    completePrinterQuest();
-
-  }
-
-
-  // ======================================
-  // TERMINER QUETE CAFE
-  // ======================================
-
-  else if (
-    hasCoffee
-  ) {
-
-    completeCoffeeQuest();
-
-  }
-
-
-  // ======================================
-  // DEMARRER QUETE IMPRIMANTE
-  // ======================================
-
-  else if (
-    printerQuestAvailable &&
-    !printerQuestActive
-  ) {
-
-    startPrinterQuest();
-
-  }
-
-
-  // ======================================
-  // DEMARRER QUETE CAFE
-  // ======================================
-
-  else if (
-    !coffeeQuestActive &&
-    !coffeeQuestCompleted
-  ) {
-
-    startCoffeeQuest();
-
-  }
-
-
-  updateInteractions();
-
-}
-
-
-// ========================================
-// DIALOGUE TRISTANT
-// ========================================
-
-function handleTristanTDialogue() {
-
-  let currentDialogue;
-
-
-  // ======================================
-  // PREMIERE DISCUSSION
-  // ======================================
-
-  if (
-    tristanTStep === 0
-  ) {
-
-    currentDialogue =
-      tristanTDialogue;
-
-  }
-
-
-  // ======================================
-  // DISCUSSION FINALE
-  // ======================================
-
-  else if (
-    tristanTStep === 3 &&
-    !tristanTQuestCompleted
-  ) {
-
-    currentDialogue =
-      tristanTCompleteDialogue;
-
-  }
-
-
-  else {
-
-    return;
-
-  }
-
-
-  // ======================================
-  // OUVRIR
-  // ======================================
-
-  if (
-    !dialogueOpen
-  ) {
-
-    dialogueOpen = true;
-
-    dialogueStep = 0;
-
-
-    dialogue.style.display =
-      "block";
-
-
-    dialogueName.textContent =
-      currentDialogue[
-        dialogueStep
-      ].speaker;
-
-
-    dialogueText.textContent =
-      currentDialogue[
-        dialogueStep
-      ].text;
-
-
-    interaction.style.display =
-      "none";
-
-
-    return;
-
-  }
-
-
-  // ======================================
-  // SUIVANT
-  // ======================================
-
-  dialogueStep++;
-
-
-  if (
-    dialogueStep <
-    currentDialogue.length
-  ) {
-
-    dialogueName.textContent =
-      currentDialogue[
-        dialogueStep
-      ].speaker;
-
-
-    dialogueText.textContent =
-      currentDialogue[
-        dialogueStep
-      ].text;
-
-
-    return;
-
-  }
-
-
-  // ======================================
-  // FIN DU DIALOGUE
-  // ======================================
-
-  dialogueOpen = false;
-
-
-  dialogue.style.display =
-    "none";
-
-
-  // Apres la premiere discussion
-
-  if (
-    tristanTStep === 0
-  ) {
-
-    tristanTStep = 1;
-
-
-    questTitle.textContent =
-      "💻 Pourtant, j'ai fini";
-
-
-    questObjective.textContent =
-      "□ Examiner le PC du professeur";
-
-  }
-
-
-  // Fin de la quete
-
-  else if (
-    tristanTStep === 3 &&
-    !tristanTQuestCompleted
-  ) {
-
-    completeTristanTQuest();
-
-  }
-
-
-  updateInteractions();
-
-}
-
-
-// ========================================
-// QUETE 1 : CAFE
-// ========================================
-
-function startCoffeeQuest() {
-
-  coffeeQuestActive = true;
-
-
-  questBox.style.display =
-    "block";
-
-
-  questTitle.textContent =
-    "☕ La pause cafe";
-
-
-  questObjective.textContent =
-    "□ Trouver un cafe pour Thiry";
-
-
-  coffee.style.display =
-    "block";
-
-
-  updateInteractions();
-
-}
-
-
-// ========================================
-// TERMINER QUETE CAFE
-// ========================================
-
-function completeCoffeeQuest() {
-
-  coffeeQuestCompleted = true;
-
-  coffeeQuestActive = false;
-
-  hasCoffee = false;
-
-
-  questTitle.textContent =
-    "☕ La pause cafe";
-
-
-  questObjective.textContent =
-    "💬 Reparler a Thiry";
-
-
-  addXP(40);
-
-
-  printerQuestAvailable =
-    true;
-
-
-  updateInteractions();
-
-}
-
-
-// ========================================
-// QUETE 2 : IMPRIMANTE
-// ========================================
-
-function startPrinterQuest() {
-
-  printerQuestActive = true;
-
-  printerQuestAvailable =
-    false;
-
-  printerStep = 0;
-
-  printerFixed = false;
-
-
-  printer.classList.remove(
-    "fixed"
-  );
-
-
-  questBox.style.display =
-    "block";
-
-
-  questTitle.textContent =
-    "🖨️ Probleme reseau";
-
-
-  questObjective.textContent =
-    "□ Entrer dans l'universite et trouver l'imprimante";
-
-
-  updateInteractions();
-
-}
-
-
-// ========================================
-// DIAGNOSTIC IMPRIMANTE
-// ========================================
-
-function examinePrinter() {
-
-  interaction.style.display =
-    "none";
-
-
-  dialogueOpen = true;
-
-  printerMessageOpen = true;
-
-
-  dialogue.style.display =
-    "block";
-
-
-  dialogueName.textContent =
-    "Joel";
-
-
-  // ======================================
-  // ETAPE 1
-  // ======================================
-
-  if (
-    printerStep === 0
-  ) {
-
-    dialogueText.textContent =
-      "Hmm... imprimante hors ligne. Elle recupere une adresse en 169.254.";
-
-
-    questObjective.textContent =
-      "□ Verifier la connexion reseau de l'imprimante";
-
-
-    printerStep = 1;
-
-
-    return;
-
-  }
-
-
-  // ======================================
-  // ETAPE 2
-  // ======================================
-
-  if (
-    printerStep === 1
-  ) {
-
-    dialogueText.textContent =
-      "Pas de DHCP... Voyons le cable. Ah. Il est branche sur le mauvais port.";
-
-
-    questObjective.textContent =
-      "□ Rebrancher correctement l'imprimante";
-
-
-    printerStep = 2;
-
-
-    return;
-
-  }
-
-
-  // ======================================
-  // ETAPE 3
-  // ======================================
-
-  if (
-    printerStep === 2
-  ) {
-
-    dialogueText.textContent =
-      "Voila. Nouvelle IP... et elle repond au ping.";
-
-
-    printerStep = 3;
-
-    printerFixed = true;
-
-
-    printer.classList.add(
-      "fixed"
-    );
-
-
-    questObjective.textContent =
-      "☑ Imprimante reconnectee - Retourner voir Thiry";
-
-
-    return;
-
-  }
-
-}
-
-
-// ========================================
-// TERMINER QUETE IMPRIMANTE
-// ========================================
-
-function completePrinterQuest() {
-
-  printerQuestCompleted = true;
-
-  printerQuestActive = false;
-
-
-  questTitle.textContent =
-    "🖨️ Probleme reseau";
-
-
-  questObjective.textContent =
-    "💬 Reparler a Thiry";
-
-
-  // 40 XP cafe + 60 XP imprimante = niveau 2
-
-  addXP(60);
-
-
-  // Debloquer TristanT au niveau 2
-
-  if (
-    joel.level >= 2
-  ) {
-
-    tristanTQuestAvailable =
-      true;
-
-  }
-
-
-  updateInteractions();
-
-}
-
-
-// ========================================
-// QUETE 3 : TRISTANT
-// ========================================
-
-function startTristanTQuest() {
-
-  tristanTQuestAvailable =
-    false;
-
-  tristanTQuestActive =
-    true;
-
-  tristanTQuestCompleted =
-    false;
-
-  tristanTStep = 0;
-
-
-  showTristanT();
-
-
-  questBox.style.display =
-    "block";
-
-
-  questTitle.textContent =
-    "👤 TristanT vous cherche";
-
-
-  questObjective.textContent =
-    "□ Retourner a l'universite et parler a TristanT";
-
-
-  updateInteractions();
-
-}
-
-
-// ========================================
-// AFFICHER TRISTANT + PC
-// ========================================
-
-function showTristanT() {
-
-  if (tristanT) {
-
-    tristanT.style.display =
-      "block";
-
-  }
-
-
-  if (professorPC) {
-
-    professorPC.style.display =
-      "block";
-
-  }
-
-
-  if (professorPCStatus) {
-
-    professorPCStatus.style.display =
-      "flex";
-
-    professorPCStatus.textContent =
-      "!";
-
-  }
-
-}
-
-
-// ========================================
-// CACHER TRISTANT + PC AU DEBUT
-// ========================================
-
-function hideTristanT() {
-
-  if (tristanT) {
-
-    tristanT.style.display =
-      "none";
-
-  }
-
-
-  if (professorPC) {
-
-    professorPC.style.display =
-      "none";
-
-  }
-
-
-  if (professorPCStatus) {
-
-    professorPCStatus.style.display =
-      "none";
-
-  }
-
-}
-
-
-// ========================================
-// EXAMINER LE PC DU PROF
-// ========================================
-
-function examineProfessorPC() {
-
-  interaction.style.display =
-    "none";
-
-
-  dialogueOpen = true;
-
-  professorPCMessageOpen = true;
-
-
-  dialogue.style.display =
-    "block";
-
-
-  // ======================================
-  // ETAPE 1 : EXAMINER
-  // ======================================
-
-  if (
-    tristanTStep === 1
-  ) {
-
-    dialogueName.textContent =
-      "Joel";
-
-
-    dialogueText.textContent =
-      "Ca plante sur PowerPoint ? ...Son fichier fait 3,8 Go.";
-
-
-    questObjective.textContent =
-      "□ Aider TristanT a regler le probleme";
-
-
-    tristanTStep = 2;
-
-
-    return;
-
-  }
-
-
-  // ======================================
-  // ETAPE 2 : AIDER TRISTANT
-  // ======================================
-
-  if (
-    tristanTStep === 2
-  ) {
-
-    dialogueName.textContent =
-      "Joel";
-
-
-    dialogueText.textContent =
-      "247 photos et six videos dans le meme PowerPoint... On a trouve le probleme.";
-
-
-    tristanTStep = 3;
-
-
-    professorPC.classList.add(
-      "fixed"
-    );
-
-
-    if (professorPCStatus) {
-
-      professorPCStatus.textContent =
-        "✓";
+      }
 
     }
 
 
-    questObjective.textContent =
-      "💬 Reparler a TristanT";
+    // ========================================
+    // EXAMINER LE PC DU PROF
+    // ========================================
 
+    function examineProfessorPC() {
 
-    return;
-
-  }
-
-}
-
-
-// ========================================
-// TERMINER QUETE TRISTANT
-// ========================================
-
-function completeTristanTQuest() {
-
-  tristanTQuestCompleted =
-    true;
-
-  tristanTQuestActive =
-    false;
-
-
-  questTitle.textContent =
-    "💻 Pourtant, j'ai fini";
-
-
-  questObjective.textContent =
-    "✅ Quete terminee !";
-
-
-  addXP(75);
-
-
-  updateInteractions();
-
-}
-
-
-// ========================================
-// CHANGEMENT DE MAP
-// ========================================
-
-function changeMap(mapName) {
-
-  mapOutside.classList.remove(
-    "active-map"
-  );
-
-
-  mapOffice.classList.remove(
-    "active-map"
-  );
-
-
-  // ======================================
-  // ENTRER
-  // ======================================
-
-  if (
-    mapName === "office"
-  ) {
-
-    currentMap =
-      "office";
-
-
-    mapOffice.classList.add(
-      "active-map"
-    );
-
-
-    x = 325;
-
-    y = 320;
-
-  }
-
-
-  // ======================================
-  // SORTIR
-  // ======================================
-
-  else if (
-    mapName === "outside"
-  ) {
-
-    currentMap =
-      "outside";
-
-
-    mapOutside.classList.add(
-      "active-map"
-    );
-
-
-    x = 525;
-
-    y = 330;
-
-  }
-
-
-  player.style.left =
-    x + "px";
-
-
-  player.style.top =
-    y + "px";
-
-
-  player.style.zIndex =
-    30;
-
-
-  dialogueOpen = false;
-
-  printerMessageOpen = false;
-
-  professorPCMessageOpen = false;
-
-
-  dialogue.style.display =
-    "none";
-
-
-  updateInteractions();
-
-}
-
-
-// ========================================
-// XP
-// ========================================
-
-function addXP(amount) {
-
-  joel.xp += amount;
-
-
-  while (
-    joel.xp >=
-    joel.xpToNextLevel
-  ) {
-
-    joel.xp -=
-      joel.xpToNextLevel;
-
-
-    levelUp();
-
-  }
-
-
-  updateStats();
-
-}
-
-
-// ========================================
-// LEVEL UP
-// ========================================
-
-function levelUp() {
-
-  joel.level++;
-
-
-  joel.xpToNextLevel += 50;
-
-
-  joel.maxHealth += 10;
-
-
-  joel.health =
-    joel.maxHealth;
-
-
-  showLevelUp();
-
-}
-
-
-// ========================================
-// NOTIFICATION LEVEL UP
-// ========================================
-
-function showLevelUp() {
-
-  levelUpText.textContent =
-    "Joel passe niveau " +
-    joel.level +
-    " - ❤️ Vie max : " +
-    joel.maxHealth;
-
-
-  levelUpMessage.style.display =
-    "block";
-
-
-  setTimeout(
-    function() {
-
-      levelUpMessage.style.display =
+      interaction.style.display =
         "none";
 
-    },
-    2500
-  );
 
-}
+      dialogueOpen = true;
 
+      professorPCMessageOpen = true;
 
-// ========================================
-// HUD
-// ========================================
 
-function updateStats() {
+      dialogue.style.display =
+        "block";
 
-  levelDisplay.textContent =
-    "Niv. " +
-    joel.level;
 
+      // ======================================
+      // ETAPE 1 : EXAMINER
+      // ======================================
 
-  healthDisplay.textContent =
-    joel.health +
-    " / " +
-    joel.maxHealth;
+      if (
+        tristanTStep === 1
+      ) {
 
+        dialogueName.textContent =
+          "Joel";
 
-  xpText.textContent =
-    joel.xp +
-    " / " +
-    joel.xpToNextLevel;
 
+        dialogueText.textContent =
+          "Ca plante sur PowerPoint ? ...Son fichier fait 3,8 Go.";
 
-  const percentage =
 
-    (
-      joel.xp /
-      joel.xpToNextLevel
-    ) *
-    100;
+        questObjective.textContent =
+          "□ Aider TristanT a regler le probleme";
 
 
-  xpFill.style.width =
-    percentage +
-    "%";
+        tristanTStep = 2;
 
-}
 
+        return;
 
-// ========================================
-// JOYSTICK MOBILE
-// ========================================
+      }
 
-function updateJoystick(event) {
 
-  const rect =
-    joystick.getBoundingClientRect();
+      // ======================================
+      // ETAPE 2 : AIDER TRISTANT
+      // ======================================
 
+      if (
+        tristanTStep === 2
+      ) {
 
-  const centerX =
-    rect.left +
-    rect.width / 2;
+        dialogueName.textContent =
+          "Joel";
 
 
-  const centerY =
-    rect.top +
-    rect.height / 2;
+        dialogueText.textContent =
+          "247 photos et six videos dans le meme PowerPoint... On a trouve le probleme.";
 
 
-  let deltaX =
-    event.clientX -
-    centerX;
+        tristanTStep = 3;
 
 
-  let deltaY =
-    event.clientY -
-    centerY;
+        professorPC.classList.add(
+          "fixed"
+        );
 
 
-  const maxDistance = 35;
+        if (professorPCStatus) {
 
+          professorPCStatus.textContent =
+            "✓";
 
-  const distance =
-    Math.sqrt(
-
-      deltaX * deltaX +
-
-      deltaY * deltaY
-
-    );
-
-
-  if (
-    distance >
-    maxDistance
-  ) {
-
-    deltaX =
-      (
-        deltaX /
-        distance
-      ) *
-      maxDistance;
-
-
-    deltaY =
-      (
-        deltaY /
-        distance
-      ) *
-      maxDistance;
-
-  }
-
-
-  joystickStick.style.transform =
-    "translate(" +
-    deltaX +
-    "px, " +
-    deltaY +
-    "px)";
-
-
-  joystickX =
-    deltaX /
-    maxDistance;
-
-
-  joystickY =
-    deltaY /
-    maxDistance;
-
-}
-
-
-// ========================================
-// JOYSTICK : APPUYER
-// ========================================
-
-joystick.addEventListener(
-  "pointerdown",
-  function(event) {
-
-    joystickActive = true;
-
-
-    joystick.setPointerCapture(
-      event.pointerId
-    );
-
-
-    updateJoystick(event);
-
-  }
-);
-
-
-// ========================================
-// JOYSTICK : BOUGER
-// ========================================
-
-joystick.addEventListener(
-  "pointermove",
-  function(event) {
-
-    if (
-      !joystickActive
-    ) {
-
-      return;
-
-    }
-
-
-    updateJoystick(event);
-
-  }
-);
-
-
-// ========================================
-// ARRETER JOYSTICK
-// ========================================
-
-function stopJoystick() {
-
-  joystickActive = false;
-
-
-  joystickX = 0;
-
-  joystickY = 0;
-
-
-  joystickStick.style.transform =
-    "translate(0px, 0px)";
-
-}
-
-
-joystick.addEventListener(
-  "pointerup",
-  stopJoystick
-);
-
-
-joystick.addEventListener(
-  "pointercancel",
-  stopJoystick
-);
-
-
-// ========================================
-// MOUVEMENT MOBILE
-// ========================================
-
-let lastMobileMove = 0;
-
-
-function mobileMovement(time) {
-
-  if (
-    joystickActive &&
-    time - lastMobileMove > 60
-  ) {
-
-
-    if (
-      joystickY < -0.35
-    ) {
-
-      document.dispatchEvent(
-
-        new KeyboardEvent(
-          "keydown",
-          {
-            key: "ArrowUp"
-          }
-        )
-
-      );
-
-    }
-
-
-    if (
-      joystickY > 0.35
-    ) {
-
-      document.dispatchEvent(
-
-        new KeyboardEvent(
-          "keydown",
-          {
-            key: "ArrowDown"
-          }
-        )
-
-      );
-
-    }
-
-
-    if (
-      joystickX < -0.35
-    ) {
-
-      document.dispatchEvent(
-
-        new KeyboardEvent(
-          "keydown",
-          {
-            key: "ArrowLeft"
-          }
-        )
-
-      );
-
-    }
-
-
-    if (
-      joystickX > 0.35
-    ) {
-
-      document.dispatchEvent(
-
-        new KeyboardEvent(
-          "keydown",
-          {
-            key: "ArrowRight"
-          }
-        )
-
-      );
-
-    }
-
-
-    lastMobileMove =
-      time;
-
-  }
-
-
-  requestAnimationFrame(
-    mobileMovement
-  );
-
-}
-
-
-requestAnimationFrame(
-  mobileMovement
-);
-
-
-// ========================================
-// BOUTON E MOBILE
-// ========================================
-
-mobileAction.addEventListener(
-  "pointerdown",
-  function(event) {
-
-    event.preventDefault();
-
-
-    document.dispatchEvent(
-
-      new KeyboardEvent(
-        "keydown",
-        {
-          key: "e"
         }
-      )
 
+
+        questObjective.textContent =
+          "💬 Reparler a TristanT";
+
+
+        return;
+
+      }
+
+    }
+
+
+    // ========================================
+    // TERMINER QUETE TRISTANT
+    // ========================================
+
+    function completeTristanTQuest() {
+
+      tristanTQuestCompleted =
+        true;
+
+      tristanTQuestActive =
+        false;
+
+
+      questTitle.textContent =
+        "💻 Pourtant, j'ai fini";
+
+
+      questObjective.textContent =
+        "✅ Quete terminee !";
+
+
+      addXP(75);
+
+
+      updateInteractions();
+
+    }
+
+
+    // ========================================
+    // CHANGEMENT DE MAP
+    // ========================================
+
+    function changeMap(mapName) {
+
+      mapOutside.classList.remove(
+        "active-map"
+      );
+
+
+      mapOffice.classList.remove(
+        "active-map"
+      );
+
+
+      // ======================================
+      // ENTRER
+      // ======================================
+
+      if (
+        mapName === "office"
+      ) {
+
+        currentMap =
+          "office";
+
+
+        mapOffice.classList.add(
+          "active-map"
+        );
+
+
+        x = 325;
+
+        y = 320;
+
+      }
+
+
+      // ======================================
+      // SORTIR
+      // ======================================
+
+      else if (
+        mapName === "outside"
+      ) {
+
+        currentMap =
+          "outside";
+
+
+        mapOutside.classList.add(
+          "active-map"
+        );
+
+
+        x = 525;
+
+        y = 330;
+
+      }
+
+
+      player.style.left =
+        x + "px";
+
+
+      player.style.top =
+        y + "px";
+
+
+      player.style.zIndex =
+        30;
+
+
+      dialogueOpen = false;
+
+      printerMessageOpen = false;
+
+      professorPCMessageOpen = false;
+
+
+      dialogue.style.display =
+        "none";
+
+
+      updateInteractions();
+
+    }
+
+
+    // ========================================
+    // XP
+    // ========================================
+
+    function addXP(amount) {
+
+      joel.xp += amount;
+
+
+      while (
+        joel.xp >=
+        joel.xpToNextLevel
+      ) {
+
+        joel.xp -=
+          joel.xpToNextLevel;
+
+
+        levelUp();
+
+      }
+
+
+      updateStats();
+
+    }
+
+
+    // ========================================
+    // LEVEL UP
+    // ========================================
+
+    function levelUp() {
+
+      joel.level++;
+
+
+      joel.xpToNextLevel += 50;
+
+
+      joel.maxHealth += 10;
+
+
+      joel.health =
+        joel.maxHealth;
+
+
+      showLevelUp();
+
+    }
+
+
+    // ========================================
+    // NOTIFICATION LEVEL UP
+    // ========================================
+
+    function showLevelUp() {
+
+      levelUpText.textContent =
+        "Joel passe niveau " +
+        joel.level +
+        " - ❤️ Vie max : " +
+        joel.maxHealth;
+
+
+      levelUpMessage.style.display =
+        "block";
+
+
+      setTimeout(
+        function() {
+
+          levelUpMessage.style.display =
+            "none";
+
+        },
+        2500
+      );
+
+    }
+
+
+    // ========================================
+    // HUD
+    // ========================================
+
+    function updateStats() {
+
+      levelDisplay.textContent =
+        "Niv. " +
+        joel.level;
+
+
+      healthDisplay.textContent =
+        joel.health +
+        " / " +
+        joel.maxHealth;
+
+
+      xpText.textContent =
+        joel.xp +
+        " / " +
+        joel.xpToNextLevel;
+
+
+      const percentage =
+
+        (
+          joel.xp /
+          joel.xpToNextLevel
+        ) *
+        100;
+
+
+      xpFill.style.width =
+        percentage +
+        "%";
+
+    }
+
+
+    // ========================================
+    // JOYSTICK MOBILE
+    // ========================================
+
+    function updateJoystick(event) {
+
+      const rect =
+        joystick.getBoundingClientRect();
+
+
+      const centerX =
+        rect.left +
+        rect.width / 2;
+
+
+      const centerY =
+        rect.top +
+        rect.height / 2;
+
+
+      let deltaX =
+        event.clientX -
+        centerX;
+
+
+      let deltaY =
+        event.clientY -
+        centerY;
+
+
+      const maxDistance = 35;
+
+
+      const distance =
+        Math.sqrt(
+
+          deltaX * deltaX +
+
+          deltaY * deltaY
+
+        );
+
+
+      if (
+        distance >
+        maxDistance
+      ) {
+
+        deltaX =
+          (
+            deltaX /
+            distance
+          ) *
+          maxDistance;
+
+
+        deltaY =
+          (
+            deltaY /
+            distance
+          ) *
+          maxDistance;
+
+      }
+
+
+      joystickStick.style.transform =
+        "translate(" +
+        deltaX +
+        "px, " +
+        deltaY +
+        "px)";
+
+
+      joystickX =
+        deltaX /
+        maxDistance;
+
+
+      joystickY =
+        deltaY /
+        maxDistance;
+
+    }
+
+
+    // ========================================
+    // JOYSTICK : APPUYER
+    // ========================================
+
+    joystick.addEventListener(
+      "pointerdown",
+      function(event) {
+
+        joystickActive = true;
+
+
+        joystick.setPointerCapture(
+          event.pointerId
+        );
+
+
+        updateJoystick(event);
+
+      }
     );
 
-  }
-);
+
+    // ========================================
+    // JOYSTICK : BOUGER
+    // ========================================
+
+    joystick.addEventListener(
+      "pointermove",
+      function(event) {
+
+        if (
+          !joystickActive
+        ) {
+
+          return;
+
+        }
 
 
-// ========================================
-// PREMIERE DETECTION
-// ========================================
+        updateJoystick(event);
 
-updateInteractions();
+      }
+    );
+
+
+    // ========================================
+    // ARRETER JOYSTICK
+    // ========================================
+
+    function stopJoystick() {
+
+      joystickActive = false;
+
+
+      joystickX = 0;
+
+      joystickY = 0;
+
+
+      joystickStick.style.transform =
+        "translate(0px, 0px)";
+
+    }
+
+
+    joystick.addEventListener(
+      "pointerup",
+      stopJoystick
+    );
+
+
+    joystick.addEventListener(
+      "pointercancel",
+      stopJoystick
+    );
+
+
+    // ========================================
+    // MOUVEMENT MOBILE
+    // ========================================
+
+    let lastMobileMove = 0;
+
+
+    function mobileMovement(time) {
+
+      if (
+        joystickActive &&
+        time - lastMobileMove > 60
+      ) {
+
+
+        if (
+          joystickY < -0.35
+        ) {
+
+          document.dispatchEvent(
+
+            new KeyboardEvent(
+              "keydown",
+              {
+                key: "ArrowUp"
+              }
+            )
+
+          );
+
+        }
+
+
+        if (
+          joystickY > 0.35
+        ) {
+
+          document.dispatchEvent(
+
+            new KeyboardEvent(
+              "keydown",
+              {
+                key: "ArrowDown"
+              }
+            )
+
+          );
+
+        }
+
+
+        if (
+          joystickX < -0.35
+        ) {
+
+          document.dispatchEvent(
+
+            new KeyboardEvent(
+              "keydown",
+              {
+                key: "ArrowLeft"
+              }
+            )
+
+          );
+
+        }
+
+
+        if (
+          joystickX > 0.35
+        ) {
+
+          document.dispatchEvent(
+
+            new KeyboardEvent(
+              "keydown",
+              {
+                key: "ArrowRight"
+              }
+            )
+
+          );
+
+        }
+
+
+        lastMobileMove =
+          time;
+
+      }
+
+
+      requestAnimationFrame(
+        mobileMovement
+      );
+
+    }
+
+
+    requestAnimationFrame(
+      mobileMovement
+    );
+
+
+    // ========================================
+    // BOUTON E MOBILE
+    // ========================================
+
+    mobileAction.addEventListener(
+      "pointerdown",
+      function(event) {
+
+        event.preventDefault();
+
+
+        document.dispatchEvent(
+
+          new KeyboardEvent(
+            "keydown",
+            {
+              key: "e"
+            }
+          )
+
+        );
+
+      }
+    );
+
+
+    // ========================================
+    // PREMIERE DETECTION
+    // ========================================
+
+    updateInteractions();
