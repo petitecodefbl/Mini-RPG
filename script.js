@@ -1,5 +1,5 @@
 // ========================================
-// ÉLÉMENTS DU JEU
+// ELEMENTS DU JEU
 // ========================================
 
 const player = document.getElementById("player");
@@ -51,6 +51,21 @@ const officeExit =
 const printer =
   document.getElementById("printer");
 
+
+// ========================================
+// TRISTANT + PC DU PROF
+// ========================================
+
+const tristanT =
+  document.getElementById("tristant");
+
+const professorPC =
+  document.getElementById("professor-pc");
+
+const professorPCStatus =
+  document.getElementById("professor-pc-status");
+
+
 let currentMap = "outside";
 
 
@@ -68,9 +83,13 @@ let canExitOffice = false;
 
 let canExaminePrinter = false;
 
+let canTalkTristanT = false;
+
+let canExamineProfessorPC = false;
+
 
 // ========================================
-// POSITION DE JOËL
+// POSITION DE JOEL
 // ========================================
 
 let x = 330;
@@ -80,7 +99,7 @@ const speed = 10;
 
 
 // ========================================
-// QUÊTE 1 : CAFÉ
+// QUETE 1 : CAFE
 // ========================================
 
 let coffeeQuestActive = false;
@@ -91,7 +110,7 @@ let hasCoffee = false;
 
 
 // ========================================
-// QUÊTE 2 : IMPRIMANTE
+// QUETE 2 : IMPRIMANTE
 // ========================================
 
 let printerQuestAvailable = false;
@@ -103,10 +122,10 @@ let printerQuestCompleted = false;
 let printerFixed = false;
 
 
-// 0 = pas diagnostiquée
-// 1 = problème réseau détecté
-// 2 = mauvais port trouvé
-// 3 = imprimante réparée
+// 0 = pas diagnostiquee
+// 1 = probleme reseau detecte
+// 2 = mauvais port trouve
+// 3 = imprimante reparee
 
 let printerStep = 0;
 
@@ -114,7 +133,7 @@ let printerMessageOpen = false;
 
 
 // ========================================
-// QUÊTE 3 : TRISTANT
+// QUETE 3 : TRISTANT
 // ========================================
 
 let tristanTQuestAvailable = false;
@@ -122,6 +141,16 @@ let tristanTQuestAvailable = false;
 let tristanTQuestActive = false;
 
 let tristanTQuestCompleted = false;
+
+
+// 0 = parler a TristanT
+// 1 = examiner le PC du prof
+// 2 = aider TristanT
+// 3 = reparler a TristanT
+
+let tristanTStep = 0;
+
+let professorPCMessageOpen = false;
 
 
 // ========================================
@@ -134,7 +163,7 @@ let dialogueStep = 0;
 
 
 // ========================================
-// STATS DE JOËL
+// STATS DE JOEL
 // ========================================
 
 const joel = {
@@ -194,38 +223,38 @@ let joystickActive = false;
 
 
 // ========================================
-// DIALOGUE QUÊTE 1 : CAFÉ
+// DIALOGUE QUETE 1 : CAFE
 // ========================================
 
 const thiryDialogue = [
 
   {
     speaker: "Thiry",
-    text: "Joël ! Café ?"
+    text: "Joel ! Cafe ?"
   },
 
   {
-    speaker: "Joël",
-    text: "Déjà ??"
+    speaker: "Joel",
+    text: "Deja ??"
   },
 
   {
     speaker: "Thiry",
-    text: "Je me disais qu'une petite pause café ferait pas de mal..."
+    text: "Je me disais qu'une petite pause cafe ferait pas de mal..."
   },
 
   {
-    speaker: "Joël",
+    speaker: "Joel",
     text: "Il est 8h..."
   },
 
   {
     speaker: "Thiry",
-    text: "J'ai envie d'un café."
+    text: "J'ai envie d'un cafe."
   },
 
   {
-    speaker: "Joël",
+    speaker: "Joel",
     text: "Bon, attends. Je vais voir si je peux t'en trouver un."
   },
 
@@ -238,14 +267,14 @@ const thiryDialogue = [
 
 
 // ========================================
-// RETOUR CAFÉ
+// RETOUR CAFE
 // ========================================
 
 const thiryCoffeeDialogue = [
 
   {
-    speaker: "Joël",
-    text: "Tiens, ton café."
+    speaker: "Joel",
+    text: "Tiens, ton cafe."
   },
 
   {
@@ -254,27 +283,27 @@ const thiryCoffeeDialogue = [
   },
 
   {
-    speaker: "Joël",
-    text: "Ça fait même pas cinq minutes..."
+    speaker: "Joel",
+    text: "Ca fait meme pas cinq minutes..."
   },
 
   {
     speaker: "Thiry",
-    text: "Parfait. Pause café !"
+    text: "Parfait. Pause cafe !"
   }
 
 ];
 
 
 // ========================================
-// QUÊTE 2 : IMPRIMANTE
+// QUETE 2 : IMPRIMANTE
 // ========================================
 
 const printerQuestDialogue = [
 
   {
-    speaker: "Joël",
-    text: "Bon, maintenant je vais peut-être pouvoir bosser."
+    speaker: "Joel",
+    text: "Bon, maintenant je vais peut-etre pouvoir bosser."
   },
 
   {
@@ -283,27 +312,27 @@ const printerQuestDialogue = [
   },
 
   {
-    speaker: "Joël",
+    speaker: "Joel",
     text: "Quoi encore ?"
   },
 
   {
     speaker: "Thiry",
-    text: "J'ai une imprimante qui répond plus sur le réseau, fait chier..."
+    text: "J'ai une imprimante qui repond plus sur le reseau, fait chier..."
   },
 
   {
-    speaker: "Joël",
-    text: "T'as vérifié le câble ?"
+    speaker: "Joel",
+    text: "T'as verifie le cable ?"
   },
 
   {
     speaker: "Thiry",
-    text: "C'est toi l'admin réseau..."
+    text: "C'est toi l'admin reseau..."
   },
 
   {
-    speaker: "Joël",
+    speaker: "Joel",
     text: "Bon. Je vais voir."
   }
 
@@ -311,33 +340,33 @@ const printerQuestDialogue = [
 
 
 // ========================================
-// RETOUR QUÊTE IMPRIMANTE
+// RETOUR QUETE IMPRIMANTE
 // ========================================
 
 const printerQuestCompleteDialogue = [
 
   {
-    speaker: "Joël",
-    text: "C'est bon, ton imprimante est reconnectée."
+    speaker: "Joel",
+    text: "C'est bon, ton imprimante est reconnectee."
   },
 
   {
     speaker: "Thiry",
-    text: "Ah ! C'était quoi ?"
+    text: "Ah ! C'etait quoi ?"
   },
 
   {
-    speaker: "Joël",
-    text: "Le câble réseau était branché dans le mauvais port."
+    speaker: "Joel",
+    text: "Le cable reseau etait branche dans le mauvais port."
   },
 
   {
     speaker: "Thiry",
-    text: "Donc c'était bien un problème réseau."
+    text: "Donc c'etait bien un probleme reseau."
   },
 
   {
-    speaker: "Joël",
+    speaker: "Joel",
     text: "Si tu veux..."
   }
 
@@ -345,29 +374,97 @@ const printerQuestCompleteDialogue = [
 
 
 // ========================================
-// QUÊTE 3 : TRISTANT
+// THIRY -> TRISTANT
 // ========================================
 
 const tristanTQuestDialogue = [
 
   {
     speaker: "Thiry",
-    text: "Au fait Joël, TristanT te cherche."
+    text: "Au fait Joel, TristanT te cherche."
   },
 
   {
-    speaker: "Joël",
-    text: "TristanT ? Il est où ?"
+    speaker: "Joel",
+    text: "TristanT ? Il est ou ?"
   },
 
   {
     speaker: "Thiry",
-    text: "À l'université. Il avait l'air d'avoir besoin de toi."
+    text: "A l'universite. Il avait l'air d'avoir besoin de toi."
   },
 
   {
-    speaker: "Joël",
+    speaker: "Joel",
     text: "Bon... j'y retourne."
+  }
+
+];
+
+
+// ========================================
+// PREMIER DIALOGUE AVEC TRISTANT
+// ========================================
+
+const tristanTDialogue = [
+
+  {
+    speaker: "TristanT",
+    text: "Ah Joel ! J'ai fini avec le PC d'un prof mais apparemment ca bug toujours."
+  },
+
+  {
+    speaker: "Joel",
+    text: "Donc t'as pas fini."
+  },
+
+  {
+    speaker: "TristanT",
+    text: "J'ai tout fait ! Mises a jour, nettoyage, redemarrage..."
+  },
+
+  {
+    speaker: "TristanT",
+    text: "Faut aller se faire foutre a un moment, les utilisateurs sont chiants aussi !"
+  },
+
+  {
+    speaker: "Joel",
+    text: "Vas-y, je regarde avec toi."
+  }
+
+];
+
+
+// ========================================
+// DIALOGUE FINAL TRISTANT
+// ========================================
+
+const tristanTCompleteDialogue = [
+
+  {
+    speaker: "TristanT",
+    text: "Voila ! La c'est fini."
+  },
+
+  {
+    speaker: "Joel",
+    text: "La, oui."
+  },
+
+  {
+    speaker: "TristanT",
+    text: "Donc j'avais presque fini."
+  },
+
+  {
+    speaker: "Joel",
+    text: "Non."
+  },
+
+  {
+    speaker: "TristanT",
+    text: "AHAHAHAHA !"
   }
 
 ];
@@ -383,6 +480,8 @@ player.style.left =
 player.style.top =
   y + "px";
 
+
+hideTristanT();
 
 updateStats();
 
@@ -426,7 +525,31 @@ document.addEventListener(
 
 
     // ====================================
-    // ENTRER DANS L'UNIVERSITÉ
+    // FERMER MESSAGE PC DU PROF
+    // ====================================
+
+    if (
+      key === "e" &&
+      professorPCMessageOpen
+    ) {
+
+      professorPCMessageOpen = false;
+
+      dialogueOpen = false;
+
+      dialogue.style.display =
+        "none";
+
+
+      updateInteractions();
+
+      return;
+
+    }
+
+
+    // ====================================
+    // ENTRER DANS L'UNIVERSITE
     // ====================================
 
     if (
@@ -442,7 +565,7 @@ document.addEventListener(
 
 
     // ====================================
-    // SORTIR DE L'UNIVERSITÉ
+    // SORTIR DE L'UNIVERSITE
     // ====================================
 
     if (
@@ -476,7 +599,40 @@ document.addEventListener(
 
 
     // ====================================
-    // RAMASSER LE CAFÉ
+    // INTERAGIR AVEC LE PC DU PROF
+    // ====================================
+
+    if (
+      key === "e" &&
+      canExamineProfessorPC &&
+      tristanTQuestActive
+    ) {
+
+      examineProfessorPC();
+
+      return;
+
+    }
+
+
+    // ====================================
+    // PARLER A TRISTANT
+    // ====================================
+
+    if (
+      key === "e" &&
+      canTalkTristanT
+    ) {
+
+      handleTristanTDialogue();
+
+      return;
+
+    }
+
+
+    // ====================================
+    // RAMASSER LE CAFE
     // ====================================
 
     if (
@@ -495,7 +651,7 @@ document.addEventListener(
 
 
       questObjective.textContent =
-        "☑ Café récupéré — Retourner voir Thiry";
+        "☑ Cafe recupere - Retourner voir Thiry";
 
 
       interaction.style.display =
@@ -508,7 +664,7 @@ document.addEventListener(
 
 
     // ====================================
-    // PARLER À THIRY
+    // PARLER A THIRY
     // ====================================
 
     if (
@@ -524,7 +680,7 @@ document.addEventListener(
 
 
     // ====================================
-    // POSITION AVANT DÉPLACEMENT
+    // POSITION AVANT DEPLACEMENT
     // ====================================
 
     const oldX = x;
@@ -532,7 +688,7 @@ document.addEventListener(
 
 
     // ====================================
-    // DÉPLACEMENT
+    // DEPLACEMENT
     // ====================================
 
     if (
@@ -720,6 +876,20 @@ function hasCollision() {
   obstacles.forEach(
     function(obstacle) {
 
+
+      // Element cache = aucune collision
+
+      if (
+        window.getComputedStyle(
+          obstacle
+        ).display === "none"
+      ) {
+
+        return;
+
+      }
+
+
       const fullRect =
         obstacle.getBoundingClientRect();
 
@@ -776,6 +946,33 @@ function hasCollision() {
 
           top:
             fullRect.top + 20,
+
+          bottom:
+            fullRect.bottom
+
+        };
+
+      }
+
+
+      // ==================================
+      // TRISTANT
+      // ==================================
+
+      else if (
+        obstacle.id === "tristant"
+      ) {
+
+        obstacleRect = {
+
+          left:
+            fullRect.left + 10,
+
+          right:
+            fullRect.right - 10,
+
+          top:
+            fullRect.bottom - 25,
 
           bottom:
             fullRect.bottom
@@ -857,7 +1054,7 @@ function hasCollision() {
 
 
 // ========================================
-// PROFONDEUR DE JOËL
+// PROFONDEUR DE JOEL
 // ========================================
 
 function updatePlayerDepth() {
@@ -935,6 +1132,10 @@ function updateInteractions() {
 
   canExaminePrinter = false;
 
+  canTalkTristanT = false;
+
+  canExamineProfessorPC = false;
+
 
   interaction.style.display =
     "none";
@@ -954,7 +1155,7 @@ function updateInteractions() {
 
 
   // ======================================
-  // EXTÉRIEUR
+  // EXTERIEUR
   // ======================================
 
   if (
@@ -963,7 +1164,7 @@ function updateInteractions() {
 
 
     // ====================================
-    // UNIVERSITÉ
+    // UNIVERSITE
     // ====================================
 
     const doorRect =
@@ -1012,7 +1213,7 @@ function updateInteractions() {
 
 
       interaction.textContent =
-        "E — Entrer";
+        "E - Entrer";
 
 
       interaction.style.left =
@@ -1033,7 +1234,7 @@ function updateInteractions() {
 
 
     // ====================================
-    // CAFÉ
+    // CAFE
     // ====================================
 
     if (
@@ -1057,7 +1258,7 @@ function updateInteractions() {
 
 
         interaction.textContent =
-          "E — Ramasser";
+          "E - Ramasser";
 
 
         interaction.style.left =
@@ -1103,7 +1304,7 @@ function updateInteractions() {
 
 
       interaction.textContent =
-        "E — Parler";
+        "E - Parler";
 
 
       interaction.style.left =
@@ -1127,7 +1328,7 @@ function updateInteractions() {
 
 
   // ======================================
-  // INTÉRIEUR
+  // INTERIEUR
   // ======================================
 
   if (
@@ -1155,7 +1356,7 @@ function updateInteractions() {
 
 
       interaction.textContent =
-        "E — Sortir";
+        "E - Sortir";
 
 
       interaction.style.left =
@@ -1175,6 +1376,143 @@ function updateInteractions() {
 
 
       return;
+
+    }
+
+
+    // ====================================
+    // TRISTANT
+    // ====================================
+
+    if (
+      tristanTQuestActive &&
+      !tristanTQuestCompleted &&
+      tristanT &&
+      window.getComputedStyle(
+        tristanT
+      ).display !== "none"
+    ) {
+
+      const tristanTRect =
+        tristanT.getBoundingClientRect();
+
+
+      if (
+        rectanglesNear(
+          playerRect,
+          tristanTRect,
+          35
+        )
+      ) {
+
+        // On parle a TristanT seulement
+        // au debut ou a la fin
+
+        if (
+          tristanTStep === 0 ||
+          tristanTStep === 3
+        ) {
+
+          canTalkTristanT = true;
+
+
+          interaction.textContent =
+            "E - Parler";
+
+
+          interaction.style.left =
+            tristanT.offsetLeft -
+            5 +
+            "px";
+
+
+          interaction.style.top =
+            tristanT.offsetTop -
+            35 +
+            "px";
+
+
+          interaction.style.display =
+            "block";
+
+
+          return;
+
+        }
+
+      }
+
+    }
+
+
+    // ====================================
+    // PC DU PROFESSEUR
+    // ====================================
+
+    if (
+      tristanTQuestActive &&
+      !tristanTQuestCompleted &&
+      professorPC &&
+      (
+        tristanTStep === 1 ||
+        tristanTStep === 2
+      )
+    ) {
+
+      const pcRect =
+        professorPC.getBoundingClientRect();
+
+
+      if (
+        rectanglesNear(
+          playerRect,
+          pcRect,
+          40
+        )
+      ) {
+
+        canExamineProfessorPC = true;
+
+
+        if (
+          tristanTStep === 1
+        ) {
+
+          interaction.textContent =
+            "E - Examiner";
+
+        }
+
+
+        else if (
+          tristanTStep === 2
+        ) {
+
+          interaction.textContent =
+            "E - Aider TristanT";
+
+        }
+
+
+        interaction.style.left =
+          professorPC.offsetLeft -
+          5 +
+          "px";
+
+
+        interaction.style.top =
+          professorPC.offsetTop -
+          35 +
+          "px";
+
+
+        interaction.style.display =
+          "block";
+
+
+        return;
+
+      }
 
     }
 
@@ -1208,7 +1546,7 @@ function updateInteractions() {
         ) {
 
           interaction.textContent =
-            "E — Diagnostiquer";
+            "E - Diagnostiquer";
 
         }
 
@@ -1218,7 +1556,7 @@ function updateInteractions() {
         ) {
 
           interaction.textContent =
-            "E — Vérifier le câble";
+            "E - Verifier le cable";
 
         }
 
@@ -1228,7 +1566,7 @@ function updateInteractions() {
         ) {
 
           interaction.textContent =
-            "E — Rebrancher";
+            "E - Rebrancher";
 
         }
 
@@ -1258,7 +1596,7 @@ function updateInteractions() {
 
 
 // ========================================
-// PROXIMITÉ
+// PROXIMITE
 // ========================================
 
 function rectanglesNear(
@@ -1296,23 +1634,23 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // QUÊTE 3 : TRISTAN
+  // QUETE 3 : TRISTANT
   // ======================================
 
   if (
-    tristanQuestAvailable &&
-    !tristanQuestActive &&
-    !tristanQuestCompleted
+    tristanTQuestAvailable &&
+    !tristanTQuestActive &&
+    !tristanTQuestCompleted
   ) {
 
     currentDialogue =
-      tristanQuestDialogue;
+      tristanTQuestDialogue;
 
   }
 
 
   // ======================================
-  // RETOUR APRÈS RÉPARATION
+  // RETOUR APRES REPARATION
   // ======================================
 
   else if (
@@ -1328,7 +1666,7 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // RETOUR CAFÉ
+  // RETOUR CAFE
   // ======================================
 
   else if (
@@ -1342,7 +1680,7 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // DONNER QUÊTE IMPRIMANTE
+  // DONNER QUETE IMPRIMANTE
   // ======================================
 
   else if (
@@ -1358,7 +1696,7 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // PREMIÈRE RENCONTRE
+  // PREMIERE RENCONTRE
   // ======================================
 
   else {
@@ -1448,22 +1786,22 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // DÉMARRER QUÊTE 3
+  // DEMARRER QUETE 3
   // ======================================
 
   if (
-    tristanQuestAvailable &&
-    !tristanQuestActive &&
-    !tristanQuestCompleted
+    tristanTQuestAvailable &&
+    !tristanTQuestActive &&
+    !tristanTQuestCompleted
   ) {
 
-    startTristanQuest();
+    startTristanTQuest();
 
   }
 
 
   // ======================================
-  // TERMINER QUÊTE IMPRIMANTE
+  // TERMINER QUETE IMPRIMANTE
   // ======================================
 
   else if (
@@ -1478,7 +1816,7 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // TERMINER QUÊTE CAFÉ
+  // TERMINER QUETE CAFE
   // ======================================
 
   else if (
@@ -1491,7 +1829,7 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // DÉMARRER QUÊTE IMPRIMANTE
+  // DEMARRER QUETE IMPRIMANTE
   // ======================================
 
   else if (
@@ -1505,7 +1843,7 @@ function handleThiryDialogue() {
 
 
   // ======================================
-  // DÉMARRER QUÊTE CAFÉ
+  // DEMARRER QUETE CAFE
   // ======================================
 
   else if (
@@ -1524,7 +1862,166 @@ function handleThiryDialogue() {
 
 
 // ========================================
-// QUÊTE 1 : CAFÉ
+// DIALOGUE TRISTANT
+// ========================================
+
+function handleTristanTDialogue() {
+
+  let currentDialogue;
+
+
+  // ======================================
+  // PREMIERE DISCUSSION
+  // ======================================
+
+  if (
+    tristanTStep === 0
+  ) {
+
+    currentDialogue =
+      tristanTDialogue;
+
+  }
+
+
+  // ======================================
+  // DISCUSSION FINALE
+  // ======================================
+
+  else if (
+    tristanTStep === 3 &&
+    !tristanTQuestCompleted
+  ) {
+
+    currentDialogue =
+      tristanTCompleteDialogue;
+
+  }
+
+
+  else {
+
+    return;
+
+  }
+
+
+  // ======================================
+  // OUVRIR
+  // ======================================
+
+  if (
+    !dialogueOpen
+  ) {
+
+    dialogueOpen = true;
+
+    dialogueStep = 0;
+
+
+    dialogue.style.display =
+      "block";
+
+
+    dialogueName.textContent =
+      currentDialogue[
+        dialogueStep
+      ].speaker;
+
+
+    dialogueText.textContent =
+      currentDialogue[
+        dialogueStep
+      ].text;
+
+
+    interaction.style.display =
+      "none";
+
+
+    return;
+
+  }
+
+
+  // ======================================
+  // SUIVANT
+  // ======================================
+
+  dialogueStep++;
+
+
+  if (
+    dialogueStep <
+    currentDialogue.length
+  ) {
+
+    dialogueName.textContent =
+      currentDialogue[
+        dialogueStep
+      ].speaker;
+
+
+    dialogueText.textContent =
+      currentDialogue[
+        dialogueStep
+      ].text;
+
+
+    return;
+
+  }
+
+
+  // ======================================
+  // FIN DU DIALOGUE
+  // ======================================
+
+  dialogueOpen = false;
+
+
+  dialogue.style.display =
+    "none";
+
+
+  // Apres la premiere discussion
+
+  if (
+    tristanTStep === 0
+  ) {
+
+    tristanTStep = 1;
+
+
+    questTitle.textContent =
+      "💻 Pourtant, j'ai fini";
+
+
+    questObjective.textContent =
+      "□ Examiner le PC du professeur";
+
+  }
+
+
+  // Fin de la quete
+
+  else if (
+    tristanTStep === 3 &&
+    !tristanTQuestCompleted
+  ) {
+
+    completeTristanTQuest();
+
+  }
+
+
+  updateInteractions();
+
+}
+
+
+// ========================================
+// QUETE 1 : CAFE
 // ========================================
 
 function startCoffeeQuest() {
@@ -1537,11 +2034,11 @@ function startCoffeeQuest() {
 
 
   questTitle.textContent =
-    "☕ La pause café";
+    "☕ La pause cafe";
 
 
   questObjective.textContent =
-    "□ Trouver un café pour Thiry";
+    "□ Trouver un cafe pour Thiry";
 
 
   coffee.style.display =
@@ -1554,7 +2051,7 @@ function startCoffeeQuest() {
 
 
 // ========================================
-// TERMINER QUÊTE CAFÉ
+// TERMINER QUETE CAFE
 // ========================================
 
 function completeCoffeeQuest() {
@@ -1567,15 +2064,11 @@ function completeCoffeeQuest() {
 
 
   questTitle.textContent =
-    "☕ La pause café";
+    "☕ La pause cafe";
 
-
-  /*
-    TRANSITION VERS LA QUÊTE 2
-  */
 
   questObjective.textContent =
-    "💬 Reparler à Thiry";
+    "💬 Reparler a Thiry";
 
 
   addXP(40);
@@ -1591,7 +2084,7 @@ function completeCoffeeQuest() {
 
 
 // ========================================
-// QUÊTE 2 : IMPRIMANTE
+// QUETE 2 : IMPRIMANTE
 // ========================================
 
 function startPrinterQuest() {
@@ -1616,11 +2109,11 @@ function startPrinterQuest() {
 
 
   questTitle.textContent =
-    "🖨️ Problème réseau";
+    "🖨️ Probleme reseau";
 
 
   questObjective.textContent =
-    "□ Entrer dans l'université et trouver l'imprimante";
+    "□ Entrer dans l'universite et trouver l'imprimante";
 
 
   updateInteractions();
@@ -1648,11 +2141,11 @@ function examinePrinter() {
 
 
   dialogueName.textContent =
-    "Joël";
+    "Joel";
 
 
   // ======================================
-  // ÉTAPE 1
+  // ETAPE 1
   // ======================================
 
   if (
@@ -1660,11 +2153,11 @@ function examinePrinter() {
   ) {
 
     dialogueText.textContent =
-      "Hmm... imprimante hors ligne. Elle récupère une adresse en 169.254.";
+      "Hmm... imprimante hors ligne. Elle recupere une adresse en 169.254.";
 
 
     questObjective.textContent =
-      "□ Vérifier la connexion réseau de l'imprimante";
+      "□ Verifier la connexion reseau de l'imprimante";
 
 
     printerStep = 1;
@@ -1676,7 +2169,7 @@ function examinePrinter() {
 
 
   // ======================================
-  // ÉTAPE 2
+  // ETAPE 2
   // ======================================
 
   if (
@@ -1684,7 +2177,7 @@ function examinePrinter() {
   ) {
 
     dialogueText.textContent =
-      "Pas de DHCP... Voyons le câble. Ah. Il est branché sur le mauvais port.";
+      "Pas de DHCP... Voyons le cable. Ah. Il est branche sur le mauvais port.";
 
 
     questObjective.textContent =
@@ -1700,7 +2193,7 @@ function examinePrinter() {
 
 
   // ======================================
-  // ÉTAPE 3
+  // ETAPE 3
   // ======================================
 
   if (
@@ -1708,7 +2201,7 @@ function examinePrinter() {
   ) {
 
     dialogueText.textContent =
-      "Voilà. Nouvelle IP... et elle répond au ping.";
+      "Voila. Nouvelle IP... et elle repond au ping.";
 
 
     printerStep = 3;
@@ -1722,7 +2215,7 @@ function examinePrinter() {
 
 
     questObjective.textContent =
-      "☑ Imprimante reconnectée — Retourner voir Thiry";
+      "☑ Imprimante reconnectee - Retourner voir Thiry";
 
 
     return;
@@ -1733,7 +2226,7 @@ function examinePrinter() {
 
 
 // ========================================
-// TERMINER QUÊTE IMPRIMANTE
+// TERMINER QUETE IMPRIMANTE
 // ========================================
 
 function completePrinterQuest() {
@@ -1744,33 +2237,25 @@ function completePrinterQuest() {
 
 
   questTitle.textContent =
-    "🖨️ Problème réseau";
+    "🖨️ Probleme reseau";
 
-
-  /*
-    TRANSITION VERS LA QUÊTE 3
-  */
 
   questObjective.textContent =
-    "💬 Reparler à Thiry";
+    "💬 Reparler a Thiry";
 
 
-  /*
-    40 XP café
-    + 60 XP imprimante
-    = niveau 2
-  */
+  // 40 XP cafe + 60 XP imprimante = niveau 2
 
   addXP(60);
 
 
-  // Débloquer Tristan uniquement niveau 2
+  // Debloquer TristanT au niveau 2
 
   if (
     joel.level >= 2
   ) {
 
-    tristanQuestAvailable =
+    tristanTQuestAvailable =
       true;
 
   }
@@ -1782,16 +2267,24 @@ function completePrinterQuest() {
 
 
 // ========================================
-// QUÊTE 3 : TRISTANT
+// QUETE 3 : TRISTANT
 // ========================================
 
-function startTristanQuest() {
+function startTristanTQuest() {
 
-  tristanQuestAvailable =
+  tristanTQuestAvailable =
     false;
 
-  tristanQuestActive =
+  tristanTQuestActive =
     true;
+
+  tristanTQuestCompleted =
+    false;
+
+  tristanTStep = 0;
+
+
+  showTristanT();
 
 
   questBox.style.display =
@@ -1803,7 +2296,193 @@ function startTristanQuest() {
 
 
   questObjective.textContent =
-    "□ Retourner à l'université";
+    "□ Retourner a l'universite et parler a TristanT";
+
+
+  updateInteractions();
+
+}
+
+
+// ========================================
+// AFFICHER TRISTANT + PC
+// ========================================
+
+function showTristanT() {
+
+  if (tristanT) {
+
+    tristanT.style.display =
+      "block";
+
+  }
+
+
+  if (professorPC) {
+
+    professorPC.style.display =
+      "block";
+
+  }
+
+
+  if (professorPCStatus) {
+
+    professorPCStatus.style.display =
+      "flex";
+
+    professorPCStatus.textContent =
+      "!";
+
+  }
+
+}
+
+
+// ========================================
+// CACHER TRISTANT + PC AU DEBUT
+// ========================================
+
+function hideTristanT() {
+
+  if (tristanT) {
+
+    tristanT.style.display =
+      "none";
+
+  }
+
+
+  if (professorPC) {
+
+    professorPC.style.display =
+      "none";
+
+  }
+
+
+  if (professorPCStatus) {
+
+    professorPCStatus.style.display =
+      "none";
+
+  }
+
+}
+
+
+// ========================================
+// EXAMINER LE PC DU PROF
+// ========================================
+
+function examineProfessorPC() {
+
+  interaction.style.display =
+    "none";
+
+
+  dialogueOpen = true;
+
+  professorPCMessageOpen = true;
+
+
+  dialogue.style.display =
+    "block";
+
+
+  // ======================================
+  // ETAPE 1 : EXAMINER
+  // ======================================
+
+  if (
+    tristanTStep === 1
+  ) {
+
+    dialogueName.textContent =
+      "Joel";
+
+
+    dialogueText.textContent =
+      "Ca plante sur PowerPoint ? ...Son fichier fait 3,8 Go.";
+
+
+    questObjective.textContent =
+      "□ Aider TristanT a regler le probleme";
+
+
+    tristanTStep = 2;
+
+
+    return;
+
+  }
+
+
+  // ======================================
+  // ETAPE 2 : AIDER TRISTANT
+  // ======================================
+
+  if (
+    tristanTStep === 2
+  ) {
+
+    dialogueName.textContent =
+      "Joel";
+
+
+    dialogueText.textContent =
+      "247 photos et six videos dans le meme PowerPoint... On a trouve le probleme.";
+
+
+    tristanTStep = 3;
+
+
+    professorPC.classList.add(
+      "fixed"
+    );
+
+
+    if (professorPCStatus) {
+
+      professorPCStatus.textContent =
+        "✓";
+
+    }
+
+
+    questObjective.textContent =
+      "💬 Reparler a TristanT";
+
+
+    return;
+
+  }
+
+}
+
+
+// ========================================
+// TERMINER QUETE TRISTANT
+// ========================================
+
+function completeTristanTQuest() {
+
+  tristanTQuestCompleted =
+    true;
+
+  tristanTQuestActive =
+    false;
+
+
+  questTitle.textContent =
+    "💻 Pourtant, j'ai fini";
+
+
+  questObjective.textContent =
+    "✅ Quete terminee !";
+
+
+  addXP(75);
 
 
   updateInteractions();
@@ -1891,6 +2570,8 @@ function changeMap(mapName) {
 
   printerMessageOpen = false;
 
+  professorPCMessageOpen = false;
+
 
   dialogue.style.display =
     "none";
@@ -1960,9 +2641,9 @@ function levelUp() {
 function showLevelUp() {
 
   levelUpText.textContent =
-    "Joël passe niveau " +
+    "Joel passe niveau " +
     joel.level +
-    " — ❤️ Vie max : " +
+    " - ❤️ Vie max : " +
     joel.maxHealth;
 
 
@@ -2154,7 +2835,7 @@ joystick.addEventListener(
 
 
 // ========================================
-// ARRÊTER JOYSTICK
+// ARRETER JOYSTICK
 // ========================================
 
 function stopJoystick() {
@@ -2317,7 +2998,7 @@ mobileAction.addEventListener(
 
 
 // ========================================
-// PREMIÈRE DÉTECTION
+// PREMIERE DETECTION
 // ========================================
 
 updateInteractions();
