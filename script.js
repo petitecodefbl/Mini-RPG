@@ -279,7 +279,7 @@ const printerQuestDialogue = [
 
   {
     speaker: "Thiry",
-    text: "Justement..."
+    text: "Oh putain !"
   },
 
   {
@@ -289,7 +289,7 @@ const printerQuestDialogue = [
 
   {
     speaker: "Thiry",
-    text: "J'ai une imprimante qui répond plus sur le réseau."
+    text: "J'ai une imprimante qui répond plus sur le réseau, fait chier..."
   },
 
   {
@@ -299,7 +299,7 @@ const printerQuestDialogue = [
 
   {
     speaker: "Thiry",
-    text: "...C'est pour ça que je viens voir l'admin réseau."
+    text: "C'est toi l'admin réseau..."
   },
 
   {
@@ -338,7 +338,7 @@ const printerQuestCompleteDialogue = [
 
   {
     speaker: "Joël",
-    text: "...Si tu veux."
+    text: "Si tu veux..."
   }
 
 ];
@@ -352,12 +352,12 @@ const tristanQuestDialogue = [
 
   {
     speaker: "Thiry",
-    text: "Au fait Joël, Tristan te cherche."
+    text: "Au fait Joël, TristanT te cherche."
   },
 
   {
     speaker: "Joël",
-    text: "Tristan ? Il est où ?"
+    text: "TristanT ? Il est où ?"
   },
 
   {
