@@ -148,10 +148,10 @@ function startFoodQuest() {
   questTitle.textContent =
     "🍔 Une urgence relative";
 
-  questObjective.textContent =
-    "□ Trouver quelque chose a manger pour TristanT";
+questObjective.textContent =
+  "□ Aller au distributeur de l'universite";
 
-  // Il faut sortir de l'universite pour aller au distributeur.
+ 
   updateInteractions();
 }
 
@@ -1688,39 +1688,7 @@ function updateInteractions() {
     }
 
 
-    // DISTRIBUTEUR
-    const vendingMachine =
-      document.getElementById("vending-machine");
-
-    if (
-      foodQuestActive &&
-      foodStep === 1 &&
-      vendingMachine
-    ) {
-
-      const vendingRect =
-        vendingMachine.getBoundingClientRect();
-
-      if (
-        rectanglesNear(
-          playerRect,
-          vendingRect,
-          45
-        )
-      ) {
-
-        canUseVending = true;
-        interaction.textContent = "E - Utiliser";
-        interaction.style.left =
-          vendingMachine.offsetLeft - 10 + "px";
-        interaction.style.top =
-          vendingMachine.offsetTop - 35 + "px";
-        interaction.style.display = "block";
-        return;
-      }
-    }
-
-
+ 
     // UNIVERSITE
     const doorRect =
       officeDoor.getBoundingClientRect();
@@ -1853,15 +1821,51 @@ function updateInteractions() {
     }
 
 
-    // DISTRIBUTEUR - QUETE BOUFFE
-    if (
-      foodQuestActive &&
-      foodStep === 1
-    ) {
+  // ====================================
+// DISTRIBUTEUR
+// ====================================
 
-      // Le distributeur est place sur la map exterieure,
-      // donc aucune interaction ici a l'interieur.
-    }
+const vendingMachine =
+  document.getElementById("vending-machine");
+
+if (
+  foodQuestActive &&
+  foodStep === 1 &&
+  vendingMachine
+) {
+
+  const vendingRect =
+    vendingMachine.getBoundingClientRect();
+
+  if (
+    rectanglesNear(
+      playerRect,
+      vendingRect,
+      45
+    )
+  ) {
+
+    canUseVending = true;
+
+    interaction.textContent =
+      "E - Utiliser";
+
+    interaction.style.left =
+      vendingMachine.offsetLeft -
+      10 +
+      "px";
+
+    interaction.style.top =
+      vendingMachine.offsetTop -
+      35 +
+      "px";
+
+    interaction.style.display =
+      "block";
+
+    return;
+  }
+}
 
 
     // SORTIE EN DERNIER
@@ -3160,11 +3164,10 @@ function advanceTestStage() {
     selectedFood = null;
 
     questTitle.textContent = "🍔 Une urgence relative";
-    questObjective.textContent =
-      "□ Trouver quelque chose a manger pour TristanT";
+   questObjective.textContent =
+  "□ Aller au distributeur de l'universite";
 
-    changeMap("outside");
-
+changeMap("office");
     testStage = 0;
   }
 
