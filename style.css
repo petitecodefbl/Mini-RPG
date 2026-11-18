@@ -1436,7 +1436,7 @@ body {
 /* VITRE DU DISTRIBUTEUR */
 
 #vending-machine::before {
-  content: "🥤 🍫\\A🍔 🍎";
+  content: "🥤  🍫\\A🍔  🍎";
 
   white-space: pre;
 
@@ -1445,40 +1445,43 @@ body {
   left: 8px;
   top: 8px;
 
-  width: 42px;
-  height: 55px;
+  width: 48px;
+  height: 62px;
 
-  padding: 4px;
+  padding-top: 8px;
 
   background-color: #18242b;
 
-  border: 2px solid #777;
-  border-radius: 3px;
+  border: 3px solid #777;
+  border-radius: 4px;
 
-  color: white;
+  box-sizing: border-box;
 
-  font-size: 14px;
+  font-size: 16px;
   line-height: 25px;
 
   text-align: center;
+
+  overflow: hidden;
 }
 
 
-/* BOUTONS */
+/* BOUTONS DU DISTRIBUTEUR */
 
 #vending-machine::after {
-  content: "•••";
+  content: "●\\A●\\A●";
+
+  white-space: pre;
 
   position: absolute;
 
-  right: 4px;
+  right: 5px;
   top: 18px;
 
   color: #ddd;
 
-  font-size: 9px;
-
-  writing-mode: vertical-rl;
+  font-size: 7px;
+  line-height: 12px;
 }
 
 
