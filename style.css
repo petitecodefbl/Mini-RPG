@@ -1404,3 +1404,251 @@ body {
 
   color: #888;
 }
+
+/* ======================================== */
+/* DISTRIBUTEUR                             */
+/* ======================================== */
+
+#vending-machine {
+  position: absolute;
+
+  left: 70px;
+  top: 270px;
+
+  width: 70px;
+  height: 110px;
+
+  background: linear-gradient(
+    135deg,
+    #444,
+    #222
+  );
+
+  border: 4px solid #111;
+  border-radius: 7px;
+
+  box-sizing: border-box;
+
+  z-index: 3;
+}
+
+
+/* VITRE DU DISTRIBUTEUR */
+
+#vending-machine::before {
+  content: "🥤 🍫\\A🍔 🍎";
+
+  white-space: pre;
+
+  position: absolute;
+
+  left: 8px;
+  top: 8px;
+
+  width: 42px;
+  height: 55px;
+
+  padding: 4px;
+
+  background-color: #18242b;
+
+  border: 2px solid #777;
+  border-radius: 3px;
+
+  color: white;
+
+  font-size: 14px;
+  line-height: 25px;
+
+  text-align: center;
+}
+
+
+/* BOUTONS */
+
+#vending-machine::after {
+  content: "•••";
+
+  position: absolute;
+
+  right: 4px;
+  top: 18px;
+
+  color: #ddd;
+
+  font-size: 9px;
+
+  writing-mode: vertical-rl;
+}
+
+
+/* ======================================== */
+/* ECRAN DISTRIBUTEUR                       */
+/* ======================================== */
+
+#vending-screen {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: 440px;
+
+  padding: 20px;
+
+  background-color: #171717;
+
+  border: 3px solid white;
+  border-radius: 12px;
+
+  color: white;
+
+  display: none;
+
+  z-index: 600;
+
+  box-sizing: border-box;
+}
+
+
+.vending-header {
+  margin-bottom: 10px;
+
+  text-align: center;
+
+  color: #ffd166;
+
+  font-size: 20px;
+  font-weight: bold;
+}
+
+
+#vending-message {
+  margin-bottom: 18px;
+
+  text-align: center;
+
+  font-size: 14px;
+
+  color: #ddd;
+}
+
+
+.vending-options {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 10px;
+}
+
+
+.vending-choice {
+  width: 120px;
+  height: 110px;
+
+  background-color: #292929;
+
+  border: 2px solid #555;
+  border-radius: 9px;
+
+  color: white;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+
+.vending-choice:hover {
+  border-color: #ffd166;
+
+  transform: scale(1.05);
+}
+
+
+/* ======================================== */
+/* CHOIX FINAL : GOUTER                     */
+/* ======================================== */
+
+#taste-screen {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: 360px;
+
+  padding: 20px;
+
+  background-color: #171717;
+
+  border: 3px solid white;
+  border-radius: 12px;
+
+  color: white;
+
+  text-align: center;
+
+  display: none;
+
+  z-index: 600;
+
+  box-sizing: border-box;
+}
+
+
+.taste-title {
+  margin-bottom: 8px;
+
+  color: #ffd166;
+
+  font-size: 19px;
+  font-weight: bold;
+}
+
+
+.taste-text {
+  margin-bottom: 18px;
+
+  font-size: 15px;
+}
+
+
+.taste-options {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 15px;
+}
+
+
+.taste-choice {
+  width: 125px;
+
+  padding: 12px;
+
+  background-color: #292929;
+
+  border: 2px solid #555;
+  border-radius: 7px;
+
+  color: white;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+
+.taste-choice:hover {
+  border-color: #ffd166;
+
+  transform: scale(1.05);
+}
+
