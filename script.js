@@ -625,7 +625,60 @@ document.addEventListener(
 
     }
 
+// ====================================
+// DIALOGUE FINAL TIKTOK
+// ====================================
 
+if (
+  key === "e" &&
+  dialogueOpen &&
+  tiktokQuestActive &&
+  tiktokChoiceMade &&
+  !tiktokOpen
+) {
+
+  dialogueStep++;
+
+
+  // Réplique suivante
+
+  if (
+    dialogueStep <
+    tiktokCompleteDialogue.length
+  ) {
+
+    dialogueName.textContent =
+      tiktokCompleteDialogue[
+        dialogueStep
+      ].speaker;
+
+
+    dialogueText.textContent =
+      tiktokCompleteDialogue[
+        dialogueStep
+      ].text;
+
+
+    return;
+
+  }
+
+
+  // Fin du dialogue TikTok
+
+  dialogueOpen = false;
+
+  dialogue.style.display =
+    "none";
+
+
+  completeTikTokQuest();
+
+
+  return;
+
+}
+    
     // ====================================
     // FERMER MESSAGE IMPRIMANTE
     // ====================================
@@ -1893,34 +1946,38 @@ tiktokChoices.forEach(function(button) {
 function finishTikTokChoice() {
 
   tiktokOpen = false;
-  tiktokScreen.style.display = "none";
+
+  tiktokScreen.style.display =
+    "none";
+
+
+  // On ouvre un vrai dialogue classique
 
   dialogueOpen = true;
-  dialogue.style.display = "block";
 
-  dialogueName.textContent = "TristanT";
+  dialogueStep = 0;
+
+
+  dialogue.style.display =
+    "block";
+
+
+  dialogueName.textContent =
+    tiktokCompleteDialogue[
+      dialogueStep
+    ].speaker;
+
+
   dialogueText.textContent =
-    "Attends attends, regarde celle-la...";
+    tiktokCompleteDialogue[
+      dialogueStep
+    ].text;
 
-  setTimeout(function() {
-    dialogueName.textContent = "Joel";
-    dialogueText.textContent =
-      "On etait pas sur l'audiovisuel ?";
-  }, 1500);
 
-  setTimeout(function() {
-    dialogueName.textContent = "TristanT";
-    dialogueText.textContent =
-      "Faut aller se faire foutre a un moment.";
-  }, 3000);
+  interaction.style.display =
+    "none";
 
-  setTimeout(function() {
-    dialogue.style.display = "none";
-    dialogueOpen = false;
-    completeTikTokQuest();
-  }, 4800);
 }
-
 
 // ========================================
 // TERMINER QUETE TIKTOK
