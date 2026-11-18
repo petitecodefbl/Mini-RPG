@@ -1475,74 +1475,82 @@
         }
 
 
-        // ====================================
-        // TRISTANT
-        // ====================================
+       // ====================================
+// TRISTANT
+// ====================================
 
-        if (
-          (
-            tristanTQuestActive ||
-            tiktokQuestAvailable ||
-            tiktokQuestActive
-          ) &&
-          tristanT &&
-          window.getComputedStyle(
-            tristanT
-          ).display !== "none"
-        ) {
+if (
+  tristanT &&
+  window.getComputedStyle(
+    tristanT
+  ).display !== "none"
+) {
 
-          const tristanTRect =
-            tristanT.getBoundingClientRect();
+  const tristanTRect =
+    tristanT.getBoundingClientRect();
 
 
-          if (
-            rectanglesNear(
-              playerRect,
-              tristanTRect,
-              35
-            )
-          ) {
+  if (
+    rectanglesNear(
+      playerRect,
+      tristanTRect,
+      35
+    )
+  ) {
 
-            // On parle a TristanT seulement
-            // au debut ou a la fin
+    // Quête PC en cours :
+    // début ou retour final
 
-            if (
-              tristanTStep === 0 ||
-              tristanTStep === 3 ||
-              tiktokQuestAvailable
-            ) {
+    if (
+      (
+        tristanTQuestActive &&
+        !tristanTQuestCompleted &&
+        (
+          tristanTStep === 0 ||
+          tristanTStep === 3
+        )
+      )
 
-              canTalkTristanT = true;
+      ||
 
+      // Nouvelle quête TikTok disponible
 
-              interaction.textContent =
-                "E - Parler";
+      (
+        tiktokQuestAvailable &&
+        !tiktokQuestCompleted
+      )
+    ) {
 
-
-              interaction.style.left =
-                tristanT.offsetLeft -
-                5 +
-                "px";
-
-
-              interaction.style.top =
-                tristanT.offsetTop -
-                20 +
-                "px";
+      canTalkTristanT = true;
 
 
-              interaction.style.display =
-                "block";
+      interaction.textContent =
+        "E - Parler";
 
 
-              return;
+      interaction.style.left =
+        tristanT.offsetLeft -
+        5 +
+        "px";
 
-            }
 
-          }
+      interaction.style.top =
+        tristanT.offsetTop +
+        20 +
+        "px";
 
-        }
 
+      interaction.style.display =
+        "block";
+
+
+      return;
+
+    }
+
+  }
+
+}
 
         // ====================================
         // PC DU PROFESSEUR
@@ -2037,26 +2045,39 @@
     }
 
 
-    // ========================================
-    // TERMINER QUETE TRISTANT
-    // ========================================
+// ========================================
+// TERMINER QUETE TRISTANT
+// ========================================
 
-    function completeTristanTQuest() {
+function completeTristanTQuest() {
 
-      tristanTQuestCompleted = true;
-      tristanTQuestActive = false;
+  tristanTQuestCompleted =
+    true;
 
-      questTitle.textContent = "💻 Pourtant, j'ai fini";
-      questObjective.textContent =
-        "💬 TristanT semble vouloir te montrer un truc";
+  tristanTQuestActive =
+    false;
 
-      addXP(75);
 
-      tiktokQuestAvailable = true;
+  questTitle.textContent =
+    "💻 Pourtant, j'ai fini";
 
-      updateInteractions();
-    }
 
+  questObjective.textContent =
+    "💬 Reparler à TristanT";
+
+
+  addXP(75);
+
+
+  // Débloquer la quête TikTok
+
+  tiktokQuestAvailable =
+    true;
+
+
+  updateInteractions();
+
+}
 
     // ========================================
     // DEMARRER QUETE TIKTOK
