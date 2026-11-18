@@ -1,3 +1,4 @@
+
 // ========================================
 // ELEMENTS DU JEU
 // ========================================
@@ -82,6 +83,25 @@ const tiktokChoices =
   document.querySelectorAll(".tiktok-choice");
 
 // ========================================
+// QUETE 5 : BOUFFE
+// ========================================
+
+const vendingScreen =
+  document.getElementById("vending-screen");
+
+const vendingMessage =
+  document.getElementById("vending-message");
+
+const vendingChoices =
+  document.querySelectorAll(".vending-choice");
+
+const tasteScreen =
+  document.getElementById("taste-screen");
+
+const tasteChoices =
+  document.querySelectorAll(".taste-choice");
+
+// ========================================
 // INTERACTIONS
 // ========================================
 
@@ -99,6 +119,8 @@ let canTalkTristanT = false;
 
 let canExamineProfessorPC = false;
 
+let canUseVending = false;
+
 
 // ========================================
 // POSITION DE JOEL
@@ -108,6 +130,202 @@ let x = 330;
 let y = 205;
 
 const speed = 10;
+
+
+// ========================================
+// QUETE 5 : UNE URGENCE RELATIVE
+// ========================================
+
+function startFoodQuest() {
+
+  foodQuestAvailable = false;
+  foodQuestActive = true;
+  foodQuestCompleted = false;
+
+  foodStep = 1;
+  selectedFood = null;
+
+  questTitle.textContent =
+    "🍔 Une urgence relative";
+
+  questObjective.textContent =
+    "□ Trouver quelque chose a manger pour TristanT";
+
+  // Il faut sortir de l'universite pour aller au distributeur.
+  updateInteractions();
+}
+
+
+function openVending() {
+
+  if (!vendingScreen) {
+    return;
+  }
+
+  vendingOpen = true;
+  interaction.style.display = "none";
+  vendingScreen.style.display = "block";
+
+  if (vendingMessage) {
+    vendingMessage.textContent =
+      "Qu'est-ce que Joel prend pour TristanT ?";
+  }
+}
+
+
+vendingChoices.forEach(function(button) {
+
+  button.addEventListener("click", function() {
+
+    if (!foodQuestActive || !vendingOpen) {
+      return;
+    }
+
+    const choice =
+      button.dataset.food;
+
+    vendingOpen = false;
+    vendingScreen.style.display = "none";
+
+    if (choice === "salad") {
+
+      loseXP(5, "TristanT : ...C'est quoi ca ? Repars.");
+
+      questObjective.textContent =
+        "□ Trouver quelque chose que TristanT considere comme de la nourriture";
+
+      foodStep = 1;
+      selectedFood = null;
+    }
+
+    else if (choice === "apple") {
+
+      loseXP(5, "TristanT : Joel. Tu te fous de ma gueule ?");
+
+      questObjective.textContent =
+        "□ Trouver quelque chose que TristanT considere comme de la nourriture";
+
+      foodStep = 1;
+      selectedFood = null;
+    }
+
+    else if (choice === "burger") {
+
+      selectedFood = "burger";
+      foodStep = 2;
+
+      questObjective.textContent =
+        "□ Rapporter le burger a TristanT";
+    }
+
+    updateInteractions();
+  });
+});
+
+
+function loseXP(amount, message) {
+
+  joel.xp =
+    Math.max(
+      0,
+      joel.xp - amount
+    );
+
+  updateStats();
+
+  levelUpText.textContent =
+    "💀 -" + amount + " XP — " + message;
+
+  levelUpMessage.style.display =
+    "block";
+
+  setTimeout(function() {
+    levelUpMessage.style.display =
+      "none";
+  }, 2500);
+}
+
+
+function openTasteChoice() {
+
+  dialogueOpen = false;
+  dialogue.style.display = "none";
+
+  tasteOpen = true;
+
+  if (tasteScreen) {
+    tasteScreen.style.display = "block";
+  }
+
+  interaction.style.display = "none";
+}
+
+
+tasteChoices.forEach(function(button) {
+
+  button.addEventListener("click", function() {
+
+    if (!foodQuestActive || !tasteOpen) {
+      return;
+    }
+
+    const choice =
+      button.dataset.taste;
+
+    tasteOpen = false;
+
+    if (tasteScreen) {
+      tasteScreen.style.display = "none";
+    }
+
+    if (choice === "yes") {
+
+      loseXP(
+        5,
+        "Mauvais choix de vie."
+      );
+    }
+
+    else {
+
+      addXP(5);
+
+      levelUpText.textContent =
+        "⭐ +5 XP — Pour une fois, une bonne decision.";
+
+      levelUpMessage.style.display =
+        "block";
+
+      setTimeout(function() {
+        levelUpMessage.style.display =
+          "none";
+      }, 2500);
+    }
+
+    completeFoodQuest();
+  });
+});
+
+
+function completeFoodQuest() {
+
+  foodQuestCompleted = true;
+  foodQuestActive = false;
+  foodStep = 4;
+
+  questTitle.textContent =
+    "🍔 Une urgence relative";
+
+  questObjective.textContent =
+    "✅ Quete terminee !";
+
+  // A ce stade Joel a normalement 100 XP / 150.
+  // +50 permet d'atteindre le niveau 3 si aucun XP n'a ete perdu.
+  // Les mauvais choix retardent donc vraiment le niveau.
+  addXP(50);
+
+  updateInteractions();
+}
 
 
 // ========================================
@@ -180,6 +398,24 @@ let tiktokChoiceMade = false;
 
 // Raccourci secret de test : touche P
 let testStage = 0;
+
+// ========================================
+// QUETE 5 : UNE URGENCE RELATIVE
+// ========================================
+
+let foodQuestAvailable = false;
+let foodQuestActive = false;
+let foodQuestCompleted = false;
+
+let foodStep = 0;
+// 0 = parler a TristanT
+// 1 = aller au distributeur
+// 2 = rapporter la nourriture
+// 3 = choix final gouter / refuser
+
+let selectedFood = null;
+let vendingOpen = false;
+let tasteOpen = false;
 
 // ========================================
 // DIALOGUE
@@ -568,6 +804,73 @@ const tiktokCompleteDialogue = [
   }
 
 ];
+
+// ========================================
+// QUETE 5 : UNE URGENCE RELATIVE
+// ========================================
+
+const foodQuestDialogue = [
+
+  {
+    speaker: "TristanT",
+    text: "Joel, j'ai faim."
+  },
+
+  {
+    speaker: "Joel",
+    text: "Et ?"
+  },
+
+  {
+    speaker: "TristanT",
+    text: "J'ai vraiment faim."
+  },
+
+  {
+    speaker: "Joel",
+    text: "Il est 11h12."
+  },
+
+  {
+    speaker: "TristanT",
+    text: "Justement."
+  }
+
+];
+
+const foodGoodDialogue = [
+
+  {
+    speaker: "Joel",
+    text: "Tiens."
+  },
+
+  {
+    speaker: "TristanT",
+    text: "Ahhhh ! La on parle."
+  },
+
+  {
+    speaker: "TristanT",
+    text: "Putain c'est degueulasse."
+  },
+
+  {
+    speaker: "Joel",
+    text: "Tu viens de me faire traverser le campus pour ca."
+  },
+
+  {
+    speaker: "TristanT",
+    text: "J'ai jamais dit que c'etait bon."
+  },
+
+  {
+    speaker: "TristanT",
+    text: "T'en veux ?"
+  }
+
+];
 // ========================================
 // INITIALISATION
 // ========================================
@@ -601,6 +904,13 @@ document.addEventListener(
     // MODE TEST SECRET : P
     if (key === "p") {
       advanceTestStage();
+      return;
+    }
+
+
+    // Pendant un choix a l'ecran, les touches de mouvement sont bloquees.
+    if (vendingOpen || tasteOpen || tiktokOpen) {
+      event.preventDefault();
       return;
     }
 
@@ -724,6 +1034,20 @@ if (
 
       return;
 
+    }
+
+
+    // ====================================
+    // DISTRIBUTEUR
+    // ====================================
+
+    if (
+      key === "e" &&
+      canUseVending
+    ) {
+
+      openVending();
+      return;
     }
 
 
@@ -1308,10 +1632,11 @@ function updateInteractions() {
   canExaminePrinter = false;
   canTalkTristanT = false;
   canExamineProfessorPC = false;
+  canUseVending = false;
 
   interaction.style.display = "none";
 
-  if (dialogueOpen || tiktokOpen) {
+  if (dialogueOpen || tiktokOpen || vendingOpen || tasteOpen) {
     return;
   }
 
@@ -1357,6 +1682,39 @@ function updateInteractions() {
         interaction.textContent = "E - Parler";
         interaction.style.left = npc.offsetLeft + 10 + "px";
         interaction.style.top = npc.offsetTop - 35 + "px";
+        interaction.style.display = "block";
+        return;
+      }
+    }
+
+
+    // DISTRIBUTEUR
+    const vendingMachine =
+      document.getElementById("vending-machine");
+
+    if (
+      foodQuestActive &&
+      foodStep === 1 &&
+      vendingMachine
+    ) {
+
+      const vendingRect =
+        vendingMachine.getBoundingClientRect();
+
+      if (
+        rectanglesNear(
+          playerRect,
+          vendingRect,
+          45
+        )
+      ) {
+
+        canUseVending = true;
+        interaction.textContent = "E - Utiliser";
+        interaction.style.left =
+          vendingMachine.offsetLeft - 10 + "px";
+        interaction.style.top =
+          vendingMachine.offsetTop - 35 + "px";
         interaction.style.display = "block";
         return;
       }
@@ -1420,6 +1778,15 @@ function updateInteractions() {
         (
           tiktokQuestAvailable &&
           !tiktokQuestCompleted
+        ) ||
+        (
+          foodQuestAvailable &&
+          !foodQuestCompleted
+        ) ||
+        (
+          foodQuestActive &&
+          !foodQuestCompleted &&
+          (foodStep === 0 || foodStep === 2)
         );
 
       if (
@@ -1483,6 +1850,17 @@ function updateInteractions() {
         interaction.style.display = "block";
         return;
       }
+    }
+
+
+    // DISTRIBUTEUR - QUETE BOUFFE
+    if (
+      foodQuestActive &&
+      foodStep === 1
+    ) {
+
+      // Le distributeur est place sur la map exterieure,
+      // donc aucune interaction ici a l'interieur.
     }
 
 
@@ -1777,6 +2155,22 @@ function handleTristanTDialogue() {
   let currentDialogue;
 
   if (
+    foodQuestActive &&
+    foodStep === 2 &&
+    selectedFood === "burger"
+  ) {
+    currentDialogue = foodGoodDialogue;
+  }
+
+  else if (
+    foodQuestAvailable &&
+    !foodQuestActive &&
+    !foodQuestCompleted
+  ) {
+    currentDialogue = foodQuestDialogue;
+  }
+
+  else if (
     tiktokQuestAvailable &&
     !tiktokQuestActive &&
     !tiktokQuestCompleted
@@ -1821,6 +2215,23 @@ function handleTristanTDialogue() {
   dialogue.style.display = "none";
 
   if (
+    foodQuestActive &&
+    foodStep === 2 &&
+    selectedFood === "burger"
+  ) {
+    foodStep = 3;
+    openTasteChoice();
+  }
+
+  else if (
+    foodQuestAvailable &&
+    !foodQuestActive &&
+    !foodQuestCompleted
+  ) {
+    startFoodQuest();
+  }
+
+  else if (
     tiktokQuestAvailable &&
     !tiktokQuestActive &&
     !tiktokQuestCompleted
@@ -1990,9 +2401,11 @@ function completeTikTokQuest() {
 
   questTitle.textContent = "📱 L'algorithme";
   questObjective.textContent =
-    "✅ 2 minutes de productivite perdues";
+    "💬 TristanT a encore quelque chose a dire";
 
   addXP(25);
+
+  foodQuestAvailable = true;
 
   updateInteractions();
 }
@@ -2590,11 +3003,21 @@ function advanceTestStage() {
   printerMessageOpen = false;
   professorPCMessageOpen = false;
   tiktokOpen = false;
+  vendingOpen = false;
+  tasteOpen = false;
 
   dialogue.style.display = "none";
 
   if (tiktokScreen) {
     tiktokScreen.style.display = "none";
+  }
+
+  if (vendingScreen) {
+    vendingScreen.style.display = "none";
+  }
+
+  if (tasteScreen) {
+    tasteScreen.style.display = "none";
   }
 
   // P1 : cafe fini
@@ -2702,30 +3125,45 @@ function advanceTestStage() {
     testStage = 5;
   }
 
-  // P6 : ouvrir TikTok directement
-  else {
+  // P6 : TikTok termine, quete bouffe disponible
+  else if (testStage === 5) {
 
     showTristanT();
 
     tiktokQuestAvailable = false;
-    tiktokQuestActive = true;
-    tiktokQuestCompleted = false;
-    tiktokChoiceMade = false;
+    tiktokQuestActive = false;
+    tiktokQuestCompleted = true;
+
+    foodQuestAvailable = true;
+    foodQuestActive = false;
+    foodQuestCompleted = false;
+    foodStep = 0;
 
     questTitle.textContent = "📱 L'algorithme";
     questObjective.textContent =
-      "□ Regarder le TikTok de TristanT";
+      "💬 TristanT a encore quelque chose a dire";
 
-    tiktokOpen = true;
+    changeMap("office");
 
-    if (tiktokScreen) {
-      tiktokScreen.style.display = "block";
-    }
+    testStage = 6;
+  }
 
-    if (tiktokMessage) {
-      tiktokMessage.textContent =
-        "TristanT : Choisis, y a que des bonnes videos.";
-    }
+  // P7 : lancer directement la quete bouffe
+  else {
+
+    showTristanT();
+
+    foodQuestAvailable = false;
+    foodQuestActive = true;
+    foodQuestCompleted = false;
+    foodStep = 1;
+    selectedFood = null;
+
+    questTitle.textContent = "🍔 Une urgence relative";
+    questObjective.textContent =
+      "□ Trouver quelque chose a manger pour TristanT";
+
+    changeMap("outside");
 
     testStage = 0;
   }
@@ -3154,3 +3592,7 @@ mobileAction.addEventListener(
 // ========================================
 
 updateInteractions();
+
+
+
+
