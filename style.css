@@ -1655,3 +1655,25 @@ body {
   transform: scale(1.05);
 }
 
+#vending-machine {
+  position: absolute;
+
+  left: 600px;
+  top: 120px;
+
+  width: 60px;
+  height: 100px;
+
+  background: linear-gradient(
+    135deg,
+    #444,
+    #222
+  );
+
+  border: 4px solid #111;
+  border-radius: 7px;
+
+  box-sizing: border-box;
+
+  z-index: 4;
+}
